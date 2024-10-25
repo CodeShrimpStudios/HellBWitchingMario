@@ -12,10 +12,7 @@ export default class CardScene extends Phaser.Scene{
 
     preload(){
         this.load.image("BStart", "/assets/images/BStart.png")
-        this.load.image("Carta1", "./assets/images/patatas.jpg")
-        this.load.image("Carta2", "./assets/images/patatas.jpg")
-        this.load.image("Carta3", "./assets/images/patatas.jpg")
-        this.load.image("Carta4", "./assets/images/patatas.jpg")
+        this.load.image("Patatas", "./assets/images/patatas.jpg")
     }
 
     create(){
@@ -49,5 +46,11 @@ export default class CardScene extends Phaser.Scene{
         Carta4.setScale(0.1, 0.1);
     }
 
+    StartGame() {
+        console.log("boton");
+        //this.scene.remove('MenuScene'); // I remove the scene, because I will add again when start the game
+        //this.scene.stop('scene_ui');
+        this.scene.switch('game');
+    }
     
 }
