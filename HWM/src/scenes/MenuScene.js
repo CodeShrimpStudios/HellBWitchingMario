@@ -15,26 +15,20 @@ export default class MenuScene extends Phaser.Scene {
 
     preload(){
         this.load.image("BStart", "/assets/images/BStart.png")
-        this.load.image("patatas", "./assets/images/patatas.jpg")
+        this.load.image("background", "/assets/images/space.png")
     }
 
     create(){
-        //this.add.image(100, 50, "BStart").setOrigin(0, 0).setScale(0.5, 0.5)
-        /** Lo mismo que la línea anterior con clases */
+
+        this.add.image(400, 250, 'background');
+
         let BStart = new Bstart(this, 400, 250);
         BStart.setInteractive()
         BStart.on('pointerdown', () => this.StartGame() );
         BStart.setOrigin(0.4,0.4);
         BStart.setScale(0.2,0.2);
 
-        
-        /** */
 
-        //this.add.image(400, 450, "patatas").setOrigin(0.5, 0.5).setScale(0.1, 0.1)
-        /** Lo mismo que la línea anterior con clases */
-        let patatas = new Patatas(this, 400, 450);
-        patatas.setOrigin(0.5, 0.5);
-        patatas.setScale(0.1, 0.1);
     }
 
     update(){
