@@ -32,8 +32,7 @@ export default class GameScene extends Phaser.Scene {
             //diseñemos las stats de los personajes
         this.cartasSeleccionadas.forEach((carta) => {
         if (carta.efecto.vidaExtra) {
-          // Lógica para aumentar la vida del jugador
-          console.log(`La carta elegida ha sido ${carta.nombre}`)
+          // Lógica para aumentar la vida del jugador          
           console.log(`Aumentando la vida en ${carta.efecto.vidaExtra}`);
         }
         if (carta.efecto.velocidadExtra) {

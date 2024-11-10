@@ -7,6 +7,7 @@ export default class CardScene extends Phaser.Scene{
         super({key: "card"});
         this.cartas = []; //cartas seleccionables
         this.cartasSeleccionadas = []; //cartas que se seleccionan
+        this.desordenarCartas = true; //Booleando para desordenar las cartas
     }
 
     init(){
@@ -53,6 +54,18 @@ export default class CardScene extends Phaser.Scene{
         // Carta4.setOrigin(0.5, 0.5);
         // Carta4.setScale(0.1, 0.1);
 
+
+
+
+
+
+        /**
+         * 
+         * 
+         * 
+         */
+
+        
          //efectos para las cartas (de momento chusqueros)
         const efectos = [
             { vidaExtra: 5 },
@@ -65,6 +78,12 @@ export default class CardScene extends Phaser.Scene{
             { velocidadExtra: 15 },
             { saltoExtra: 15 }
           ];
+
+        //Para desordenar o no (testing mejor ordenadas)
+
+        if (this.desordenarCartas){
+            Phaser.Utils.Array.Shuffle(efectos);
+        }
 
 
           //a cada carta le metemos un efecto
