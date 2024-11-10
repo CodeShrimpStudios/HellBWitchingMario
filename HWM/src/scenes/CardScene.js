@@ -19,6 +19,7 @@ export default class CardScene extends Phaser.Scene{
         this.load.image("Patatas", "/assets/images/patatas.jpg");
         this.load.image("CartaEstilo1", "/assets/images/CartaD1.png");
         this.load.image("CartaEstilo2", "/assets/images/CartaD2.png");
+        this.load.image("BContinuar", "/assets/images/BContinuar.png");
         
     }
 
@@ -86,7 +87,7 @@ export default class CardScene extends Phaser.Scene{
     });
       
           // Botón para continuar (chusquero ya le meteré imagen chula)
-          let botonContinuar = this.add.text(350, 580, "Continuar", { fill: "#0f0" }).setInteractive();
+          let botonContinuar = this.add.image(400, 570, "BContinuar").setScale(0.2).setInteractive();
           botonContinuar.on("pointerdown", () => {
             this.cambiarAEscenaJuego();
           });
