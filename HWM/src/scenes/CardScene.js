@@ -79,14 +79,14 @@ export default class CardScene extends Phaser.Scene{
             const x = 150 + (index % 3) * 250; // Tres cartas por fila, ajustando el espacio
             const y = 100 + Math.floor(index / 3) * 180; // Tres filas, ajustando el espacio
             const imagenCarta = index % 2 === 0 ? "CartaEstilo1" : "CartaEstilo2";
-      let cartaSprite = this.add.image(x, y, imagenCarta).setScale(scale).setInteractive();
+            let cartaSprite = this.add.image(x, y, imagenCarta).setScale(scale).setInteractive();
             cartaSprite.on("pointerdown", () => {
-                this.seleccionarCarta(cartaObj.carta);
+                this.seleccionarCarta(cartaObj);
             });
             cartaObj.sprite = cartaSprite;
     });
       
-          // Botón para continuar (chusquero ya le meteré imagen chula)
+          // Botón para continuar bien
           let botonContinuar = this.add.image(400, 570, "BContinuar").setScale(0.2).setInteractive();
           botonContinuar.on("pointerdown", () => {
             this.cambiarAEscenaJuego();
@@ -94,14 +94,16 @@ export default class CardScene extends Phaser.Scene{
         }
       
         //debug para saber si se están seleccionando y cuales y cuando has seleccionado 3
-        seleccionarCarta(carta) {
-          if (this.cartasSeleccionadas.length < 3) {
-            this.cartasSeleccionadas.push(carta);
-            console.log(`Carta seleccionada: ${carta.nombre}`);
-          } else {
-            console.log("Ya has seleccionado 3 cartas");
+        seleccionarCarta(cartaObj) {
+            if (this.cartasSeleccionadas.length < 3 && !this.cartasSeleccionadas.includes(cartaObj.carta)) {
+              this.cartasSeleccionadas.push(cartaObj.carta);
+              console.log(`Carta seleccionada: ${cartaObj.carta.nombre}`);
+              cartaObj.sprite.disableInteractive(); // Desactivar la interacción de la carta seleccionada
+              cartaObj.sprite.setAlpha(0.2); // Cambiar la opacidad para indicar que ha sido seleccionada
+            } else {
+              console.log("Ya has seleccionado 3 cartas");
+            }
           }
-        }
       
         //con este método me llevo la info al siguiente nivel
         cambiarAEscenaJuego() {
