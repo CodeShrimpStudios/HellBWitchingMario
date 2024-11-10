@@ -17,6 +17,9 @@ export default class CardScene extends Phaser.Scene{
         this.load.image("BStart", "/assets/images/BStart.png")
         //this.load.image("Patatas", "./assets/images/patatas.jpg")
         this.load.image("Patatas", "/assets/images/patatas.jpg");
+        this.load.image("CartaEstilo1", "/assets/images/CartaD1.png");
+        this.load.image("CartaEstilo2", "/assets/images/CartaD2.png");
+        
     }
 
     create(){
@@ -70,11 +73,12 @@ export default class CardScene extends Phaser.Scene{
           });
       
           // Imágenes de las cartas
-            const scale = 0.05; // Reducir el tamaño de las imágenes de las cartas para que quepan mejor
+            const scale = 0.25; // Reducir el tamaño de las imágenes de las cartas para que quepan mejor
             this.cartas.forEach((cartaObj, index) => {
-            const x = 200 + (index % 3) * 200; // Tres cartas por fila, ajustando el espacio
-            const y = 50 + Math.floor(index / 3) * 200; // Tres filas, ajustando el espacio
-            let cartaSprite = this.add.image(x, y, "Patatas").setScale(scale).setInteractive();
+            const x = 150 + (index % 3) * 250; // Tres cartas por fila, ajustando el espacio
+            const y = 100 + Math.floor(index / 3) * 180; // Tres filas, ajustando el espacio
+            const imagenCarta = index % 2 === 0 ? "CartaEstilo1" : "CartaEstilo2";
+      let cartaSprite = this.add.image(x, y, imagenCarta).setScale(scale).setInteractive();
             cartaSprite.on("pointerdown", () => {
                 this.seleccionarCarta(cartaObj.carta);
             });
@@ -82,7 +86,7 @@ export default class CardScene extends Phaser.Scene{
     });
       
           // Botón para continuar (chusquero ya le meteré imagen chula)
-          let botonContinuar = this.add.text(400, 550, "Continuar", { fill: "#0f0" }).setInteractive();
+          let botonContinuar = this.add.text(350, 580, "Continuar", { fill: "#0f0" }).setInteractive();
           botonContinuar.on("pointerdown", () => {
             this.cambiarAEscenaJuego();
           });
