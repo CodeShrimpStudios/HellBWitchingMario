@@ -1,17 +1,21 @@
 export default class GameScene extends Phaser.Scene {
+    
+    player;
+    cursors;
+    
     constructor() {
         super({ key: "game" });
     }
 
     init(data) {
         this.cartasSeleccionadas = data.cartasSeleccionadas || []; //a ver si funciona
-
     }
 
     preload() {
         this.load.image("background", "/assets/images/space.png");
         this.load.image("tiles", "/assets/tiles/FireSet.png");
         this.load.tilemapTiledJSON('tilemap', 'assets/tilemap/DemoTilemap.json');
+        this.load.image("prueba", "/assets/images/patatas.jpg");
         
     }
 
@@ -58,6 +62,40 @@ this.groundLayer =
 this.map.createLayer('Ground'
                            , tileset1)
 
+
+
+    this.cursors = this.input.keyboard.createCursorKeys();
+
+    this.player = this.physics.add.sprite(300, 200, 'prueba')
+    this.player.setScale(.1,.1)
+    this.player.setCollideWorldBounds(true);
+    
+    this.cameras.main.setBounds(0, 0, 800, 600);
+    this.physics.world.setBounds(0, 0, 800, 600);       
+    
+    this.cameras.main.startFollow(this.player)
+}
+
+    update(){
+
+        const speed = 100
+
+        this.player.setVelocity(0)
+        if (this.cursors.left.isDown){
+            this.player.setVelocityX(-speed)
+        }
+        if (this.cursors.right.isDown){
+            this.player.setVelocityX(speed)
+        }
+        if (this.cursors.up.isDown)
+        {
+            this.player.setVelocityY(-speed);
+        }
+        if (this.cursors.down.isDown)
+        {
+            this.player.setVelocityY(speed);
+        }
     }
 
+    
 }
