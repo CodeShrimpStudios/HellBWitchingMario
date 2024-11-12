@@ -16,7 +16,8 @@ export default class GameScene extends Phaser.Scene {
         this.load.image("tiles", "/assets/tiles/FireSet.png");
         this.load.tilemapTiledJSON('tilemap', 'assets/tilemap/DemoTilemap.json');
         this.load.image("prueba", "/assets/images/patatas.jpg");
-        
+        this.load.image("background", "/assets/images/space.png")
+
     }
 
     create() {
@@ -49,6 +50,8 @@ export default class GameScene extends Phaser.Scene {
         }
       });
 
+        let bg = this.add.image(400, 250, 'background');
+
         this.map = this.make.tilemap({ 
             key: 'tilemap', 
             tileWidth: 16, 
@@ -64,15 +67,20 @@ this.map.createLayer('Ground'
 
 
 
+
+    
+
+
     this.cursors = this.input.keyboard.createCursorKeys();
 
-    this.player = this.physics.add.sprite(300, 200, 'prueba')
-    this.player.setScale(.1,.1)
+    this.player = this.physics.add.sprite(300, 400, 'prueba')
+    this.player.setScale(.03,.03)
     this.player.setCollideWorldBounds(true);
     
     this.cameras.main.setBounds(0, 0, 800, 600);
     this.physics.world.setBounds(0, 0, 800, 600);       
     
+    this.cameras.main.setZoom(2)
     this.cameras.main.startFollow(this.player)
 }
 
