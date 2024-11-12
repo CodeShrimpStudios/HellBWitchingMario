@@ -1,13 +1,16 @@
 import Mario from "../classes/Mario.js";
 
 export default class GameScene extends Phaser.Scene {
+    
+    player;
+    cursors;
+    
     constructor() {
         super({ key: "game" });
     }
 
     init(data) {
         this.cartasSeleccionadas = data.cartasSeleccionadas || []; //a ver si funciona
-
     }
 
     preload() {
@@ -15,6 +18,9 @@ export default class GameScene extends Phaser.Scene {
         this.load.image("tiles", "/assets/tiles/FireSet.png");
         this.load.tilemapTiledJSON('tilemap', 'assets/tilemap/DemoTilemap.json');
         this.load.image("mario", "/assets/images/mario.png");
+        this.load.image("prueba", "/assets/images/patatas.jpg");
+        this.load.image("background", "/assets/images/space.png")
+
     }
 
     create() {
@@ -47,6 +53,8 @@ export default class GameScene extends Phaser.Scene {
           }
         });
 
+        let bg = this.add.image(400, 250, 'background');
+
         this.map = this.make.tilemap({ 
           key: 'tilemap', 
           tileWidth: 16, 
@@ -59,11 +67,30 @@ export default class GameScene extends Phaser.Scene {
         this.groundLayer = this.map.createLayer('Ground', tileset1)
 
         this.mario = new Mario(this, 0, 0);
-        this.physics.add.collider(this.map, this.mario)
+        this.physics.add.collider(this.map, this.mario);
+
+        
+
+    
+
+
+    this.cursors = this.input.keyboard.createCursorKeys();
+
+    this.player = this.physics.add.sprite(300, 400, 'prueba')
+    this.player.setScale(.03,.03);
+    this.player.setCollideWorldBounds(true);
+    
+    this.cameras.main.setBounds(0, 0, 800, 600);
+    this.physics.world.setBounds(0, 0, 800, 600);       
+    
+    this.cameras.main.setZoom(2);
+    this.cameras.main.startFollow(this.player);
     }
 
     update() {
         this.mario.update();
-        console.log(this.mario.velocity)
     }
+
+
+    
 }
