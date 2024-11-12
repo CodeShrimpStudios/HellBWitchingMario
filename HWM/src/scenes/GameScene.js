@@ -2,7 +2,6 @@ import Mario from "../classes/Mario.js";
 
 export default class GameScene extends Phaser.Scene {
     
-    player;
     cursors;
     
     constructor() {
@@ -53,6 +52,7 @@ export default class GameScene extends Phaser.Scene {
           }
         });
 
+        //Cambien el fondo cuando tengan la imagen
         let bg = this.add.image(400, 250, 'background');
 
         this.map = this.make.tilemap({ 
@@ -70,21 +70,22 @@ export default class GameScene extends Phaser.Scene {
         this.physics.add.collider(this.map, this.mario);
 
         
+        //No se si esto sigue sirviendo, lo utilze para mi personaje de prueba
+        this.cursors = this.input.keyboard.createCursorKeys();
 
+        this.mario.setCollideWorldBounds(true);
+        
+        this.cameras.main.setBounds(0, 0, 800, 600);
+        this.physics.world.setBounds(0, 0, 800, 600);       
+        
+        //La camara solo ocupa mitad de pantalla. Si necesitas pantalla completa cambia setSize a (800,600)
+        this.cameras.main.setSize(400, 600);
     
+        let camera2 = this.cameras.add(400, 0, 400, 600, false)
+        //this.camera2.setZoom(1.5)
 
-
-    this.cursors = this.input.keyboard.createCursorKeys();
-
-    this.player = this.physics.add.sprite(300, 400, 'prueba')
-    this.player.setScale(.03,.03);
-    this.player.setCollideWorldBounds(true);
-    
-    this.cameras.main.setBounds(0, 0, 800, 600);
-    this.physics.world.setBounds(0, 0, 800, 600);       
-    
-    this.cameras.main.setZoom(2);
-    this.cameras.main.startFollow(this.player);
+        this.cameras.main.setZoom(1.75);
+        this.cameras.main.startFollow(this.mario);
     }
 
     update() {
