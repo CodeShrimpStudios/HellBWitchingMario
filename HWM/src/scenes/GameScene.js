@@ -1,3 +1,5 @@
+import Mario from "../classes/Mario.js";
+
 export default class GameScene extends Phaser.Scene {
     constructor() {
         super({ key: "game" });
@@ -12,7 +14,7 @@ export default class GameScene extends Phaser.Scene {
         this.load.image("background", "/assets/images/space.png");
         this.load.image("tiles", "/assets/tiles/FireSet.png");
         this.load.tilemapTiledJSON('tilemap', 'assets/tilemap/DemoTilemap.json');
-        
+        this.load.image("mario", "/assets/images/mario.png");
     }
 
     create() {
@@ -23,41 +25,45 @@ export default class GameScene extends Phaser.Scene {
         //const tileset = map.addTilesetImage('FireSet', 'tiles');  //error?
         //const layer = map.createLayer(0, tiles, 0, 0);
         //map.createLayer('Capa', tileset)      //mas error?
-            // Aplicar los efectos de las cartas seleccionadas
+        // Aplicar los efectos de las cartas seleccionadas
 
+        this.physics.world.setBoundsCollision(true, true, true, true);
 
-
-            //del array de cartas que se han seleccionado de la pantalla de cartas 
-            //las sacamos a consola para ver que se vean, tendremos que añadirlas bien cuand
-            //diseñemos las stats de los personajes
+        //del array de cartas que se han seleccionado de la pantalla de cartas 
+        //las sacamos a consola para ver que se vean, tendremos que añadirlas bien cuand
+        //diseñemos las stats de los personajes
         this.cartasSeleccionadas.forEach((carta) => {
-        if (carta.efecto.vidaExtra) {
-          // Lógica para aumentar la vida del jugador          
-          console.log(`Aumentando la vida en ${carta.efecto.vidaExtra}`);
-        }
-        if (carta.efecto.velocidadExtra) {
-          // Lógica para aumentar la velocidad del jugador
-          console.log(`Aumentando la velocidad en ${carta.efecto.velocidadExtra}`);
-        }
-        if (carta.efecto.saltoExtra) {
-          // Lógica para aumentar el salto del jugador
-          console.log(`Aumentando el salto en ${carta.efecto.saltoExtra}`);
-        }
-      });
+          if (carta.efecto.vidaExtra) {
+            // Lógica para aumentar la vida del jugador          
+            console.log(`Aumentando la vida en ${carta.efecto.vidaExtra}`);
+          }
+          if (carta.efecto.velocidadExtra) {
+            // Lógica para aumentar la velocidad del jugador
+            console.log(`Aumentando la velocidad en ${carta.efecto.velocidadExtra}`);
+          }
+          if (carta.efecto.saltoExtra) {
+            // Lógica para aumentar el salto del jugador
+            console.log(`Aumentando el salto en ${carta.efecto.saltoExtra}`);
+          }
+        });
 
         this.map = this.make.tilemap({ 
-            key: 'tilemap', 
-            tileWidth: 16, 
-            tileHeight: 16 
-          });
+          key: 'tilemap', 
+          tileWidth: 16, 
+          tileHeight: 16 
+        });
 
-          const tileset1 = this.map.addTilesetImage('FireSet 2', 'tiles');
+        const tileset1 = this.map.addTilesetImage('FireSet 2', 'tiles');
 
-          // funciona con y sin array
-this.groundLayer = 
-this.map.createLayer('Ground'
-                           , tileset1)
+        // funciona con y sin array
+        this.groundLayer = this.map.createLayer('Ground', tileset1)
 
+        this.mario = new Mario(this, 0, 0);
+        this.physics.add.collider(this.map, this.mario)
     }
 
+    update() {
+        this.mario.update();
+        console.log(this.mario.velocity)
+    }
 }
