@@ -9,8 +9,8 @@ export default class GameScene extends Phaser.Scene {
     }
 
     preload() {
-        this.load.image("background", "/assets/images/space.png");
-        this.load.image("tiles", "/assets/tiles/FireSet.png");
+        this.load.image("background", "assets/images/space.png");
+        this.load.image("tiles", "assets/tiles/FireSet.png");
         this.load.tilemapTiledJSON('tilemap', 'assets/tilemap/DemoTilemap.json');
         
     }

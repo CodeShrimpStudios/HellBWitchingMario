@@ -15,12 +15,12 @@ export default class CardScene extends Phaser.Scene{
     }
 
     preload(){
-        this.load.image("BStart", "/assets/images/BStart.png")
+        this.load.image("BStart", "assets/images/BStart.png")
         //this.load.image("Patatas", "./assets/images/patatas.jpg")
-        this.load.image("Patatas", "/assets/images/patatas.jpg");
-        this.load.image("CartaEstilo1", "/assets/images/CartaD1.png");
-        this.load.image("CartaEstilo2", "/assets/images/CartaD2.png");
-        this.load.image("BContinuar", "/assets/images/BContinuar.png");
+        this.load.image("Patatas", "assets/images/patatas.jpg");
+        this.load.image("CartaEstilo1", "assets/images/CartaD1.png");
+        this.load.image("CartaEstilo2", "assets/images/CartaD2.png");
+        this.load.image("BContinuar", "assets/images/BContinuar.png");
         
     }
 
