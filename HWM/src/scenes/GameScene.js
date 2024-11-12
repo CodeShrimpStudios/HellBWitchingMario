@@ -16,10 +16,10 @@ export default class GameScene extends Phaser.Scene {
         this.load.image("background", "/assets/images/space.png");
         this.load.image("tiles", "/assets/tiles/FireSet.png");
         this.load.tilemapTiledJSON('tilemap', 'assets/tilemap/DemoTilemap.json');
-        this.load.image("mario", "/assets/images/mario.png");
+        this.load.spritesheet("mario", "/assets/images/mario_small.png", {frameHeight: 18, frameWidth: 18});
         this.load.image("prueba", "/assets/images/patatas.jpg");
         this.load.image("background", "/assets/images/space.png")
-
+        this.load.image("platformplaceholder", "/assets/images/platformplaceholder.png")
     }
 
     create() {
@@ -66,9 +66,15 @@ export default class GameScene extends Phaser.Scene {
         // funciona con y sin array
         this.groundLayer = this.map.createLayer('Ground', tileset1)
 
-        this.mario = new Mario(this, 0, 0);
-        this.physics.add.collider(this.map, this.mario);
+        this.placeholderplatform = this.physics.add.image(200, 465, 'platformplaceholder').setImmovable();;
+        this.placeholderplatform.body.allowGravity = false;
+        this.placeholderplatform.setCollideWorldBounds(true);
+        this.placeholderplatform.setScale(1.5,1);
 
+        this.mario = new Mario(this, 0, 0);
+        this.physics.add.collider(this.mario, this.placeholderplatform);
+
+        
         
         //No se si esto sigue sirviendo, lo utilze para mi personaje de prueba
         this.cursors = this.input.keyboard.createCursorKeys();

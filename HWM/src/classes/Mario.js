@@ -1,9 +1,9 @@
-export default class Mario extends Phaser.Physics.Arcade.Image
+export default class Mario extends Phaser.Physics.Arcade.Sprite
 {
     constructor (scene, x, y)
     {
         super(scene, x, y, 'mario');
-        this.setScale(0.01,0.01);
+        this.setScale(1.5,1.5);
 
         scene.add.existing(this);
         scene.physics.add.existing(this);
@@ -16,23 +16,69 @@ export default class Mario extends Phaser.Physics.Arcade.Image
         this.baseJumpStrength = 400;
 
         this.grounded = false;
-        this.jumping = false;
-        this.movingLeft = false;
+        this.walking = false;
+        this.walkAnim = false;
 
         this.cursors = this.scene.input.keyboard.createCursorKeys();
+
+        this.anims.create({
+            key: "mar_idle",
+            frameRate: 1,
+            frames: this.anims.generateFrameNumbers("mario", {frames: [0]}),
+        })
+        this.anims.create({
+            key: "mar_run",
+            frameRate: 20,
+            frames: this.anims.generateFrameNumbers("mario", {frames: [4,5,6]}),
+            repeat: -1
+        })
+        this.anims.create({
+            key: "mar_air",
+            frameRate: 1,
+            frames: this.anims.generateFrameNumbers("mario", {frames: [2]}),
+        })
     }
 
     update() {
         if (this.cursors.left.isDown) {
             this.setVelocityX(-200);
             this.flipX = true;
+            this.walking = true;
         }
         else if (this.cursors.right.isDown) {
             this.setVelocityX(200);
             this.flipX = false;
+            this.walking = true;
         } 
         else {
             this.setVelocityX(0);
+            this.walking = false;
+            this.walkAnim = false;
+        }
+    
+        if (this.cursors.up.isDown && this.body.touching.down) {
+            this.setVelocityY(-300);
+        }
+
+        if (!this.body.touching.down) {
+            this.grounded = false;
+        }
+        else {
+            this.grounded = true;
+        }
+
+        if (this.grounded && this.walking) {
+            if (!this.walkAnim) {
+                this.play("mar_run");
+                this.walkAnim = true;
+            }
+        }
+        else if (!this.grounded) {
+            this.play("mar_air");
+        }
+        else {
+            this.play("mar_idle");
+            this.walkAnim = false;
         }
     }
 }
