@@ -23,14 +23,6 @@ export default class GameScene extends Phaser.Scene {
     }
 
     create() {
-        //this.add.image(400, 250, 'background')
-        //const map = this.make.tilemap({ key: 'tilemap' });
-        //const map = this.make.tilemap('tilemap');
-        //const tiles = map.addTilesetImage('FireSet', 'tiles');
-        //const tileset = map.addTilesetImage('FireSet', 'tiles');  //error?
-        //const layer = map.createLayer(0, tiles, 0, 0);
-        //map.createLayer('Capa', tileset)      //mas error?
-        // Aplicar los efectos de las cartas seleccionadas
 
         this.physics.world.setBoundsCollision(true, true, true, true);
 
@@ -55,16 +47,16 @@ export default class GameScene extends Phaser.Scene {
         //Cambien el fondo cuando tengan la imagen
         let bg = this.add.image(400, 250, 'background');
 
-        this.map = this.make.tilemap({ 
-          key: 'tilemap', 
-          tileWidth: 16, 
-          tileHeight: 16 
-        });
+        // this.map = this.make.tilemap({ 
+        //   key: 'tilemap', 
+        //   tileWidth: 16, 
+        //   tileHeight: 16 
+        // });
 
-        const tileset1 = this.map.addTilesetImage('FireSet 2', 'tiles');
+        //const tileset1 = this.map.addTilesetImage('FireSet 2', 'tiles');
 
         // funciona con y sin array
-        this.groundLayer = this.map.createLayer('Ground', tileset1)
+        //this.groundLayer = this.map.createLayer('Ground', tileset1)
 
         this.placeholderplatform = this.physics.add.image(200, 465, 'platformplaceholder').setImmovable();;
         this.placeholderplatform.body.allowGravity = false;
