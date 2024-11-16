@@ -47,16 +47,16 @@ export default class GameScene extends Phaser.Scene {
         //Cambien el fondo cuando tengan la imagen
         let bg = this.add.image(400, 250, 'background');
 
-        // this.map = this.make.tilemap({ 
-        //   key: 'tilemap', 
-        //   tileWidth: 16, 
-        //   tileHeight: 16 
-        // });
+         this.map = this.make.tilemap({ 
+           key: 'tilemap', 
+           tileWidth: 16, 
+           tileHeight: 16 
+         });
 
-        //const tileset1 = this.map.addTilesetImage('FireSet 2', 'tiles');
+        const tileset1 = this.map.addTilesetImage('FireSet', 'tiles');
 
         // funciona con y sin array
-        //this.groundLayer = this.map.createLayer('Ground', tileset1)
+        this.groundLayer = this.map.createLayer('Ground', tileset1)
 
         this.placeholderplatform = this.physics.add.image(200, 465, 'platformplaceholder').setImmovable();;
         this.placeholderplatform.body.allowGravity = false;
@@ -65,6 +65,12 @@ export default class GameScene extends Phaser.Scene {
 
         this.mario = new Mario(this, 0, 0);
         this.physics.add.collider(this.mario, this.placeholderplatform);
+        // así colisionarán todos los tiles de la capa 
+        // asumiendo que no hay id > 999
+        this.groundLayer.setCollisionByProperty({ colisiona: true });
+        this.physics.add.collider(this.mario, this.groundLayer);
+        
+
 
         
         
