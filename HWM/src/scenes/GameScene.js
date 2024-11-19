@@ -1,4 +1,5 @@
 import Mario from "../classes/Mario.js";
+import Yennefer from "../classes/Yennefer.js";
 
 export default class GameScene extends Phaser.Scene {
     
@@ -17,6 +18,8 @@ export default class GameScene extends Phaser.Scene {
         this.load.image("tiles", "/assets/tiles/FireSet.png");
         this.load.tilemapTiledJSON('tilemap', 'assets/tilemap/DemoTilemap.json');
         this.load.spritesheet("mario", "/assets/images/mario_small.png", {frameHeight: 18, frameWidth: 18});
+        //Cambien a Yennefer
+        this.load.spritesheet("yennefer", "/assets/images/mario_small.png", {frameHeight: 18, frameWidth: 18});
         this.load.image("prueba", "/assets/images/patatas.jpg");
         this.load.image("background", "/assets/images/space.png")
         this.load.image("platformplaceholder", "/assets/images/platformplaceholder.png")
@@ -63,21 +66,20 @@ export default class GameScene extends Phaser.Scene {
         this.placeholderplatform.setCollideWorldBounds(true);
         this.placeholderplatform.setScale(1.5,1);
 
-        this.mario = new Mario(this, 0, 0);
-        this.physics.add.collider(this.mario, this.placeholderplatform);
+        this.groundLayer.setCollisionByProperty({ colisiona: true });
         // así colisionarán todos los tiles de la capa 
         // asumiendo que no hay id > 999
-        this.groundLayer.setCollisionByProperty({ colisiona: true });
+        
+        this.mario = new Mario(this, 0, 0);
+        this.physics.add.collider(this.mario, this.placeholderplatform);
         this.physics.add.collider(this.mario, this.groundLayer);
-        
 
-
-        
-        
-        //No se si esto sigue sirviendo, lo utilze para mi personaje de prueba
-        this.cursors = this.input.keyboard.createCursorKeys();
+        this.yennefer = new Yennefer(this, 1, 0);
+        this.physics.add.collider(this.yennefer, this.placeholderplatform);
+        this.physics.add.collider(this.yennefer, this.groundLayer);
 
         this.mario.setCollideWorldBounds(true);
+        this.yennefer.setCollideWorldBounds(true);
         
         this.cameras.main.setBounds(0, 0, 800, 600);
         this.physics.world.setBounds(0, 0, 800, 600);       
@@ -85,7 +87,7 @@ export default class GameScene extends Phaser.Scene {
         //La camara solo ocupa mitad de pantalla. Si necesitas pantalla completa cambia setSize a (800,600)
         this.cameras.main.setSize(400, 600);
     
-        let camera2 = this.cameras.add(400, 0, 400, 600, false)
+        let camera2 = this.cameras.add(400, 0, 400, 600, false);
         //this.camera2.setZoom(1.5)
 
         this.cameras.main.setZoom(1.75);
@@ -94,6 +96,7 @@ export default class GameScene extends Phaser.Scene {
 
     update() {
         this.mario.update();
+        this.yennefer.update();
     }
 
 
