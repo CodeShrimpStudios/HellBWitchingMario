@@ -81,17 +81,17 @@ export default class GameScene extends Phaser.Scene {
         this.mario.setCollideWorldBounds(true);
         this.yennefer.setCollideWorldBounds(true);
         
-        this.cameras.main.setBounds(0, 0, 800, 600);
         this.physics.world.setBounds(0, 0, 800, 600);       
         
-        //La camara solo ocupa mitad de pantalla. Si necesitas pantalla completa cambia setSize a (800,600)
         this.cameras.main.setSize(400, 600);
-    
-        let camera2 = this.cameras.add(400, 0, 400, 600, false);
-        //this.camera2.setZoom(1.5)
-
         this.cameras.main.setZoom(1.75);
         this.cameras.main.startFollow(this.mario);
+        this.cameras.main.setBounds(0, 0, 800, 600);
+
+        const camera2 = this.cameras.add(400, 0, 400, 600, false, 'camera2')
+        .setZoom(1.75)
+        .startFollow(this.yennefer)
+        .setBounds(0, 0, 800, 600);
     }
 
     update() {
