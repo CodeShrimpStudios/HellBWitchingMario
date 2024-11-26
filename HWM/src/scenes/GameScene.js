@@ -1,6 +1,8 @@
 import Mario from "../classes/Mario.js";
 import Yennefer from "../classes/Yennefer.js";
 
+import VictoryScene from "./VictoryScene.js";
+
 export default class GameScene extends Phaser.Scene {
     
     cursors;
@@ -72,11 +74,13 @@ export default class GameScene extends Phaser.Scene {
         
         this.mario = new Mario(this, 0, 0);
         this.physics.add.collider(this.mario, this.placeholderplatform);
-        this.physics.add.collider(this.mario, this.groundLayer);
+        //this.physics.add.collider(this.mario, this.groundLayer);
+        //Voy a dejar groundLayer comentado hasta que funcione correctamente.
 
-        this.yennefer = new Yennefer(this, 1, 0);
+        this.yennefer = new Yennefer(this, 100, 0);
         this.physics.add.collider(this.yennefer, this.placeholderplatform);
-        this.physics.add.collider(this.yennefer, this.groundLayer);
+        //this.physics.add.collider(this.yennefer, this.groundLayer);
+        this.physics.add.collider(this.mario, this.yennefer, this.marioWin, null, this);
 
         this.mario.setCollideWorldBounds(true);
         this.yennefer.setCollideWorldBounds(true);
@@ -92,6 +96,12 @@ export default class GameScene extends Phaser.Scene {
         .setZoom(1.75)
         .startFollow(this.yennefer)
         .setBounds(0, 0, 800, 600);
+    }
+
+    marioWin(Mario, Yennefer) {
+        //Añadan animaciones antes de cambiar de escena
+        console.log("Colision!!!");
+        this.scene.switch('victory');
     }
 
     update() {
