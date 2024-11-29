@@ -94,9 +94,56 @@
          "width":45,
          "x":0,
          "y":0
+        }, 
+        {
+         "draworder":"topdown",
+         "id":4,
+         "name":"powerup",
+         "objects":[
+                {
+                 "gid":24,
+                 "height":16,
+                 "id":2,
+                 "name":"",
+                 "properties":[
+                        {
+                         "name":"colisiona",
+                         "type":"bool",
+                         "value":false
+                        }],
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":16,
+                 "x":145,
+                 "y":192.666666666667
+                }, 
+                {
+                 "gid":24,
+                 "height":16,
+                 "id":3,
+                 "name":"",
+                 "properties":[
+                        {
+                         "name":"colisiona",
+                         "type":"bool",
+                         "value":false
+                        }],
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":16,
+                 "x":162.666666666667,
+                 "y":227
+                }],
+         "opacity":1,
+         "type":"objectgroup",
+         "visible":true,
+         "x":0,
+         "y":0
         }],
- "nextlayerid":4,
- "nextobjectid":1,
+ "nextlayerid":6,
+ "nextobjectid":4,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.11.0",
