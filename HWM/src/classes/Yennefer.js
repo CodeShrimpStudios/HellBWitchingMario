@@ -5,10 +5,12 @@ export default class Yennefer extends Phaser.Physics.Arcade.Sprite
     constructor (scene, x, y)
     {
         super(scene, x, y, 'yennefer');
-        this.setScale(1.5,1.5);
+        //this.setScale(1, 1);
 
         scene.add.existing(this);
         scene.physics.add.existing(this);
+        this.body.setSize(16, 16);
+        this.body.setOffset(0, 2);
 
         this.setCollideWorldBounds(true);
 
@@ -26,11 +28,11 @@ export default class Yennefer extends Phaser.Physics.Arcade.Sprite
 
     update() {
         if (this.cursors.left.isDown && !this.cursors.right.isDown ) {
-            this.setVelocityX(-200);
+            this.setVelocityX(-100);
             this.flipX = true;
         }
         else if (this.cursors.right.isDown && !this.cursors.left.isDown) {
-            this.setVelocityX(200);
+            this.setVelocityX(100);
             this.flipX = false;
         } 
         else {
@@ -39,7 +41,7 @@ export default class Yennefer extends Phaser.Physics.Arcade.Sprite
         }
     
         if (this.cursors.up.isDown && this.body.onFloor()) {
-            this.setVelocityY(-300);
+            this.setVelocityY(-200);
         }
 
         if (!this.body.onFloor()) {
