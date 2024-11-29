@@ -80,6 +80,7 @@ export default class GameScene extends Phaser.Scene {
         this.physics.add.collider(this.yennefer, this.groundLayer);
         this.physics.add.collider(this.mario, this.yennefer, this.marioWin, null, this);
 
+
         this.mario.setCollideWorldBounds(true);
         this.yennefer.setCollideWorldBounds(true);
         
@@ -99,12 +100,22 @@ export default class GameScene extends Phaser.Scene {
     marioWin(Mario, Yennefer) {
         //Añadan animaciones antes de cambiar de escena
         console.log("Colision!!!");
-        this.scene.switch('victory');
+        this.WinnerP1 = true;
+        this.scene.switch('victory', { WinnerP1: this.WinnerP1 });
+    }
+
+    yenneferWin(){
+      console.log("Yennefer");
+      this.WinnerP1 = false;
+      this.scene.switch('victory', { WinnerP1: this.WinnerP1 });
     }
 
     update() {
         this.mario.update();
         this.yennefer.update();
+        if (this.yennefer.body.blocked.right){
+          this.yenneferWin();
+        }
     }
 
 
