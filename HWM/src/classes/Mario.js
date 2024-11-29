@@ -3,10 +3,12 @@ export default class Mario extends Phaser.Physics.Arcade.Sprite
     constructor (scene, x, y)
     {
         super(scene, x, y, 'mario');
-        this.setScale(1.5,1.5);
+        //this.setScale(1, 1);
 
         scene.add.existing(this);
         scene.physics.add.existing(this);
+        this.body.setSize(16, 16);
+        this.body.setOffset(0, 2);
 
         this.setCollideWorldBounds(true);
 
@@ -47,12 +49,12 @@ export default class Mario extends Phaser.Physics.Arcade.Sprite
 
     update() {
         if (this.cursors.left.isDown && !this.cursors.right.isDown) {
-            this.setVelocityX(-200);
+            this.setVelocityX(-100);
             this.flipX = true;
             this.walking = true;
         }
         else if (this.cursors.right.isDown && !this.cursors.left.isDown) {
-            this.setVelocityX(200);
+            this.setVelocityX(100);
             this.flipX = false;
             this.walking = true;
         } 
@@ -63,7 +65,7 @@ export default class Mario extends Phaser.Physics.Arcade.Sprite
         }
     
         if (this.cursors.up.isDown && this.body.onFloor()) {
-            this.setVelocityY(-300);
+            this.setVelocityY(-200);
         }
 
         if (!this.body.onFloor()) {
