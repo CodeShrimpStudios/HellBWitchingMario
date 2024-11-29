@@ -69,17 +69,15 @@ export default class GameScene extends Phaser.Scene {
         this.placeholderplatform.setScale(1.5,1);
 
         this.groundLayer.setCollisionByProperty({ colisiona: true });
-        // así colisionarán todos los tiles de la capa 
-        // asumiendo que no hay id > 999
         
         this.mario = new Mario(this, 0, 0);
         this.physics.add.collider(this.mario, this.placeholderplatform);
-        //this.physics.add.collider(this.mario, this.groundLayer);
+        this.physics.add.collider(this.mario, this.groundLayer);
         //Voy a dejar groundLayer comentado hasta que funcione correctamente.
 
         this.yennefer = new Yennefer(this, 100, 0);
         this.physics.add.collider(this.yennefer, this.placeholderplatform);
-        //this.physics.add.collider(this.yennefer, this.groundLayer);
+        this.physics.add.collider(this.yennefer, this.groundLayer);
         this.physics.add.collider(this.mario, this.yennefer, this.marioWin, null, this);
 
         this.mario.setCollideWorldBounds(true);

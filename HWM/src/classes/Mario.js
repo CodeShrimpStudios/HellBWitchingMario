@@ -62,11 +62,11 @@ export default class Mario extends Phaser.Physics.Arcade.Sprite
             this.walkAnim = false;
         }
     
-        if (this.cursors.up.isDown && this.body.touching.down) {
+        if (this.cursors.up.isDown && this.body.onFloor()) {
             this.setVelocityY(-300);
         }
 
-        if (!this.body.touching.down) {
+        if (!this.body.onFloor()) {
             this.grounded = false;
         }
         else {
