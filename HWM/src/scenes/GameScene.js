@@ -91,6 +91,7 @@ export default class GameScene extends Phaser.Scene {
 
         this.mario.setCollideWorldBounds(true);
         this.yennefer.setCollideWorldBounds(true);
+        this.yennefer.body.onWorldBounds = true;
         
         this.physics.world.setBounds(0, 0, 800, 600);       
         
@@ -121,11 +122,10 @@ export default class GameScene extends Phaser.Scene {
     update() {
         this.mario.update();
         this.yennefer.update();
-        if (this.yennefer.body.blocked.right){
-          this.yenneferWin();
-        }
+        this.physics.world.on("worldbounds", (body, up, down, left, right) => {
+          if (right){
+            this.yenneferWin();
+          }
+        })
     }
-
-
-    
 }
