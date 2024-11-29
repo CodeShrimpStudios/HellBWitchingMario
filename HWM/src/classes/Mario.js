@@ -21,6 +21,10 @@ export default class Mario extends Phaser.Physics.Arcade.Sprite
         this.walking = false;
         this.walkAnim = false;
 
+        this.damagecd = 0;
+        this.damagecdval = 60;
+        this.canbedamaged = true;
+
         this.cursors = this.scene.input.keyboard.createCursorKeys();
         //Añadi esto para para cambiar a Mario a WASD - Davide
         this.cursors = this.scene.input.keyboard.addKeys(
@@ -44,6 +48,12 @@ export default class Mario extends Phaser.Physics.Arcade.Sprite
             key: "mar_air",
             frameRate: 1,
             frames: this.anims.generateFrameNumbers("mario", {frames: [2]}),
+        })
+        this.anims.create({
+            key: "mar_damage",
+            frameRate: 2,
+            frames: this.anims.generateFrameNumbers("mario", {frames: [3, 0]}),
+            repeat: -1
         })
     }
 
@@ -75,18 +85,32 @@ export default class Mario extends Phaser.Physics.Arcade.Sprite
             this.grounded = true;
         }
 
-        if (this.grounded && this.walking) {
-            if (!this.walkAnim) {
-                this.play("mar_run");
-                this.walkAnim = true;
+        if (this.damagecd <= 0) {
+            this.canbedamaged = true;
+            if (this.grounded && this.walking) {
+                if (!this.walkAnim) {
+                    this.play("mar_run");
+                    this.walkAnim = true;
+                }
+            }
+            else if (!this.grounded) {
+                this.play("mar_air");
+            }
+            else {
+                this.play("mar_idle");
+                this.walkAnim = false;
             }
         }
-        else if (!this.grounded) {
-            this.play("mar_air");
-        }
         else {
-            this.play("mar_idle");
-            this.walkAnim = false;
+            this.damagecd -= 1;
+        }
+    }
+
+    damage() {
+        if (this.damagecdbool) {
+            this.canbedamaged = false;
+            this.play("mar_damage");
+            this.damagecd = this.damagecdval;
         }
     }
 }
