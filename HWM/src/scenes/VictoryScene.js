@@ -7,7 +7,7 @@ export default class MenuScene extends Phaser.Scene {
     }
 
     init(data) {
-        this.winnerP1 = data.winnerP1;
+        this.WinnerP1 = data.WinnerP1;
     }
 
     preload(){
@@ -17,14 +17,29 @@ export default class MenuScene extends Phaser.Scene {
     }
 
     create(){
-        if (this.winnerP1){
-            let victory = this.add.image(425, 250, "Victory1").setScale(0.2)
+        const screenCenterX = this.cameras.main.worldView.x + this.cameras.main.width / 2;
+        const screenCenterY = this.cameras.main.worldView.y + this.cameras.main.height / 3;
+
+        if (this.WinnerP1){
+            const victory = this.add.text(screenCenterX, screenCenterY, "Player 1\n   Wins",{fontFamily:"babelgam",fontSize:"80px"})
+            .setOrigin(0.5);
+            victory.setStyle({
+                fill: "#FE0002",
+                stroke:"#FFD987",
+                strokeThickness:6
+            })
         }
         else {
-            let victory = this.add.image(425, 250, "Victory2").setScale(0.2)
+            const victory = this.add.text(screenCenterX, screenCenterY, "Player 2\n   Wins",{fontFamily:"babelgam",fontSize:"80px"})
+            .setOrigin(0.5);
+            victory.setStyle({
+                fill: "#610F7F",
+                stroke:"#B9929F",
+                strokeThickness:6
+            })
         }
-        
-        let botonContinuar = this.add.image(400, 400, "BContinuar").setScale(0.2).setInteractive();
+
+        let botonContinuar = this.add.image(screenCenterX, 2 * screenCenterY, "BContinuar").setScale(0.2).setInteractive();
         botonContinuar.on("pointerdown", () => {
           this.cambiarAEscenaJuego();
         });
