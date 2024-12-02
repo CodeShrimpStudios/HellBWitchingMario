@@ -5,28 +5,28 @@ import Powerup from "../classes/Powerup.js";
 import VictoryScene from "./VictoryScene.js";
 
 export default class GameScene extends Phaser.Scene {
-    
+
   cursors;
-  
+
   constructor() {
-      super({ key: "game" });
+    super({ key: "game" });
   }
 
   init(data) {
-      this.cartasSeleccionadas = data.cartasSeleccionadas || []; //a ver si funciona
+    this.cartasSeleccionadas = data.cartasSeleccionadas || []; //a ver si funciona
   }
 
   preload() {
-      this.load.image("background", "/assets/images/space.png");
-      this.load.image("tiles", "/assets/tiles/FireSet.png");
-      this.load.tilemapTiledJSON('tilemap', 'assets/tilemap/DemoTilemap.json');
-      this.load.spritesheet("mario", "/assets/images/mario_small.png", {frameHeight: 18, frameWidth: 18});
-      //Cambien a Yennefer
-      this.load.spritesheet("yennefer", "/assets/images/mario_small.png", {frameHeight: 18, frameWidth: 18});
-      this.load.image("prueba", "/assets/images/patatas.jpg");
-      this.load.image("background", "/assets/images/space.png")
-      this.load.image("platformplaceholder", "/assets/images/platformplaceholder.png")
-      this.load.spritesheet("powertile", "/assets/tiles/FireSet.png", {frameHeight: 16, frameWidth: 16});
+    this.load.image("background", "/assets/images/space.png");
+    this.load.image("tiles", "/assets/tiles/FireSet.png");
+    this.load.tilemapTiledJSON('tilemap', 'assets/tilemap/DemoTilemap.json');
+    this.load.spritesheet("mario", "/assets/images/mario_small.png", { frameHeight: 18, frameWidth: 18 });
+    //Cambien a Yennefer
+    this.load.spritesheet("yennefer", "/assets/images/mario_small.png", { frameHeight: 18, frameWidth: 18 });
+    this.load.image("prueba", "/assets/images/patatas.jpg");
+    this.load.image("background", "/assets/images/space.png")
+    this.load.image("platformplaceholder", "/assets/images/platformplaceholder.png")
+    this.load.spritesheet("powertile", "/assets/tiles/FireSet.png", { frameHeight: 16, frameWidth: 16 });
   }
 
   create() {
@@ -54,17 +54,17 @@ export default class GameScene extends Phaser.Scene {
     //Cambien el fondo cuando tengan la imagen
     let bg = this.add.image(400, 250, 'background');
 
-      this.map = this.make.tilemap({ 
-        key: 'tilemap', 
-        tileWidth: 16, 
-        tileHeight: 16 
-      });
+    this.map = this.make.tilemap({
+      key: 'tilemap',
+      tileWidth: 16,
+      tileHeight: 16
+    });
 
 
-      const tilesPerRow = 5;
-      const frame= (4 - 1) + ((5 - 1) * tilesPerRow);
-      // Crear una instancia del PowerUp 
-      this.powerUp = new Powerup(this, 100, 150, 'powertile', frame);
+    const tilesPerRow = 5;
+    const frame = (4 - 1) + ((5 - 1) * tilesPerRow);
+    // Crear una instancia del PowerUp 
+    this.powerUp = new Powerup(this, 100, 150, 'powertile', frame);
 
     const tileset1 = this.map.addTilesetImage('FireSet', 'tiles');
 
@@ -72,7 +72,7 @@ export default class GameScene extends Phaser.Scene {
     this.groundLayer = this.map.createLayer('Ground', tileset1)
 
     this.groundLayer.setCollisionByProperty({ colisiona: true });
-    
+
     this.mario = new Mario(this, 0, 0);
     this.physics.add.collider(this.mario, this.groundLayer);
     //Voy a dejar groundLayer comentado hasta que funcione correctamente.
@@ -81,34 +81,34 @@ export default class GameScene extends Phaser.Scene {
     this.physics.add.collider(this.yennefer, this.groundLayer);
     this.physics.add.collider(this.mario, this.yennefer, this.marioWin, null, this);
 
-    this.physics.world.setBounds(0, 0, 800, 600);   
+    this.physics.world.setBounds(0, 0, 800, 600);
 
     this.mario.setCollideWorldBounds(true);
     this.yennefer.setCollideWorldBounds(true);
     this.yennefer.body.onWorldBounds = true;
-    
+
     this.cameras.main.setSize(400, 600);
     this.cameras.main.setZoom(2.25);
     this.cameras.main.startFollow(this.mario);
     this.cameras.main.setBounds(0, 0, 800, 600);
 
     const camera2 = this.cameras.add(400, 0, 400, 600, false, 'camera2')
-    .setZoom(2.25)
-    .startFollow(this.yennefer)
-    .setBounds(0, 0, 800, 600);
+      .setZoom(2.25)
+      .startFollow(this.yennefer)
+      .setBounds(0, 0, 800, 600);
   }
 
   marioWin(Mario, Yennefer) {
     //Añadan animaciones antes de cambiar de escena
     console.log("Colision!!!");
     this.WinnerP1 = true;
-    this.scene.switch('victory', { WinnerP1: this.WinnerP1 });
+    this.scene.switch('victory', { WinnerP1: this.WinnerP1, cartasSeleccionadas: this.cartasSeleccionadas });
   }
 
-  yenneferWin(){
+  yenneferWin() {
     console.log("Yennefer");
     this.WinnerP1 = false;
-    this.scene.switch('victory', { WinnerP1: this.WinnerP1 });
+    this.scene.switch('victory', { WinnerP1: this.WinnerP1, cartasSeleccionadas: this.cartasSeleccionadas });
   }
 
   update() {

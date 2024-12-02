@@ -5,33 +5,33 @@ import CardScene from "./CardScene.js";
 
 /*Escena de Phaser*/
 export default class MenuScene extends Phaser.Scene {
-    constructor(){
-        super({key: "menu"});
+    constructor() {
+        super({ key: "menu" });
     }
 
-    init(){
+    init() {
 
     }
 
-    preload(){
+    preload() {
         this.load.image("BStart", "/assets/images/BStart.png");
         this.load.image("background", "/assets/images/space.png");
     }
 
-    create(){
+    create() {
 
         this.add.image(400, 250, 'background');
 
         let BStart = new Bstart(this, 400, 250);
-        BStart.on('pointerdown', () => this.CardSelect() );
-        BStart.setOrigin(0.4,0.4);
-        BStart.setScale(0.2,0.2);
+        BStart.on('pointerdown', () => this.CardSelect());
+        BStart.setOrigin(0.4, 0.4);
+        BStart.setScale(0.2, 0.2);
 
 
     }
 
-    update(){
-        
+    update() {
+
     }
 
     CardSelect() {
@@ -40,5 +40,5 @@ export default class MenuScene extends Phaser.Scene {
         //this.scene.stop('scene_ui');
         this.scene.switch('card');
     }
-        
+
 }
