@@ -60,21 +60,23 @@ export default class GameScene extends Phaser.Scene {
       tileHeight: 16
     });
 
-
-    const tilesPerRow = 5;
-    const frame = (4 - 1) + ((5 - 1) * tilesPerRow);
-    // Crear una instancia del PowerUp 
-    this.powerUp = new Powerup(this, 100, 150, 'powertile', frame);
-
     const tileset1 = this.map.addTilesetImage('FireSet', 'tiles');
+    this.bgLayer = this.map.createLayer('Fondo', tileset1);
+    this.groundLayer = this.map.createLayer('Ground', tileset1);
+    this.trampasLayer = this.map.createLayer('Trampas', tileset1);
 
-    // funciona con y sin array
-    this.groundLayer = this.map.createLayer('Ground', tileset1)
+     // Crear una instancia del PowerUp 
+     const tilesPerRow = 5;
+     const frame= (4 - 1) + ((5 - 1) * tilesPerRow);
+     this.powerUp = new Powerup(this, 100, 150, 'powertile', frame);
 
     this.groundLayer.setCollisionByProperty({ colisiona: true });
+    this.trampasLayer.setCollisionByProperty({ colisiona: true });
+
 
     this.mario = new Mario(this, 0, 0);
     this.physics.add.collider(this.mario, this.groundLayer);
+    this.physics.add.overlap(this.mario, this.trampasLayer, this.damageMario, null, this);
     //Voy a dejar groundLayer comentado hasta que funcione correctamente.
 
     this.yennefer = new Yennefer(this, 600, 0);
@@ -97,6 +99,11 @@ export default class GameScene extends Phaser.Scene {
       .startFollow(this.yennefer)
       .setBounds(0, 0, 800, 600);
   }
+
+  damageMario(mario, tile) { 
+    if (tile.properties.trampa) { mario.damage(); }
+  }
+
 
   marioWin(Mario, Yennefer) {
     //Añadan animaciones antes de cambiar de escena

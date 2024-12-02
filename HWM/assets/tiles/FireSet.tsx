@@ -8,7 +8,7 @@
  </tile>
  <tile id="1">
   <properties>
-   <property name="colisiona" type="bool" value="false"/>
+   <property name="colisiona" type="bool" value="true"/>
   </properties>
  </tile>
  <tile id="2">
