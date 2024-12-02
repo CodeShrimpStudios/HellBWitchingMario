@@ -80,10 +80,12 @@ export default class GameScene extends Phaser.Scene {
         //this.placeholderplatform.setScale(1.5,1);
 //
         this.groundLayer.setCollisionByProperty({ colisiona: true });
+        this.trampasLayer.setCollisionByProperty({ colisiona: true });
         
         this.mario = new Mario(this, 0, 0);
         //this.physics.add.collider(this.mario, this.placeholderplatform);
         this.physics.add.collider(this.mario, this.groundLayer);
+        this.physics.add.overlap(this.mario, this.trampasLayer, this.damageMario, null, this);
         //Voy a dejar groundLayer comentado hasta que funcione correctamente.
 
         this.yennefer = new Yennefer(this, 100, 0);
@@ -107,6 +109,10 @@ export default class GameScene extends Phaser.Scene {
         .setZoom(2.25)
         .startFollow(this.yennefer)
         .setBounds(0, 0, 800, 600);
+    }
+
+    damageMario(mario, tile) { 
+      if (tile.properties.trampa) { mario.damage(); }
     }
 
     marioWin(Mario, Yennefer) {

@@ -110,6 +110,11 @@
                          "name":"colisiona",
                          "type":"bool",
                          "value":false
+                        }, 
+                        {
+                         "name":"trampa",
+                         "type":"bool",
+                         "value":false
                         }],
                  "rotation":0,
                  "type":"",
@@ -126,6 +131,11 @@
                  "properties":[
                         {
                          "name":"colisiona",
+                         "type":"bool",
+                         "value":false
+                        }, 
+                        {
+                         "name":"trampa",
                          "type":"bool",
                          "value":false
                         }],
@@ -168,6 +178,11 @@
                          "name":"colisiona",
                          "type":"bool",
                          "value":false
+                        }, 
+                        {
+                         "name":"trampa",
+                         "type":"bool",
+                         "value":false
                         }]
                 }, 
                 {
@@ -177,6 +192,11 @@
                          "name":"colisiona",
                          "type":"bool",
                          "value":false
+                        }, 
+                        {
+                         "name":"trampa",
+                         "type":"bool",
+                         "value":true
                         }]
                 }, 
                 {
@@ -184,6 +204,11 @@
                  "properties":[
                         {
                          "name":"colisiona",
+                         "type":"bool",
+                         "value":false
+                        }, 
+                        {
+                         "name":"trampa",
                          "type":"bool",
                          "value":false
                         }]
@@ -195,6 +220,11 @@
                          "name":"colisiona",
                          "type":"bool",
                          "value":false
+                        }, 
+                        {
+                         "name":"trampa",
+                         "type":"bool",
+                         "value":false
                         }]
                 }, 
                 {
@@ -204,6 +234,11 @@
                          "name":"colisiona",
                          "type":"bool",
                          "value":true
+                        }, 
+                        {
+                         "name":"trampa",
+                         "type":"bool",
+                         "value":false
                         }]
                 }, 
                 {
@@ -211,6 +246,11 @@
                  "properties":[
                         {
                          "name":"colisiona",
+                         "type":"bool",
+                         "value":false
+                        }, 
+                        {
+                         "name":"trampa",
                          "type":"bool",
                          "value":false
                         }]
@@ -222,6 +262,11 @@
                          "name":"colisiona",
                          "type":"bool",
                          "value":false
+                        }, 
+                        {
+                         "name":"trampa",
+                         "type":"bool",
+                         "value":false
                         }]
                 }, 
                 {
@@ -229,6 +274,11 @@
                  "properties":[
                         {
                          "name":"colisiona",
+                         "type":"bool",
+                         "value":false
+                        }, 
+                        {
+                         "name":"trampa",
                          "type":"bool",
                          "value":false
                         }]
@@ -240,6 +290,11 @@
                          "name":"colisiona",
                          "type":"bool",
                          "value":false
+                        }, 
+                        {
+                         "name":"trampa",
+                         "type":"bool",
+                         "value":false
                         }]
                 }, 
                 {
@@ -249,6 +304,11 @@
                          "name":"colisiona",
                          "type":"bool",
                          "value":true
+                        }, 
+                        {
+                         "name":"trampa",
+                         "type":"bool",
+                         "value":false
                         }]
                 }, 
                 {
@@ -256,6 +316,11 @@
                  "properties":[
                         {
                          "name":"colisiona",
+                         "type":"bool",
+                         "value":false
+                        }, 
+                        {
+                         "name":"trampa",
                          "type":"bool",
                          "value":false
                         }]
@@ -267,6 +332,11 @@
                          "name":"colisiona",
                          "type":"bool",
                          "value":false
+                        }, 
+                        {
+                         "name":"trampa",
+                         "type":"bool",
+                         "value":false
                         }]
                 }, 
                 {
@@ -274,6 +344,11 @@
                  "properties":[
                         {
                          "name":"colisiona",
+                         "type":"bool",
+                         "value":false
+                        }, 
+                        {
+                         "name":"trampa",
                          "type":"bool",
                          "value":false
                         }]
@@ -285,6 +360,11 @@
                          "name":"colisiona",
                          "type":"bool",
                          "value":false
+                        }, 
+                        {
+                         "name":"trampa",
+                         "type":"bool",
+                         "value":false
                         }]
                 }, 
                 {
@@ -292,6 +372,11 @@
                  "properties":[
                         {
                          "name":"colisiona",
+                         "type":"bool",
+                         "value":false
+                        }, 
+                        {
+                         "name":"trampa",
                          "type":"bool",
                          "value":false
                         }]
@@ -303,6 +388,11 @@
                          "name":"colisiona",
                          "type":"bool",
                          "value":false
+                        }, 
+                        {
+                         "name":"trampa",
+                         "type":"bool",
+                         "value":false
                         }]
                 }, 
                 {
@@ -310,6 +400,11 @@
                  "properties":[
                         {
                          "name":"colisiona",
+                         "type":"bool",
+                         "value":false
+                        }, 
+                        {
+                         "name":"trampa",
                          "type":"bool",
                          "value":false
                         }]
@@ -321,6 +416,11 @@
                          "name":"colisiona",
                          "type":"bool",
                          "value":false
+                        }, 
+                        {
+                         "name":"trampa",
+                         "type":"bool",
+                         "value":false
                         }]
                 }, 
                 {
@@ -330,6 +430,11 @@
                          "name":"colisiona",
                          "type":"bool",
                          "value":false
+                        }, 
+                        {
+                         "name":"trampa",
+                         "type":"bool",
+                         "value":true
                         }]
                 }, 
                 {
@@ -339,6 +444,11 @@
                          "name":"colisiona",
                          "type":"bool",
                          "value":false
+                        }, 
+                        {
+                         "name":"trampa",
+                         "type":"bool",
+                         "value":true
                         }]
                 }, 
                 {
@@ -346,6 +456,11 @@
                  "properties":[
                         {
                          "name":"colisiona",
+                         "type":"bool",
+                         "value":false
+                        }, 
+                        {
+                         "name":"trampa",
                          "type":"bool",
                          "value":false
                         }]
@@ -357,6 +472,11 @@
                          "name":"colisiona",
                          "type":"bool",
                          "value":false
+                        }, 
+                        {
+                         "name":"trampa",
+                         "type":"bool",
+                         "value":false
                         }]
                 }, 
                 {
@@ -364,6 +484,11 @@
                  "properties":[
                         {
                          "name":"colisiona",
+                         "type":"bool",
+                         "value":false
+                        }, 
+                        {
+                         "name":"trampa",
                          "type":"bool",
                          "value":false
                         }]
@@ -375,6 +500,11 @@
                          "name":"colisiona",
                          "type":"bool",
                          "value":false
+                        }, 
+                        {
+                         "name":"trampa",
+                         "type":"bool",
+                         "value":false
                         }]
                 }, 
                 {
@@ -382,6 +512,11 @@
                  "properties":[
                         {
                          "name":"colisiona",
+                         "type":"bool",
+                         "value":false
+                        }, 
+                        {
+                         "name":"trampa",
                          "type":"bool",
                          "value":false
                         }]
