@@ -60,16 +60,19 @@ export default class GameScene extends Phaser.Scene {
            tileHeight: 16 
          });
 
+        const tileset1 = this.map.addTilesetImage('FireSet', 'tiles');
+        this.bgLayer = this.map.createLayer('Fondo', tileset1);
+        this.groundLayer = this.map.createLayer('Ground', tileset1);
+        this.trampasLayer = this.map.createLayer('Trampas', tileset1);
 
+         // Crear una instancia del PowerUp 
          const tilesPerRow = 5;
          const frame= (4 - 1) + ((5 - 1) * tilesPerRow);
-         // Crear una instancia del PowerUp 
          this.powerUp = new Powerup(this, 100, 150, 'powertile', frame);
 
-        const tileset1 = this.map.addTilesetImage('FireSet', 'tiles');
-
-        // funciona con y sin array
-        this.groundLayer = this.map.createLayer('Ground', tileset1)
+        
+        
+        
 
         //this.placeholderplatform = this.physics.add.image(200, 465, 'platformplaceholder').setImmovable();;
         //this.placeholderplatform.body.allowGravity = false;
