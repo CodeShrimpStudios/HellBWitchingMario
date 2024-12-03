@@ -23,7 +23,7 @@ export default class GameScene extends Phaser.Scene {
     this.load.tilemapTiledJSON('tilemap', 'assets/tilemap/DemoTilemap.json');
     this.load.spritesheet("mario", "/assets/images/mario_small.png", { frameHeight: 18, frameWidth: 18});
     //Cambien a Yennefer
-    this.load.spritesheet("yennefer", "/assets/images/mario_small.png", { frameHeight: 18, frameWidth: 18, margin: -1, spacing: 0 });
+    this.load.spritesheet("yennefer", "/assets/images/mario_small.png", { frameHeight: 18, frameWidth: 18});
     this.load.image("fireball", "/assets/images/pngegg.png");
     this.load.image("prueba", "/assets/images/patatas.jpg");
     this.load.image("background", "/assets/images/space.png")
