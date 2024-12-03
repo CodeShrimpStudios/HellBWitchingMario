@@ -1,6 +1,7 @@
 import Mario from "../classes/Mario.js";
 import Yennefer from "../classes/Yennefer.js";
 import Powerup from "../classes/Powerup.js";
+import Fireball from "../classes/Fireball.js";
 
 import VictoryScene from "./VictoryScene.js";
 
@@ -23,6 +24,7 @@ export default class GameScene extends Phaser.Scene {
     this.load.spritesheet("mario", "/assets/images/mario_small.png", { frameHeight: 18, frameWidth: 18 });
     //Cambien a Yennefer
     this.load.spritesheet("yennefer", "/assets/images/mario_small.png", { frameHeight: 18, frameWidth: 18 });
+    this.load.image("fireball", "/assets/images/pngegg.png");
     this.load.image("prueba", "/assets/images/patatas.jpg");
     this.load.image("background", "/assets/images/space.png")
     this.load.image("platformplaceholder", "/assets/images/platformplaceholder.png")
@@ -89,6 +91,8 @@ export default class GameScene extends Phaser.Scene {
     this.yennefer.setCollideWorldBounds(true);
     this.yennefer.body.onWorldBounds = true;
 
+    this.physics.add.collider(this.yennefer.fireballs, this.mario, this.fireballHitsMario, null, this);
+
     this.cameras.main.setSize(400, 600);
     this.cameras.main.setZoom(2.25);
     this.cameras.main.startFollow(this.mario);
@@ -104,8 +108,20 @@ export default class GameScene extends Phaser.Scene {
     if (tile.properties.trampa) { mario.damage(); }
   }
 
+  fireballHitsMario(mario, fireball) {
+    console.log('Fireball hit Mario!');
+    if (fireball.active) {
+      fireball.setActive(false);
+      fireball.setVisible(false);
+      console.log('Fireball destroyed');
+      if (mario.active) { 
+        mario.damage(); 
+      }
+    }
+    //Pongan metodo de daño con damageMario()
+  }
 
-  marioWin(Mario, Yennefer) {
+  marioWin() {
     //Añadan animaciones antes de cambiar de escena
     console.log("Colision!!!");
     this.WinnerP1 = true;
