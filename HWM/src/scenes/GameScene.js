@@ -118,7 +118,6 @@ export default class GameScene extends Phaser.Scene {
         mario.damage(); 
       }
     }
-    //Pongan metodo de daño con damageMario()
   }
 
   marioWin() {

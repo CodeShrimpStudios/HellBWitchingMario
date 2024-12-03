@@ -23,6 +23,7 @@ export default class Yennefer extends Phaser.Physics.Arcade.Sprite
 
         this.grounded = false;
         this.walking = false;
+        this.hasAirJumped = false;
 
         this.cursors = this.scene.input.keyboard.createCursorKeys();
         this.cursors = this.scene.input.keyboard.addKeys({
@@ -55,9 +56,17 @@ export default class Yennefer extends Phaser.Physics.Arcade.Sprite
             this.setVelocityX(0);
             this.walking = false;
         }
-    
-        if (this.cursors.up.isDown && this.body.onFloor()) {
-            this.setVelocityY(-200);
+
+        if (Phaser.Input.Keyboard.JustDown(this.cursors.up)) {
+            if (this.body.onFloor()) {
+                //Primer salto
+                this.setVelocityY(-200);
+            }
+            else if (!this.hasAirJumped) {
+                //Salto en aire
+                this.setVelocityY(-200);
+                this.hasAirJumped = true;
+            }
         }
 
         if (!this.body.onFloor()) {
@@ -65,6 +74,7 @@ export default class Yennefer extends Phaser.Physics.Arcade.Sprite
         }
         else {
             this.grounded = true;
+            this.hasAirJumped = false;
         }
 
         if (this.cursors.fireball.isDown && !this.fireballCooldown) {
