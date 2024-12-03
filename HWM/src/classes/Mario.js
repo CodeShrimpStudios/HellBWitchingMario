@@ -60,7 +60,6 @@ export default class Mario extends Phaser.Physics.Arcade.Sprite
     }
 
     update() {
-        if (this.body && this.body.velocity) {
         if (this.cursors.left.isDown && !this.cursors.right.isDown) {
             this.setVelocityX(-100);
             if(this.isdamaged == true){
@@ -113,8 +112,7 @@ export default class Mario extends Phaser.Physics.Arcade.Sprite
         else {
             this.damagecd -= 1;
         }
-        this.isdamaged = false;
-        }
+        this.isdamaged = false; 
     }
 
     damage() {

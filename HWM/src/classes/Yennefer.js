@@ -16,8 +16,7 @@ export default class Yennefer extends Phaser.Physics.Arcade.Sprite
 
         this.setCollideWorldBounds(true);
 
-        this.setVisible(true);
-        this.isAlive = true;
+        this.isAlive = false;
 
         this.maxHorizontalSpeed = 1;
         this.baseJumpStrength = 400;
