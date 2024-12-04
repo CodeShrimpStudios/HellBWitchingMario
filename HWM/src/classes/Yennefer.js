@@ -31,7 +31,7 @@ export default class Yennefer extends Phaser.Physics.Arcade.Sprite
             down:Phaser.Input.Keyboard.KeyCodes.DOWN,
             left:Phaser.Input.Keyboard.KeyCodes.LEFT,
             right:Phaser.Input.Keyboard.KeyCodes.RIGHT,
-            fireball:Phaser.Input.Keyboard.KeyCodes.NUMPAD_ONE
+            fireball:Phaser.Input.Keyboard.KeyCodes.J
         });
 
         this.fireballCooldown = false;
