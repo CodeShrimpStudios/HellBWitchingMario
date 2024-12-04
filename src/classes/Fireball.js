@@ -6,7 +6,7 @@ export default class Fireball extends Phaser.Physics.Arcade.Sprite
 
         scene.add.existing(this);
         scene.physics.add.existing(this);
-        this.setScale(0.5, 0.5);
+        this.setScale(1, 1);
         this.body.setCircle(10);
 
         this.anims.create({
