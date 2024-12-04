@@ -8,6 +8,7 @@ import VictoryScene from "./scenes/VictoryScene.js";
  */
 let config = {
 	type: Phaser.AUTO,
+	parent: 'juego',
 	width:  800,
 	height: 600,
 	pixelArt: true,
