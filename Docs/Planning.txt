@@ -1,0 +1,16 @@
+Semana 0 (V:25):
+-poder cambiar entre las 3 escenas
+-Meter alguna imagen de placeholder de cosas
+
+Semana 1:
+-Tener en la escena de juego a mario que pueda moverse entre plataformas
+-Tener un sistema de seleccion de cartas que pase true en las que hayas hecho click (con botones)
+EXTRA-camara sigue a mario
+
+Semana 2:
+-Mario (wasd) y  yennefer (flechas)
+-split screen
+-Mario atrapa yennefer
+-yennefer llega meta
+
+Semana 3:
