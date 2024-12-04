@@ -220,6 +220,10 @@ export default class GameScene extends Phaser.Scene {
 
 
     //UI
+      this.yennefer.fireballs.children.each((fireball) => {
+        this.uiCamera.ignore(fireball);
+      });
+
       //Temporizador para el icono fireball
       if (this.yennefer.fireballCooldown) {
         this.fireballCooldownTime -= this.game.loop.delta;
