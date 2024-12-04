@@ -15,6 +15,9 @@ export default class GameScene extends Phaser.Scene {
 
   init(data) {
     this.cartasSeleccionadas = data.cartasSeleccionadas || []; //a ver si funciona
+
+    this.fireballCooldownTime = 0; //Para el icono de la fireball
+    this.maxCooldownTime = 5000;
   }
 
   preload() {
@@ -25,6 +28,7 @@ export default class GameScene extends Phaser.Scene {
     //Cambien a Yennefer
     this.load.spritesheet("yennefer", "/assets/images/mario_small.png", { frameHeight: 18, frameWidth: 18});
     this.load.image("fireball", "/assets/images/pngegg.png");
+    this.load.image('fireballIcon', 'assets/images/Retro-Fire-Ball.64.png');
     this.load.image("prueba", "/assets/images/patatas.jpg");
     this.load.image("background", "/assets/images/space.png")
     this.load.image("platformplaceholder", "/assets/images/platformplaceholder.png")
@@ -92,11 +96,19 @@ export default class GameScene extends Phaser.Scene {
     this.yennefer.body.onWorldBounds = true;
 
     this.physics.add.collider(this.yennefer.fireballs, this.mario, this.fireballHitsMario, null, this);
+    this.fireballIcon = this.add.image(240, 390, 'fireballIcon').setScale(0.5).setScrollFactor(0);
+    this.cooldownCircle = this.add.graphics();
+    this.cooldownCircle.setDepth(0);
+    this.fireballIcon.setDepth(1);
 
     this.cameras.main.setSize(400, 600);
     this.cameras.main.setZoom(2.25);
     this.cameras.main.startFollow(this.mario);
     this.cameras.main.setBounds(0, 0, 800, 600);
+
+    //El cooldown de la fireBall solo aparece en camera2
+    this.cameras.main.ignore(this.cooldownCircle);
+    this.cameras.main.ignore(this.fireballIcon);
 
     const camera2 = this.cameras.add(400, 0, 400, 600, false, 'camera2')
       .setZoom(2.25)
@@ -142,5 +154,40 @@ export default class GameScene extends Phaser.Scene {
         this.yenneferWin();
       }
     });
+
+    //Temporizador para el icono
+    if (this.yennefer.fireballCooldown) {
+      this.fireballCooldownTime -= this.game.loop.delta;
+    }
+    else {
+      this.fireballCooldownTime = this.maxCooldownTime;
+    }
+
+    //Calculador del progreso
+    let progress = 1 - Math.max(0, this.fireballCooldownTime / this.maxCooldownTime);
+    this.cooldownCircle.clear();
+    this.cooldownCircle.lineStyle(10, 0x00C04B, 1);
+    const startAngle = Phaser.Math.DegToRad(270);
+    const endAngle = Phaser.Math.DegToRad(270 + (360 * progress));
+    this.cooldownCircle.beginPath();
+    if (progress != 0) {
+      this.cooldownCircle.arc(240, 390, 15, startAngle, endAngle, false);
+    }
+    else {
+      this.cooldownCircle.arc(240, 390, 15, startAngle - 1, Phaser.Math.DegToRad(270 + (360)), false);
+    } 
+    this.cooldownCircle.strokePath();
+    this.cooldownCircle.setScrollFactor(0);
+
+    if (this.fireballCooldownTime != this.maxCooldownTime) {
+      this.fireballIcon.setTint(0x555555);
+      // Darker tint for cooldown state
+      }
+    else {
+      this.fireballIcon.clearTint();
+      // Normal state
+    }
+
+    console.log("Progress: " + progress)
   }
 }
