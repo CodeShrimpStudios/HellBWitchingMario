@@ -25,6 +25,8 @@ export default class Yennefer extends Phaser.Physics.Arcade.Sprite
         this.grounded = false;
         this.walking = false;
         this.walkAnim = false;
+        this.idleAnim = false;
+        this.jumpAnim = false;
         this.hasAirJumped = false;
 
         this.cursors = this.scene.input.keyboard.createCursorKeys();
@@ -38,8 +40,8 @@ export default class Yennefer extends Phaser.Physics.Arcade.Sprite
 
         this.anims.create({
             key: "yen_idle",
-            frameRate: 5,
-            frames: this.anims.generateFrameNumbers("yennefer", {frames: [0,1,2,3,4,5,6]}),
+            frameRate: 3,
+            frames: this.anims.generateFrameNumbers("yennefer", {frames: [0,2,3,4,5,6,0,1,2,3,4,5,6]}),//Añadi mas frames para que no parpadee tanto - Davide
             repeat: -1
         })
         this.anims.create({
@@ -50,13 +52,15 @@ export default class Yennefer extends Phaser.Physics.Arcade.Sprite
         })
         this.anims.create({
             key: "yen_air",
-            frameRate: 20,
+            frameRate: 10,
             frames: this.anims.generateFrameNumbers("yennefer", {frames: [15,16,17]}),
+            repeat: -1
         })
         this.anims.create({
             key: "yen_fireball",
             frameRate: 20,
             frames: this.anims.generateFrameNumbers("yennefer", {frames: [21,22,23]}),
+            repeat: -1
         })
 
         this.fireballCooldown = false;
@@ -117,30 +121,47 @@ export default class Yennefer extends Phaser.Physics.Arcade.Sprite
                     if (!this.walkAnim) {
                         this.play("yen_run");
                         this.walkAnim = true;
+                        this.idleAnim = false;
+                        this.jumpAnim = false;
                     }
                 }
                 else {
-                    this.play("yen_idle");
-                    this.walkAnim = false;
+                    if (!this.idleAnim) {
+                        this.play("yen_idle");
+                        this.walkAnim = false;
+                        this.idleAnim = true;
+                        this.jumpAnim = false;
+                    }
                 }
             }
             
             if (!this.grounded) {
-                this.play("yen_air");
-                this.walkAnim = false;
+                if (!this.jumpAnim) {
+                    this.play("yen_air");
+                    this.walkAnim = false;
+                    this.idleAnim = false;
+                    this.jumpAnim = true;
+                }
             }
             else if (this.walking) {
                 if (!this.walkAnim) {
                     this.play("yen_run");
                     this.walkAnim = true;
+                    this.idleAnim = false;
+                    this.jumpAnim = false;
                 }
             }
             else {
-                this.play("yen_idle");
-                this.walkAnim = false;
+                if (!this.idleAnim) {
+                    this.play("yen_idle");
+                    this.walkAnim = false;
+                    this.idleAnim = true;
+                    this.jumpAnim = false;
+                }
             }
         }
         else {
+            this.flipX = false;
             this.fireballAnimCounter--;
         }
 
@@ -152,6 +173,9 @@ export default class Yennefer extends Phaser.Physics.Arcade.Sprite
         console.log('Fireball shot!');
 
         this.play("yen_fireball");
+        this.walkAnim = false;
+        this.idleAnim = false;
+        this.jumpAnim = false;
         this.fireballAnimCounter = this.fireballAnimDuration;
 
         const fireball = this.fireballs.get(this.x, this.y, 'fireball').setActive(true).setVisible(true);
