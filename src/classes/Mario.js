@@ -17,6 +17,7 @@ export default class Mario extends Phaser.Physics.Arcade.Sprite
         this.maxHorizontalSpeed = 1;
         this.baseJumpStrength = 400;
 
+        this.groundedlastFrame = false;
         this.grounded = false;
         this.walking = false;
         this.walkAnim = false;
@@ -93,16 +94,35 @@ export default class Mario extends Phaser.Physics.Arcade.Sprite
             this.grounded = true;
         }
 
+        if (this.groundedlastFrame == false && this.grounded == true) { // acaba de tocar el suelo
+            this.anims.stop(); // Cancela la animación de caída
+        }
+
         if (this.damagecd <= 0) {
             this.canbedamaged = true;
-            if (this.grounded && this.walking) {
+            if (this.groundedlastFrame == false && this.grounded == true) { // acaba de tocar el suelo
+                this.anims.stop(); // Cancela la animación de caída
+                if (this.walking) {
+                    if (!this.walkAnim) {
+                        this.play("mar_run");
+                        this.walkAnim = true;
+                    }
+                }
+                else {
+                    this.play("mar_idle");
+                    this.walkAnim = false;
+                }
+            }
+            
+            if (!this.grounded) {
+                this.play("mar_air");
+                this.walkAnim = false;
+            }
+            else if (this.walking) {
                 if (!this.walkAnim) {
                     this.play("mar_run");
                     this.walkAnim = true;
                 }
-            }
-            else if (!this.grounded) {
-                this.play("mar_air");
             }
             else {
                 this.play("mar_idle");
@@ -113,6 +133,8 @@ export default class Mario extends Phaser.Physics.Arcade.Sprite
             this.damagecd -= 1;
         }
         this.isdamaged = false; 
+
+        this.groundedlastFrame = this.grounded;
     }
 
     damage() {

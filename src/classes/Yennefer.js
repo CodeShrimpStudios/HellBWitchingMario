@@ -21,8 +21,10 @@ export default class Yennefer extends Phaser.Physics.Arcade.Sprite
         this.maxHorizontalSpeed = 1;
         this.baseJumpStrength = 400;
 
+        this.groundedlastFrame = false;
         this.grounded = false;
         this.walking = false;
+        this.walkAnim = false;
         this.hasAirJumped = false;
 
         this.cursors = this.scene.input.keyboard.createCursorKeys();
@@ -33,6 +35,24 @@ export default class Yennefer extends Phaser.Physics.Arcade.Sprite
             right:Phaser.Input.Keyboard.KeyCodes.RIGHT,
             fireball:Phaser.Input.Keyboard.KeyCodes.J
         });
+
+        this.anims.create({
+            key: "yen_idle",
+            frameRate: 5,
+            frames: this.anims.generateFrameNumbers("yennefer", {frames: [0,1,2,3,4,5,6]}),
+            repeat: -1
+        })
+        this.anims.create({
+            key: "yen_run",
+            frameRate: 20,
+            frames: this.anims.generateFrameNumbers("yennefer", {frames: [7,8,9,10,11,12,13,14]}),
+            repeat: -1
+        })
+        this.anims.create({
+            key: "yen_air",
+            frameRate: 20,
+            frames: this.anims.generateFrameNumbers("yennefer", {frames: [15,16,17]}),
+        })
 
         this.fireballCooldown = false;
         this.cooldownTime = 5000;
@@ -47,10 +67,12 @@ export default class Yennefer extends Phaser.Physics.Arcade.Sprite
         if (this.cursors.left.isDown && !this.cursors.right.isDown ) {
             this.setVelocityX(-100);
             this.flipX = true;
+            this.walking = true;
         }
         else if (this.cursors.right.isDown && !this.cursors.left.isDown) {
             this.setVelocityX(100);
             this.flipX = false;
+            this.walking = true;
         } 
         else {
             this.setVelocityX(0);
@@ -80,6 +102,38 @@ export default class Yennefer extends Phaser.Physics.Arcade.Sprite
         if (this.cursors.fireball.isDown && !this.fireballCooldown) {
             this.shootFireball();
         }
+
+        if (this.groundedlastFrame == false && this.grounded == true) { // acaba de tocar el suelo
+            this.anims.stop(); // Cancela la animación de caída
+            if (this.walking) {
+                if (!this.walkAnim) {
+                    this.play("yen_run");
+                    this.walkAnim = true;
+                }
+            }
+            else {
+                this.play("yen_idle");
+                this.walkAnim = false;
+            }
+        }
+        
+        if (!this.grounded) {
+            this.play("yen_air");
+            this.walkAnim = false;
+        }
+        else if (this.walking) {
+            if (!this.walkAnim) {
+                this.play("yen_run");
+                this.walkAnim = true;
+            }
+        }
+        else {
+            this.play("yen_idle");
+            this.walkAnim = false;
+        }
+
+        this.groundedlastFrame = this.grounded;
+
     }
 
     shootFireball() {
