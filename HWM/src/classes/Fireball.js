@@ -6,8 +6,14 @@ export default class Fireball extends Phaser.Physics.Arcade.Sprite
 
         scene.add.existing(this);
         scene.physics.add.existing(this);
-        this.body.setCircle(256);
-        this.body.setOffset(128, 128);
+        this.body.setCircle(10);
+
+        this.anims.create({
+            key: 'fireball_anim',
+            frameRate: 30,
+            frames: this.anims.generateFrameNumbers('fireball', { start: 0, end: 60}),
+            repeat: -1
+        });
     }
 
     update() {

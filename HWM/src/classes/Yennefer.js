@@ -87,12 +87,16 @@ export default class Yennefer extends Phaser.Physics.Arcade.Sprite
 
         const fireball = this.fireballs.get(this.x, this.y, 'fireball').setActive(true).setVisible(true);
         fireball.body.allowGravity = false;
-        fireball.setScale(0.02);
+        fireball.play('fireball_anim');
             if (this.flipX) {
                 fireball.setVelocityX(-250);
+                fireball.setFlipX(true);
+                fireball.body.setOffset(35, 45);
                 }
             else {
                 fireball.setVelocityX(250);
+                fireball.setFlipX(false);
+                fireball.body.setOffset(45, 45);
             }
         fireball.setVelocityY(0);
 

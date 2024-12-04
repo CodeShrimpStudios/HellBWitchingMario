@@ -27,12 +27,12 @@ export default class GameScene extends Phaser.Scene {
     this.load.spritesheet("mario", "/assets/images/mario_small.png", { frameHeight: 18, frameWidth: 18});
     //Cambien a Yennefer
     this.load.spritesheet("yennefer", "/assets/images/mario_small.png", { frameHeight: 18, frameWidth: 18});
-    this.load.image("fireball", "/assets/images/pngegg.png");
     this.load.image('fireballIcon', 'assets/images/Retro-Fire-Ball.64.png');
     this.load.image("prueba", "/assets/images/patatas.jpg");
     this.load.image("background", "/assets/images/space.png")
     this.load.image("platformplaceholder", "/assets/images/platformplaceholder.png")
     this.load.spritesheet("powertile", "/assets/tiles/FireSet.png", { frameHeight: 16, frameWidth: 16 });
+    this.load.spritesheet("fireball", "/assets/images/FireBall.png", { frameHeight: 100, frameWidth: 100 });
   }
 
   create() {
@@ -100,15 +100,14 @@ export default class GameScene extends Phaser.Scene {
     this.cooldownCircle = this.add.graphics();
     this.cooldownCircle.setDepth(0);
     this.fireballIcon.setDepth(1);
+    //El cooldown de la fireBall solo aparece en camera2
+    this.cameras.main.ignore(this.cooldownCircle);
+    this.cameras.main.ignore(this.fireballIcon);
 
     this.cameras.main.setSize(400, 600);
     this.cameras.main.setZoom(2.25);
     this.cameras.main.startFollow(this.mario);
     this.cameras.main.setBounds(0, 0, 800, 600);
-
-    //El cooldown de la fireBall solo aparece en camera2
-    this.cameras.main.ignore(this.cooldownCircle);
-    this.cameras.main.ignore(this.fireballIcon);
 
     const camera2 = this.cameras.add(400, 0, 400, 600, false, 'camera2')
       .setZoom(2.25)
@@ -181,13 +180,11 @@ export default class GameScene extends Phaser.Scene {
 
     if (this.fireballCooldownTime != this.maxCooldownTime) {
       this.fireballIcon.setTint(0x555555);
-      // Darker tint for cooldown state
+      //Icono más oscuro en cooldown
       }
     else {
       this.fireballIcon.clearTint();
-      // Normal state
+      //Icono normal
     }
-
-    console.log("Progress: " + progress)
   }
 }
