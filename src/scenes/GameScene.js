@@ -2,6 +2,7 @@ import Mario from "../classes/Mario.js";
 import Yennefer from "../classes/Yennefer.js";
 import Powerup from "../classes/Powerup.js";
 import Fireball from "../classes/Fireball.js";
+import Mushroom from '../classes/Mushroom.js';
 
 import VictoryScene from "./VictoryScene.js";
 
@@ -33,6 +34,7 @@ export default class GameScene extends Phaser.Scene {
     this.load.image("platformplaceholder", "/assets/images/platformplaceholder.png")
     this.load.spritesheet("powertile", "/assets/tiles/FireSet.png", { frameHeight: 16, frameWidth: 16 });
     this.load.spritesheet("fireball", "/assets/images/FireBall.png", { frameHeight: 100, frameWidth: 100 });
+    this.load.spritesheet('mushroom_walk', '/assets/images/Big Mushroom_Walk.png', {frameWidth: 28,frameHeight: 28});
   }
 
   create() {
@@ -177,6 +179,24 @@ export default class GameScene extends Phaser.Scene {
         this.cooldownCircle
       ]);
     //Fin Camera
+
+
+    // Crear un grupo de champiñones
+    this.mushrooms = this.physics.add.group();
+    for (let i = 0; i < 5; i++) {
+        const x = Phaser.Math.Between(100, 700);
+        const y = Phaser.Math.Between(100, 500);
+        const mushroom = new Mushroom(this, x, y);
+        this.mushrooms.add(mushroom);
+    }
+
+    // Detectar colisión con los jugadores
+    this.physics.add.collider(this.mushrooms, this.player1, (mushroom, player) => {
+        mushroom.onPlayerCollision(player);
+    });
+    this.physics.add.collider(this.mushrooms, this.player2, (mushroom, player) => {
+        mushroom.onPlayerCollision(player);
+    });
   }
 
   damageMario(mario, tile) { 
@@ -275,5 +295,10 @@ export default class GameScene extends Phaser.Scene {
       //Violeta para Yennefer
       this.yenneferIndicator.fillRect(this.progressBarX + yenneferPosition - 5, (this.screenHeight * 0.08) - 5, 10, 30);
     //Fin UI
+
+    // Actualizar cada champiñón
+    this.mushrooms.children.iterate((mushroom) => {
+      mushroom.update();
+  });
   }
 }
