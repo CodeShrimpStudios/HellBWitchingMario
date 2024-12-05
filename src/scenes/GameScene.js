@@ -108,6 +108,34 @@ export default class GameScene extends Phaser.Scene {
       this.yennefer.body.onWorldBounds = true;
 
       this.physics.add.collider(this.yennefer.fireballs, this.mario, this.fireballHitsMario, null, this);
+
+
+      // Crear grupo de champiñones
+    this.mushrooms = this.physics.add.group({
+      bounceX: 1,
+      bounceY: 0.2,
+      collideWorldBounds: true
+    });
+    for (let i = 0; i < 5; i++) {
+        const x = Phaser.Math.Between(200, 800);
+        const y = Phaser.Math.Between(100,150);
+        const mushroom = new Mushroom(this, x, y);
+        this.mushrooms.add(mushroom);
+    }
+
+     // Evitar colisiones entre champiñones y hacer que reboten
+     this.physics.add.collider(this.mushrooms, this.mushrooms, (mushroom1, mushroom2) => {
+      mushroom1.setVelocityY(-100);
+      mushroom2.setVelocityY(-100);
+    });
+
+    // Detectar colisión con los jugadores
+    this.physics.add.collider(this.mushrooms, this.player1, (mushroom, player) => {
+        mushroom.onPlayerCollision(player);
+    });
+    this.physics.add.collider(this.mushrooms, this.player2, (mushroom, player) => {
+        mushroom.onPlayerCollision(player);
+    });
     //Fin Personajes & Fisicas
 
 
@@ -164,6 +192,7 @@ export default class GameScene extends Phaser.Scene {
         this.mario,
         this.yennefer,
         this.powerUp,
+        this.mushrooms,
         bg
       ]);
       this.yennefer.fireballs.children.each((fireball) => {
@@ -181,22 +210,7 @@ export default class GameScene extends Phaser.Scene {
     //Fin Camera
 
 
-    // Crear un grupo de champiñones
-    this.mushrooms = this.physics.add.group();
-    for (let i = 0; i < 5; i++) {
-        const x = Phaser.Math.Between(100, 700);
-        const y = Phaser.Math.Between(100, 500);
-        const mushroom = new Mushroom(this, x, y);
-        this.mushrooms.add(mushroom);
-    }
-
-    // Detectar colisión con los jugadores
-    this.physics.add.collider(this.mushrooms, this.player1, (mushroom, player) => {
-        mushroom.onPlayerCollision(player);
-    });
-    this.physics.add.collider(this.mushrooms, this.player2, (mushroom, player) => {
-        mushroom.onPlayerCollision(player);
-    });
+    
   }
 
   damageMario(mario, tile) { 
@@ -237,6 +251,10 @@ export default class GameScene extends Phaser.Scene {
         this.yenneferWin();
       }
     });
+
+     // Actualizar cada champiñón
+     this.mushrooms.children.iterate((mushroom) => {
+      mushroom.update();
 
 
     //UI
@@ -296,9 +314,7 @@ export default class GameScene extends Phaser.Scene {
       this.yenneferIndicator.fillRect(this.progressBarX + yenneferPosition - 5, (this.screenHeight * 0.08) - 5, 10, 30);
     //Fin UI
 
-    // Actualizar cada champiñón
-    this.mushrooms.children.iterate((mushroom) => {
-      mushroom.update();
+   
   });
   }
 }
