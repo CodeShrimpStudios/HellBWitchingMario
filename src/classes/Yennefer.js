@@ -7,7 +7,6 @@ export default class Yennefer extends Phaser.Physics.Arcade.Sprite
     constructor (scene, x, y)
     {
         super(scene, x, y, 'yennefer');
-        //this.setScale(1, 1);
 
         scene.add.existing(this);
         scene.physics.add.existing(this);
@@ -33,10 +32,9 @@ export default class Yennefer extends Phaser.Physics.Arcade.Sprite
         this.cursors = this.scene.input.keyboard.createCursorKeys();
         this.cursors = this.scene.input.keyboard.addKeys({
             up:Phaser.Input.Keyboard.KeyCodes.UP,
-            down:Phaser.Input.Keyboard.KeyCodes.DOWN,
             left:Phaser.Input.Keyboard.KeyCodes.LEFT,
             right:Phaser.Input.Keyboard.KeyCodes.RIGHT,
-            fireball:Phaser.Input.Keyboard.KeyCodes.J
+            fireball:Phaser.Input.Keyboard.KeyCodes.DOWN
         });
 
         this.anims.create({
@@ -76,6 +74,35 @@ export default class Yennefer extends Phaser.Physics.Arcade.Sprite
     }
 
     update() {
+        this.inputManager();
+        this.animManager();
+    }
+
+    shootFireball() {
+        console.log('Fireball shot!');
+
+        this.play("yen_fireball");
+        this.walkAnim = false;
+        this.idleAnim = false;
+        this.jumpAnim = false;
+        this.fireballAnimCounter = this.fireballAnimDuration;
+
+        const fireball = this.fireballs.get(this.x, this.y, 'fireball').setActive(true).setVisible(true);
+        fireball.body.allowGravity = false;
+        fireball.play('fireball_anim');
+        fireball.setVelocityX(-250);
+        fireball.setFlipX(true);
+        fireball.body.setOffset(35, 45);
+        fireball.setVelocityY(0);
+
+        this.fireballCooldown = true;
+        this.scene.time.delayedCall(this.cooldownTime, () => {
+            this.fireballCooldown = false;
+            console.log('Fireball ready!');
+        });
+    }
+
+    inputManager() {
         if (this.cursors.left.isDown && !this.cursors.right.isDown ) {
             this.setVelocityX(-100);
             this.flipX = true;
@@ -114,7 +141,9 @@ export default class Yennefer extends Phaser.Physics.Arcade.Sprite
         if (this.cursors.fireball.isDown && !this.fireballCooldown) {
             this.shootFireball();
         }
+    }
 
+    animManager() {
         if (this.fireballAnimCounter <= 0) {
             if (this.groundedlastFrame == false && this.grounded == true) { // acaba de tocar el suelo
                 this.anims.stop(); // Cancela la animación de caída
@@ -167,30 +196,5 @@ export default class Yennefer extends Phaser.Physics.Arcade.Sprite
         }
 
         this.groundedlastFrame = this.grounded;
-
-    }
-
-    shootFireball() {
-        console.log('Fireball shot!');
-
-        this.play("yen_fireball");
-        this.walkAnim = false;
-        this.idleAnim = false;
-        this.jumpAnim = false;
-        this.fireballAnimCounter = this.fireballAnimDuration;
-
-        const fireball = this.fireballs.get(this.x, this.y, 'fireball').setActive(true).setVisible(true);
-        fireball.body.allowGravity = false;
-        fireball.play('fireball_anim');
-        fireball.setVelocityX(-250);
-        fireball.setFlipX(true);
-        fireball.body.setOffset(35, 45);
-        fireball.setVelocityY(0);
-
-        this.fireballCooldown = true;
-        this.scene.time.delayedCall(this.cooldownTime, () => {
-            this.fireballCooldown = false;
-            console.log('Fireball ready!');
-        });
     }
 }
