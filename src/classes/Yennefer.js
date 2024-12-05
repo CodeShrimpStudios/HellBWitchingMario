@@ -11,8 +11,9 @@ export default class Yennefer extends Phaser.Physics.Arcade.Sprite
 
         scene.add.existing(this);
         scene.physics.add.existing(this);
-        this.body.setSize(16, 16);
-        this.body.setOffset(0, 2);
+        this.setDisplaySize(this.width * 2/3, this.height * 2/3);
+        this.body.setSize((16) * 3/2, (16) * 3/2);
+        this.body.setOffset(33, 8);
 
         this.setCollideWorldBounds(true);
 
