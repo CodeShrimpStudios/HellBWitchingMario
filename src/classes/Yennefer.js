@@ -28,6 +28,7 @@ export default class Yennefer extends Phaser.Physics.Arcade.Sprite
         this.idleAnim = false;
         this.jumpAnim = false;
         this.hasAirJumped = false;
+        this.isSlowed=false;
 
         this.cursors = this.scene.input.keyboard.createCursorKeys();
         this.cursors = this.scene.input.keyboard.addKeys({
@@ -102,14 +103,31 @@ export default class Yennefer extends Phaser.Physics.Arcade.Sprite
         });
     }
 
+    slowDown(factor, duration) {
+        if (!this.isSlowed) {
+          this.isSlowed = true;
+          this.speed *= factor;
+          this.scene.time.delayedCall(duration, () => {
+            this.speed /= factor;
+            this.isSlowed = false;
+          });
+        }
+    }
+
     inputManager() {
         if (this.cursors.left.isDown && !this.cursors.right.isDown ) {
-            this.setVelocityX(-100);
+            if(this.isSlowed==true){
+                this.setVelocityX(-30)
+            }
+             else{this.setVelocityX(-100)}
             this.flipX = true;
             this.walking = true;
         }
         else if (this.cursors.right.isDown && !this.cursors.left.isDown) {
-            this.setVelocityX(100);
+            if(this.isSlowed==true){
+                this.setVelocityX(30)
+            }
+             else{this.setVelocityX(100)}
             this.flipX = false;
             this.walking = true;
         } 
@@ -121,11 +139,17 @@ export default class Yennefer extends Phaser.Physics.Arcade.Sprite
         if (Phaser.Input.Keyboard.JustDown(this.cursors.up)) {
             if (this.body.onFloor()) {
                 //Primer salto
-                this.setVelocityY(-200);
+                if(this.isSlowed==true){
+                    this.setVelocityY(-120)
+                }
+                else{this.setVelocityY(-200);}
             }
             else if (!this.hasAirJumped) {
                 //Salto en aire
-                this.setVelocityY(-200);
+                if(this.isSlowed==true){
+                    this.setVelocityY(-120)
+                }
+                else{this.setVelocityY(-200);}
                 this.hasAirJumped = true;
             }
         }
