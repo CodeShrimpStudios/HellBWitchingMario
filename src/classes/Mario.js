@@ -31,9 +31,9 @@ export default class Mario extends Phaser.Physics.Arcade.Sprite
         //Añadi esto para para cambiar a Mario a WASD - Davide
         this.cursors = this.scene.input.keyboard.addKeys({
             up:Phaser.Input.Keyboard.KeyCodes.W,
-            down:Phaser.Input.Keyboard.KeyCodes.S,
             left:Phaser.Input.Keyboard.KeyCodes.A,
-            right:Phaser.Input.Keyboard.KeyCodes.D
+            right:Phaser.Input.Keyboard.KeyCodes.D,
+            boost:Phaser.Input.Keyboard.KeyCodes.S
         });
 
         this.anims.create({
@@ -61,6 +61,22 @@ export default class Mario extends Phaser.Physics.Arcade.Sprite
     }
 
     update() {
+        this.inputManager();
+        this.animManager();
+    }
+
+    damage() {
+        console.log("daño")
+        //if (this.damagecdbool) {
+            this.canbedamaged = false;
+            this.play("mar_damage");
+            this.damagecd = this.damagecdval;
+            this.isdamaged = true;
+            this.body.velocity.x *= 0.2;
+        //}
+    }
+
+    inputManager() {
         if (this.cursors.left.isDown && !this.cursors.right.isDown) {
             this.setVelocityX(-100);
             if(this.isdamaged == true){
@@ -93,7 +109,9 @@ export default class Mario extends Phaser.Physics.Arcade.Sprite
         else {
             this.grounded = true;
         }
+    }
 
+    animManager() {
         if (this.groundedlastFrame == false && this.grounded == true) { // acaba de tocar el suelo
             this.anims.stop(); // Cancela la animación de caída
         }
@@ -135,16 +153,5 @@ export default class Mario extends Phaser.Physics.Arcade.Sprite
         this.isdamaged = false; 
 
         this.groundedlastFrame = this.grounded;
-    }
-
-    damage() {
-        console.log("daño")
-        //if (this.damagecdbool) {
-            this.canbedamaged = false;
-            this.play("mar_damage");
-            this.damagecd = this.damagecdval;
-            this.isdamaged = true;
-            this.body.velocity.x *= 0.2;
-        //}
     }
 }
