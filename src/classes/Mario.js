@@ -26,6 +26,7 @@ export default class Mario extends Phaser.Physics.Arcade.Sprite
         this.damagecdval = 60;
         this.canbedamaged = true;
         this.isdamaged = false;
+        this.isSlowed = false;
 
         this.cursors = this.scene.input.keyboard.createCursorKeys();
         //Añadi esto para para cambiar a Mario a WASD - Davide
@@ -60,9 +61,23 @@ export default class Mario extends Phaser.Physics.Arcade.Sprite
         })
     }
 
-    update() {
+    update(cursors) {
         this.inputManager();
         this.animManager();
+        //console.log("VelMario"+this.body.velocity.x);
+        if (!this.isSlowed) {
+            if (cursors.left.isDown) {
+              this.setVelocityX(-this.speed);
+            } else if (cursors.right.isDown) {
+              this.setVelocityX(this.speed);
+            } else {
+              this.setVelocityX(0);
+            }
+      
+            if (cursors.up.isDown && this.body.blocked.down) {
+              this.setVelocityY(-300);
+            }
+          }
     }
 
     damage() {
@@ -72,12 +87,13 @@ export default class Mario extends Phaser.Physics.Arcade.Sprite
             this.play("mar_damage");
             this.damagecd = this.damagecdval;
             this.isdamaged = true;
-            this.body.velocity.x *= 0.2;
+            this.body.velocity.x *= 0.1;
         //}
     }
 
     inputManager() {
         if (this.cursors.left.isDown && !this.cursors.right.isDown) {
+            console.log(this.body.velocity.x)
             this.setVelocityX(-100);
             if(this.isdamaged == true){
                 this.body.velocity.x *= 0.2;

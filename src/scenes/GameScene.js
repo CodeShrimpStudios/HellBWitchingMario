@@ -2,7 +2,7 @@ import Mario from "../classes/Mario.js";
 import Yennefer from "../classes/Yennefer.js";
 import Powerup from "../classes/Powerup.js";
 import Fireball from "../classes/Fireball.js";
-import Mushroom from '../classes/Mushroom.js';
+import Mushroom from "../classes/Mushroom.js";
 
 import VictoryScene from "./VictoryScene.js";
 
@@ -111,7 +111,7 @@ export default class GameScene extends Phaser.Scene {
 
 
       // Crear grupo de champiñones
-    this.mushrooms = this.physics.add.group({
+    this.mushroomGroup = this.physics.add.group({
       bounceX: 1,
       bounceY: 0.2,
       collideWorldBounds: true
@@ -120,22 +120,18 @@ export default class GameScene extends Phaser.Scene {
         const x = Phaser.Math.Between(200, 800);
         const y = Phaser.Math.Between(100,150);
         const mushroom = new Mushroom(this, x, y);
-        this.mushrooms.add(mushroom);
+        this.mushroomGroup.add(mushroom);
     }
 
      // Evitar colisiones entre champiñones y hacer que reboten
-     this.physics.add.collider(this.mushrooms, this.mushrooms, (mushroom1, mushroom2) => {
+     this.physics.add.collider(this.mushroomGroup, this.mushroomGroup, (mushroom1, mushroom2) => {
       mushroom1.setVelocityY(-100);
       mushroom2.setVelocityY(-100);
     });
 
     // Detectar colisión con los jugadores
-    this.physics.add.collider(this.mushrooms, this.player1, (mushroom, player) => {
-        mushroom.onPlayerCollision(player);
-    });
-    this.physics.add.collider(this.mushrooms, this.player2, (mushroom, player) => {
-        mushroom.onPlayerCollision(player);
-    });
+    this.physics.add.collider(this.mushroomGroup, this.mario, this.handleMushroomCollision, null, this);
+    this.physics.add.collider(this.mushroomGroup, this.yennefer, this.handleMushroomCollision, null, this);
     //Fin Personajes & Fisicas
 
 
@@ -192,7 +188,7 @@ export default class GameScene extends Phaser.Scene {
         this.mario,
         this.yennefer,
         this.powerUp,
-        this.mushrooms,
+        this.mushroomGroup,
         bg
       ]);
       this.yennefer.fireballs.children.each((fireball) => {
@@ -228,6 +224,20 @@ export default class GameScene extends Phaser.Scene {
       }
     }
   }
+  handleMushroomCollision(player, mushroom) {
+    console.log(player.body.velocity.x);
+    if (player instanceof Mario || player instanceof Yennefer) {
+      player.setVelocityX(player.body.velocity.x * 0.5); // Ralentizar al jugador
+      console.log(player.body.velocity.x);
+      console.log(`${player.constructor.name} colisionó con un champiñón y fue ralentizado.`);
+      // Aplicar el efecto de ralentización durante 3 segundos
+      // player.scene.time.delayedCall(3000, () => {
+      //   if (player.active) {
+      //     player.setVelocityX(player.body.velocity.x > 0 ? player.body.velocity.x * 2 : -player.body.velocity.x * 2); // Restaurar la velocidad del jugador
+      //   }
+      // });
+    }
+  }
 
   marioWin() {
     //Añadan animaciones antes de cambiar de escena
@@ -253,7 +263,7 @@ export default class GameScene extends Phaser.Scene {
     });
 
      // Actualizar cada champiñón
-     this.mushrooms.children.iterate((mushroom) => {
+     this.mushroomGroup.children.iterate((mushroom) => {
       mushroom.update();
 
 
