@@ -65,19 +65,8 @@ export default class Mario extends Phaser.Physics.Arcade.Sprite
         this.inputManager();
         this.animManager();
         //console.log("VelMario"+this.body.velocity.x);
-        if (!this.isSlowed) {
-            if (cursors.left.isDown) {
-              this.setVelocityX(-this.speed);
-            } else if (cursors.right.isDown) {
-              this.setVelocityX(this.speed);
-            } else {
-              this.setVelocityX(0);
-            }
-      
-            if (cursors.up.isDown && this.body.blocked.down) {
-              this.setVelocityY(-300);
-            }
-          }
+        console.log("Ralentizado:"+this.isSlowed);
+        
     }
 
     damage() {
@@ -90,11 +79,24 @@ export default class Mario extends Phaser.Physics.Arcade.Sprite
             this.body.velocity.x *= 0.1;
         //}
     }
+    slowDown(factor, duration) {
+        if (!this.isSlowed) {
+          this.isSlowed = true;
+          this.speed *= factor;
+          this.scene.time.delayedCall(duration, () => {
+            this.speed /= factor;
+            this.isSlowed = false;
+          });
+        }
+    }
 
     inputManager() {
         if (this.cursors.left.isDown && !this.cursors.right.isDown) {
             console.log(this.body.velocity.x)
-            this.setVelocityX(-100);
+            if(this.isSlowed==true){
+                this.setVelocityX(-30)
+            }
+             else{this.setVelocityX(-100)}
             if(this.isdamaged == true){
                 this.body.velocity.x *= 0.2;
             }

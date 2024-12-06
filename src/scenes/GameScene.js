@@ -227,16 +227,20 @@ export default class GameScene extends Phaser.Scene {
   handleMushroomCollision(player, mushroom) {
     console.log(player.body.velocity.x);
     if (player instanceof Mario || player instanceof Yennefer) {
-      player.setVelocityX(player.body.velocity.x * 0.5); // Ralentizar al jugador
-      console.log(player.body.velocity.x);
+      player.slowDown(0.5, 3000); // Aplicar la ralentización al jugador usando el nuevo método
       console.log(`${player.constructor.name} colisionó con un champiñón y fue ralentizado.`);
-      // Aplicar el efecto de ralentización durante 3 segundos
-      // player.scene.time.delayedCall(3000, () => {
-      //   if (player.active) {
-      //     player.setVelocityX(player.body.velocity.x > 0 ? player.body.velocity.x * 2 : -player.body.velocity.x * 2); // Restaurar la velocidad del jugador
-      //   }
-      // });
     }
+    // if (player instanceof Mario || player instanceof Yennefer) {
+    //   player.setVelocityX(player.body.velocity.x * 0.5); // Ralentizar al jugador
+    //   console.log(player.body.velocity.x);
+    //   console.log(`${player.constructor.name} colisionó con un champiñón y fue ralentizado.`);
+    //   //Aplicar el efecto de ralentización durante 3 segundos
+    //   player.scene.time.delayedCall(3000, () => {
+    //     if (player.active) {
+    //       player.setVelocityX(player.body.velocity.x > 0 ? player.body.velocity.x * 2 : -player.body.velocity.x * 2); // Restaurar la velocidad del jugador
+    //     }
+    //   });
+    // }
   }
 
   marioWin() {
