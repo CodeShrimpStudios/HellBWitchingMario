@@ -104,7 +104,10 @@ export default class Mario extends Phaser.Physics.Arcade.Sprite
             this.walking = true;
         }
         else if (this.cursors.right.isDown && !this.cursors.left.isDown) {
-            this.setVelocityX(100);
+            if(this.isSlowed==true){
+                this.setVelocityX(30)
+            }
+             else{this.setVelocityX(100)}
             if(this.isdamaged == true){
                 this.body.velocity.x *= 0.2;
             }
@@ -118,7 +121,10 @@ export default class Mario extends Phaser.Physics.Arcade.Sprite
         }
     
         if (Phaser.Input.Keyboard.JustDown(this.cursors.up) && this.body.onFloor()) {
-            this.setVelocityY(-200);
+            if(this.isSlowed==true){
+                this.setVelocityY(-120)
+            }
+            else{this.setVelocityY(-200);}
         }
 
         if (!this.body.onFloor()) {
