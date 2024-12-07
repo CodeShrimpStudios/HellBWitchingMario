@@ -111,27 +111,27 @@ export default class GameScene extends Phaser.Scene {
 
 
       // Crear grupo de champiñones
-    this.mushroomGroup = this.physics.add.group({
-      bounceX: 1,
-      bounceY: 0.2,
-      collideWorldBounds: true
-    });
-    for (let i = 0; i < 5; i++) {
+      this.mushroomGroup = this.physics.add.group({
+        bounceX: 1,
+        bounceY: 0.2,
+        collideWorldBounds: true
+      });
+      for (let i = 0; i < 5; i++) {
         const x = Phaser.Math.Between(200, 800);
         const y = Phaser.Math.Between(100,150);
         const mushroom = new Mushroom(this, x, y);
         this.mushroomGroup.add(mushroom);
-    }
+      }
 
-     // Evitar colisiones entre champiñones y hacer que reboten
-     this.physics.add.collider(this.mushroomGroup, this.mushroomGroup, (mushroom1, mushroom2) => {
-      mushroom1.setVelocityY(-100);
-      mushroom2.setVelocityY(-100);
-    });
+      // Evitar colisiones entre champiñones y hacer que reboten
+      this.physics.add.collider(this.mushroomGroup, this.mushroomGroup, (mushroom1, mushroom2) => {
+        mushroom1.setVelocityY(-100);
+        mushroom2.setVelocityY(-100);
+      });
 
-    // Detectar colisión con los jugadores
-    this.physics.add.collider(this.mushroomGroup, this.mario, this.handleMushroomCollision, null, this);
-    this.physics.add.collider(this.mushroomGroup, this.yennefer, this.handleMushroomCollision, null, this);
+      // Detectar colisión con los jugadores
+      this.physics.add.collider(this.mushroomGroup, this.mario, this.handleMushroomCollision, null, this);
+      this.physics.add.collider(this.mushroomGroup, this.yennefer, this.handleMushroomCollision, null, this);
     //Fin Personajes & Fisicas
 
 
@@ -191,9 +191,6 @@ export default class GameScene extends Phaser.Scene {
         this.mushroomGroup,
         bg
       ]);
-      this.yennefer.fireballs.children.each((fireball) => {
-        this.uiCamera.ignore(fireball);
-      });
 
       this.cameras.main.ignore([
         this.progressBarBg,
@@ -224,6 +221,7 @@ export default class GameScene extends Phaser.Scene {
       }
     }
   }
+
   handleMushroomCollision(player, mushroom) {
     console.log(player.body.velocity.x);
     if (player instanceof Mario || player instanceof Yennefer) {
@@ -256,9 +254,67 @@ export default class GameScene extends Phaser.Scene {
     this.scene.switch('victory', { WinnerP1: this.WinnerP1, cartasSeleccionadas: this.cartasSeleccionadas });
   }
 
+  uiManager() {
+    this.yennefer.fireballs.children.each((fireball) => {
+      this.uiCamera.ignore(fireball);
+    });
+
+    //Temporizador para el icono fireball
+    if (this.yennefer.fireballCooldown) {
+      this.fireballCooldownTime -= this.game.loop.delta;
+    }
+    else {
+      this.fireballCooldownTime = this.maxCooldownTime;
+    }
+
+    //Calculador del progreso
+    let progress = 1 - Math.max(0, this.fireballCooldownTime / this.maxCooldownTime);
+    this.cooldownCircle.clear();
+    this.cooldownCircle.lineStyle(15, 0x00C04B, 1);
+    const startAngle = Phaser.Math.DegToRad(270);
+    const endAngle = Phaser.Math.DegToRad(270 + (360 * progress));
+    this.cooldownCircle.beginPath();
+    if (progress != 0) {
+      this.cooldownCircle.arc(this.screenWidth * 0.9, this.screenHeight * 0.85, 35, startAngle, endAngle, false);
+    }
+    else {
+      this.cooldownCircle.arc(this.screenWidth * 0.9, this.screenHeight * 0.85, 35, startAngle - 1, Phaser.Math.DegToRad(270 + (360)), false);
+    } 
+    this.cooldownCircle.strokePath();
+
+    if (this.fireballCooldownTime != this.maxCooldownTime) {
+      this.fireballIcon.setTint(0x555555);
+      //Icono más oscuro en cooldown
+      }
+    else {
+      this.fireballIcon.clearTint();
+      //Icono normal
+    }
+
+    //Barra de progreso
+    const marioPosition = (this.mario.x / this.worldWidth) * this.progressBarWidth;
+    const yenneferPosition = (this.yennefer.x / this.worldWidth) * this.progressBarWidth;
+
+    this.progressBar.clear();
+    this.progressBar.fillStyle(0xC84361, 1);
+    this.progressBar.fillRect(this.progressBarX, (this.screenHeight * 0.08), marioPosition, 10);
+    this.progressBar.fillStyle(0x8967B3, 1);
+    this.progressBar.fillRect(this.progressBarX, (this.screenHeight * 0.08) + 10, yenneferPosition, 10);
+
+    this.marioIndicator.clear();
+    this.marioIndicator.fillStyle(0xBF3131, 1);
+    //Rojo para Mario
+    this.marioIndicator.fillRect(this.progressBarX + marioPosition - 5, (this.screenHeight * 0.08) - 5, 10, 30);
+    this.yenneferIndicator.clear();
+    this.yenneferIndicator.fillStyle(0x6420AA, 1);
+    //Violeta para Yennefer
+    this.yenneferIndicator.fillRect(this.progressBarX + yenneferPosition - 5, (this.screenHeight * 0.08) - 5, 10, 30);
+  }
+
   update() {
     this.mario.update();
     this.yennefer.update();
+    this.uiManager();
 
     this.physics.world.once("worldbounds", (body, up, down, left, right) => {
       if (right) {
@@ -266,69 +322,9 @@ export default class GameScene extends Phaser.Scene {
       }
     });
 
-     // Actualizar cada champiñón
-     this.mushroomGroup.children.iterate((mushroom) => {
-      mushroom.update();
-
-
-    //UI
-      this.yennefer.fireballs.children.each((fireball) => {
-        this.uiCamera.ignore(fireball);
-      });
-
-      //Temporizador para el icono fireball
-      if (this.yennefer.fireballCooldown) {
-        this.fireballCooldownTime -= this.game.loop.delta;
-      }
-      else {
-        this.fireballCooldownTime = this.maxCooldownTime;
-      }
-
-      //Calculador del progreso
-      let progress = 1 - Math.max(0, this.fireballCooldownTime / this.maxCooldownTime);
-      this.cooldownCircle.clear();
-      this.cooldownCircle.lineStyle(15, 0x00C04B, 1);
-      const startAngle = Phaser.Math.DegToRad(270);
-      const endAngle = Phaser.Math.DegToRad(270 + (360 * progress));
-      this.cooldownCircle.beginPath();
-      if (progress != 0) {
-        this.cooldownCircle.arc(this.screenWidth * 0.9, this.screenHeight * 0.85, 35, startAngle, endAngle, false);
-      }
-      else {
-        this.cooldownCircle.arc(this.screenWidth * 0.9, this.screenHeight * 0.85, 35, startAngle - 1, Phaser.Math.DegToRad(270 + (360)), false);
-      } 
-      this.cooldownCircle.strokePath();
-
-      if (this.fireballCooldownTime != this.maxCooldownTime) {
-        this.fireballIcon.setTint(0x555555);
-        //Icono más oscuro en cooldown
-        }
-      else {
-        this.fireballIcon.clearTint();
-        //Icono normal
-      }
-
-      //Barra de progreso
-      const marioPosition = (this.mario.x / this.worldWidth) * this.progressBarWidth;
-      const yenneferPosition = (this.yennefer.x / this.worldWidth) * this.progressBarWidth;
-
-      this.progressBar.clear();
-      this.progressBar.fillStyle(0xC84361, 1);
-      this.progressBar.fillRect(this.progressBarX, (this.screenHeight * 0.08), marioPosition, 10);
-      this.progressBar.fillStyle(0x8967B3, 1);
-      this.progressBar.fillRect(this.progressBarX, (this.screenHeight * 0.08) + 10, yenneferPosition, 10);
-
-      this.marioIndicator.clear();
-      this.marioIndicator.fillStyle(0xBF3131, 1);
-      //Rojo para Mario
-      this.marioIndicator.fillRect(this.progressBarX + marioPosition - 5, (this.screenHeight * 0.08) - 5, 10, 30);
-      this.yenneferIndicator.clear();
-      this.yenneferIndicator.fillStyle(0x6420AA, 1);
-      //Violeta para Yennefer
-      this.yenneferIndicator.fillRect(this.progressBarX + yenneferPosition - 5, (this.screenHeight * 0.08) - 5, 10, 30);
-    //Fin UI
-
-   
+    // Actualizar cada champiñón
+    this.mushroomGroup.children.iterate((mushroom) => {
+    mushroom.update();
   });
   }
 }

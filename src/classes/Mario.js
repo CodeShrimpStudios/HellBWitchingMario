@@ -79,6 +79,7 @@ export default class Mario extends Phaser.Physics.Arcade.Sprite
             this.body.velocity.x *= 0.1;
         //}
     }
+    
     slowDown(factor, duration) {
         if (!this.isSlowed) {
           this.isSlowed = true;
