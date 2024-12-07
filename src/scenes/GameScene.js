@@ -29,6 +29,8 @@ export default class GameScene extends Phaser.Scene {
     //Cambien a Yennefer
     this.load.spritesheet("yennefer", "/assets/images/Yennefer.png", { frameHeight: 32, frameWidth: 90});
     this.load.image('fireballIcon', 'assets/images/Retro-Fire-Ball.64.png');
+    this.load.image('mario_icon', 'assets/images/Mario_Icon.png');
+    this.load.image('yennefer_icon', 'assets/images/Yennefer_Icon.png');
     this.load.image('heart_full', 'assets/images/Full_Heart.png');
     this.load.image('heart_empty', 'assets/images/Cracked_Heart.png');
     this.load.image("prueba", "/assets/images/patatas.jpg");
@@ -162,15 +164,17 @@ export default class GameScene extends Phaser.Scene {
       this.marioHearts = [];
       this.yenneferHearts = [];
       
+      this.add.image(this.screenWidth * 0.05, this.screenHeight * 0.25, 'mario_icon').setScale(3.5).setScrollFactor(0);
       for (let i = 0; i < this.mario.maxHp; i++) {
-        this.marioHearts.push(this.add.image(this.screenWidth * 0.05, this.screenHeight * 0.4 + (i * 60), 'heart_full')
+        this.marioHearts.push(this.add.image(this.screenWidth * 0.05, this.screenHeight * 0.35 + (i * 60), 'heart_full')
           .setScale(2)
           .setScrollFactor(0)
         );
       }
 
+      this.add.image(this.screenWidth * 0.95, this.screenHeight * 0.25, 'yennefer_icon').setScale(3).setScrollFactor(0);
       for (let i = 0; i < this.yennefer.maxHp; i++) {
-        this.yenneferHearts.push(this.add.image(this.screenWidth * 0.95, this.screenHeight * 0.4 + (i * 60), 'heart_full')
+        this.yenneferHearts.push(this.add.image(this.screenWidth * 0.95, this.screenHeight * 0.35 + (i * 60), 'heart_full')
           .setScale(2)
           .setScrollFactor(0)
         );
