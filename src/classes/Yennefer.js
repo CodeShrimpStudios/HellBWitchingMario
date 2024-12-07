@@ -28,7 +28,11 @@ export default class Yennefer extends Phaser.Physics.Arcade.Sprite
         this.idleAnim = false;
         this.jumpAnim = false;
         this.hasAirJumped = false;
+
         this.isSlowed=false;
+
+        this.maxHp = 4;
+        this.hp = 4;
 
         this.cursors = this.scene.input.keyboard.createCursorKeys();
         this.cursors = this.scene.input.keyboard.addKeys({

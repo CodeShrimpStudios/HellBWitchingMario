@@ -22,11 +22,14 @@ export default class Mario extends Phaser.Physics.Arcade.Sprite
         this.walking = false;
         this.walkAnim = false;
 
-        this.damagecd = 0;
-        this.damagecdval = 60;
+        this.damagecdval = 2000;
+        this.damageanimcd = 500;
         this.canbedamaged = true;
         this.isdamaged = false;
         this.isSlowed = false;
+
+        this.maxHp = 4;
+        this.hp = 4;
 
         this.cursors = this.scene.input.keyboard.createCursorKeys();
         //Añadi esto para para cambiar a Mario a WASD - Davide
@@ -69,17 +72,29 @@ export default class Mario extends Phaser.Physics.Arcade.Sprite
         
     }
 
-    damage() {
-        console.log("daño")
-        //if (this.damagecdbool) {
+    damage() {   
+        if (this.canbedamaged) {
             this.canbedamaged = false;
             this.play("mar_damage");
-            this.damagecd = this.damagecdval;
             this.isdamaged = true;
+            this.hp -= 1;
+            if (this.hp <= 0) {
+                 console.log("Mario died");
+                }
             this.body.velocity.x *= 0.1;
-        //}
+
+            console.log("daño" + this.hp);
+
+            this.scene.time.delayedCall(this.damageanimcd, () => {
+                this.isdamaged = false;
+            });
+
+            this.scene.time.delayedCall(this.damagecdval, () => {
+                this.canbedamaged = true;
+            });
+        }
     }
-    
+
     slowDown(factor, duration) {
         if (!this.isSlowed) {
           this.isSlowed = true;
@@ -141,8 +156,7 @@ export default class Mario extends Phaser.Physics.Arcade.Sprite
             this.anims.stop(); // Cancela la animación de caída
         }
 
-        if (this.damagecd <= 0) {
-            this.canbedamaged = true;
+        if (!this.isdamaged) {
             if (this.groundedlastFrame == false && this.grounded == true) { // acaba de tocar el suelo
                 this.anims.stop(); // Cancela la animación de caída
                 if (this.walking) {
@@ -173,9 +187,8 @@ export default class Mario extends Phaser.Physics.Arcade.Sprite
             }
         }
         else {
-            this.damagecd -= 1;
+
         }
-        this.isdamaged = false; 
 
         this.groundedlastFrame = this.grounded;
     }

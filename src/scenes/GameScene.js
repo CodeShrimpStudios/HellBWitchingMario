@@ -29,6 +29,8 @@ export default class GameScene extends Phaser.Scene {
     //Cambien a Yennefer
     this.load.spritesheet("yennefer", "/assets/images/Yennefer.png", { frameHeight: 32, frameWidth: 90});
     this.load.image('fireballIcon', 'assets/images/Retro-Fire-Ball.64.png');
+    this.load.image('heart_full', 'assets/images/Full_Heart.png');
+    this.load.image('heart_empty', 'assets/images/Cracked_Heart.png');
     this.load.image("prueba", "/assets/images/patatas.jpg");
     this.load.image("background", "/assets/images/space.png")
     this.load.image("platformplaceholder", "/assets/images/platformplaceholder.png")
@@ -138,32 +140,59 @@ export default class GameScene extends Phaser.Scene {
     //UI
       this.fireballIcon = this.add.image(this.screenWidth * 0.9, this.screenHeight * 0.85, 'fireballIcon')
         .setScrollFactor(0)
-        .setDepth(1);
-      this.cooldownCircle = this.add.graphics();
-      this.cooldownCircle.setDepth(0);
+      .setDepth(1);
+      this.cooldownCircle = this.add.graphics()
+      .setDepth(0);
 
       this.progressBarWidth = 500;
       this.progressBarX = (this.screenWidth - this.progressBarWidth) / 2;
-      this.progressBarBg = this.add.graphics();
-      this.progressBarBg.fillStyle(0x222222, 0.8);
-      this.progressBarBg.fillRect(this.progressBarX, this.screenHeight * 0.08, this.progressBarWidth, 20)
-      this.progressBarBg.setScrollFactor(0);
+      this.progressBarBg = this.add.graphics()
+        .fillStyle(0x222222, 0.8)
+        .fillRect(this.progressBarX, this.screenHeight * 0.08, this.progressBarWidth, 20)
+      .setScrollFactor(0);
 
-      this.progressBar = this.add.graphics();
-      this.progressBar.setScrollFactor(0);
+      this.progressBar = this.add.graphics()
+      .setScrollFactor(0);
 
-      this.marioIndicator = this.add.graphics();
-      this.marioIndicator.setScrollFactor(0);
-      this.yenneferIndicator = this.add.graphics();
-      this.yenneferIndicator.setScrollFactor(0);
+      this.marioIndicator = this.add.graphics()
+      .setScrollFactor(0);
+      this.yenneferIndicator = this.add.graphics()
+      .setScrollFactor(0);
+
+      this.marioHearts = [];
+      this.yenneferHearts = [];
+      
+      for (let i = 0; i < this.mario.maxHp; i++) {
+        this.marioHearts.push(this.add.image(this.screenWidth * 0.05, this.screenHeight * 0.4 + (i * 60), 'heart_full')
+          .setScale(2)
+          .setScrollFactor(0)
+        );
+      }
+
+      for (let i = 0; i < this.yennefer.maxHp; i++) {
+        this.yenneferHearts.push(this.add.image(this.screenWidth * 0.95, this.screenHeight * 0.4 + (i * 60), 'heart_full')
+          .setScale(2)
+          .setScrollFactor(0)
+        );
+      }
     //Fin UI
 
 
     //Camera
-      this.cameras.main.setSize(400, 600);
-      this.cameras.main.setZoom(2.25);
-      this.cameras.main.startFollow(this.mario);
-      this.cameras.main.setBounds(0, 0, 800, 600);
+      this.cameras.main.setSize(400, 600)
+        .setZoom(2.25)
+        .startFollow(this.mario)
+        .setBounds(0, 0, 800, 600)
+        .ignore([
+          this.progressBarBg,
+          this.progressBar,
+          this.marioIndicator,
+          this.yenneferIndicator,
+          this.fireballIcon,
+          this.cooldownCircle,
+          this.marioHearts,
+          this.yenneferHearts
+      ]);
 
       const camera2 = this.cameras.add(400, 0, 400, 600, false, 'camera2')
         .setZoom(2.25)
@@ -175,8 +204,10 @@ export default class GameScene extends Phaser.Scene {
           this.marioIndicator,
           this.yenneferIndicator,
           this.fireballIcon,
-          this.cooldownCircle
-        ]);
+          this.cooldownCircle,
+          this.marioHearts,
+          this.yenneferHearts
+      ]);
 
       this.uiCamera = this.cameras.add(0, 0, this.screenWidth, this.screenHeight)
       .setScroll(0, 0)
@@ -190,15 +221,6 @@ export default class GameScene extends Phaser.Scene {
         this.powerUp,
         this.mushroomGroup,
         bg
-      ]);
-
-      this.cameras.main.ignore([
-        this.progressBarBg,
-        this.progressBar,
-        this.marioIndicator,
-        this.yenneferIndicator,
-        this.fireballIcon,
-        this.cooldownCircle
       ]);
     //Fin Camera
 
@@ -309,6 +331,24 @@ export default class GameScene extends Phaser.Scene {
     this.yenneferIndicator.fillStyle(0x6420AA, 1);
     //Violeta para Yennefer
     this.yenneferIndicator.fillRect(this.progressBarX + yenneferPosition - 5, (this.screenHeight * 0.08) - 5, 10, 30);
+
+    //Vidas
+    this.marioHearts.forEach((heart, index) => {
+      if (index < this.mario.hp) {
+        heart.setTexture('heart_full');
+      }
+      else {
+        heart.setTexture('heart_empty');
+      }
+    });
+    this.yenneferHearts.forEach((heart, index) => {
+      if (index < this.yennefer.hp) {
+        heart.setTexture('heart_full');
+      }
+      else {
+        heart.setTexture('heart_empty');
+      }
+    });
   }
 
   update() {
