@@ -186,12 +186,32 @@ export default class GameScene extends Phaser.Scene {
       this.cameras.main.setSize(400, 600)
         .setZoom(2.25)
         .startFollow(this.mario)
-      .setBounds(0, 0, 800, 600);
+        .setBounds(0, 0, 800, 600)
+        .ignore([
+          this.progressBarBg,
+          this.progressBar,
+          this.marioIndicator,
+          this.yenneferIndicator,
+          this.fireballIcon,
+          this.cooldownCircle,
+          this.marioHearts,
+          this.yenneferHearts
+      ]);
 
       const camera2 = this.cameras.add(400, 0, 400, 600, false, 'camera2')
         .setZoom(2.25)
         .startFollow(this.yennefer)
-      .setBounds(0, 0, 800, 600);
+        .setBounds(0, 0, 800, 600)
+        .ignore([
+          this.progressBarBg,
+          this.progressBar,
+          this.marioIndicator,
+          this.yenneferIndicator,
+          this.fireballIcon,
+          this.cooldownCircle,
+          this.marioHearts,
+          this.yenneferHearts
+      ]);
 
       this.uiCamera = this.cameras.add(0, 0, this.screenWidth, this.screenHeight)
       .setScroll(0, 0)
