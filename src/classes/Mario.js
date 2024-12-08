@@ -82,6 +82,7 @@ export default class Mario extends Phaser.Physics.Arcade.Sprite
             this.play("mar_damage");
             this.isdamaged = true;
             this.hp -= 1;
+            this.blink();
             if (this.hp <= 0) {
                 this.recover();
             }
@@ -92,6 +93,7 @@ export default class Mario extends Phaser.Physics.Arcade.Sprite
     
                 this.scene.time.delayedCall(this.damagecdval, () => {
                     this.canbedamaged = true;
+                    this.stopBlinking();
                 });
             }
         }
@@ -102,6 +104,7 @@ export default class Mario extends Phaser.Physics.Arcade.Sprite
             this.isRecovering = true;
             this.canbedamaged = false;
             this.body.enable = false;
+            this.stopBlinking();
             this.setTint(0x999999);
             this.scene.time.addEvent({
                 delay: this.revivetime/this.maxHp,
@@ -114,11 +117,13 @@ export default class Mario extends Phaser.Physics.Arcade.Sprite
                         this.isRecovering = false;
                         this.isdamaged = false;
                         this.body.enable = true;
+                        this.blink();
                         this.clearTint();
 
                         //2 sec de invulnerabilidad
                         this.scene.time.delayedCall(this.damagecdval, () => {
                             this.canbedamaged = true;
+                            this.stopBlinking();    
                         }, [], this);
                     }
                 },
@@ -223,5 +228,22 @@ export default class Mario extends Phaser.Physics.Arcade.Sprite
         }
 
         this.groundedlastFrame = this.grounded;
+    }
+
+    blink() {
+        this.blinking = this.scene.tweens.add({
+            targets: this,
+            alpha: 0.2,
+            yoyo: true,
+            repeat: -1,
+            duration: 100
+        });
+    }
+
+    stopBlinking() {
+        if (this.blinking) {
+            this.blinking.stop();
+            this.setAlpha(1);
+        }
     }
 }
