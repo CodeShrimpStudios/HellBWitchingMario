@@ -158,8 +158,10 @@ export default class GameScene extends Phaser.Scene {
 
       this.marioIndicator = this.add.graphics()
       .setScrollFactor(0);
+      this.marioIndicatorIcon = this.add.image();
       this.yenneferIndicator = this.add.graphics()
       .setScrollFactor(0);
+      this.yenneferIndicatorIcon = this.add.image();
 
       this.marioHearts = [];
       this.yenneferHearts = [];
@@ -226,10 +228,7 @@ export default class GameScene extends Phaser.Scene {
         this.mushroomGroup,
         bg
       ]);
-    //Fin Camera
-
-
-    
+    //Fin Camera   
   }
 
   damageMario(mario, tile) { 
@@ -331,10 +330,15 @@ export default class GameScene extends Phaser.Scene {
     this.marioIndicator.fillStyle(0xBF3131, 1);
     //Rojo para Mario
     this.marioIndicator.fillRect(this.progressBarX + marioPosition - 5, (this.screenHeight * 0.08) - 5, 10, 30);
+    this.marioIndicatorIcon.destroy();
+    this.marioIndicatorIcon = this.add.image(this.progressBarX + marioPosition, (this.screenHeight * 0.08) - 10, 'mario_icon').setScale(1.5).setScrollFactor(0);
+    
     this.yenneferIndicator.clear();
     this.yenneferIndicator.fillStyle(0x6420AA, 1);
     //Violeta para Yennefer
     this.yenneferIndicator.fillRect(this.progressBarX + yenneferPosition - 5, (this.screenHeight * 0.08) - 5, 10, 30);
+    this.yenneferIndicatorIcon.destroy();
+    this.yenneferIndicatorIcon = this.add.image(this.progressBarX + yenneferPosition, (this.screenHeight * 0.08) - 10, 'yennefer_icon').setScale(1.4).setScrollFactor(0);
 
     //Vidas
     this.marioHearts.forEach((heart, index) => {
