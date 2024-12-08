@@ -24,6 +24,7 @@ export default class Mario extends Phaser.Physics.Arcade.Sprite
 
         this.damagecdval = 2000;
         this.damageanimcd = 500;
+        this.revivetime = 5000;
         this.canbedamaged = true;
         this.isdamaged = false;
         this.isSlowed = false;
@@ -65,8 +66,11 @@ export default class Mario extends Phaser.Physics.Arcade.Sprite
     }
 
     update(cursors) {
-        this.inputManager();
-        this.animManager();
+        if (!this.isRecovering) {
+            this.inputManager();
+            this.animManager();
+        }
+
         //console.log("VelMario"+this.body.velocity.x);
         console.log("Ralentizado:"+this.isSlowed);
         
@@ -79,18 +83,46 @@ export default class Mario extends Phaser.Physics.Arcade.Sprite
             this.isdamaged = true;
             this.hp -= 1;
             if (this.hp <= 0) {
-                 console.log("Mario died");
-                }
-            this.body.velocity.x *= 0.1;
+                this.recover();
+            }
+            else {
+                this.scene.time.delayedCall(this.damageanimcd, () => {
+                    this.isdamaged = false;
+                });
+    
+                this.scene.time.delayedCall(this.damagecdval, () => {
+                    this.canbedamaged = true;
+                });
+            }
+        }
+    }
 
-            console.log("daño" + this.hp);
+    recover() {
+        if (!this.isRecovering && this.hp <= 0) {
+            this.isRecovering = true;
+            this.canbedamaged = false;
+            this.body.enable = false;
+            this.setTint(0x999999);
+            this.scene.time.addEvent({
+                delay: this.revivetime/this.maxHp,
+                //Siempre  5 segundos, pero si tienes mas MaxHp, se te regenera mas rapido cada Hp (Total sigue siendo 5 sec)
+                repeat: this.maxHp - 1,
+                callback: () => {
+                    this.hp += 1;
+                    if (this.hp >= this.maxHp) {
+                        this.hp = this.maxHp;
+                        this.isRecovering = false;
+                        this.isdamaged = false;
+                        this.body.enable = true;
+                        this.clearTint();
 
-            this.scene.time.delayedCall(this.damageanimcd, () => {
-                this.isdamaged = false;
-            });
-
-            this.scene.time.delayedCall(this.damagecdval, () => {
-                this.canbedamaged = true;
+                        //2 sec de invulnerabilidad
+                        this.scene.time.delayedCall(this.damagecdval, () => {
+                            this.canbedamaged = true;
+                        }, [], this);
+                    }
+                },
+                callbackScope: this
             });
         }
     }
