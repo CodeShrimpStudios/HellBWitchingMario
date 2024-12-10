@@ -9,20 +9,20 @@ export default class CardScene extends Phaser.Scene {
             stats: null,
             mapa: null
         }; // Guardar selección por tipo
-        this.shuffleEnabled = true; // Flag para activar/desactivar desorden
+        this.shuffleEnabled = false; // Flag para activar/desactivar desorden
     }
 
     preload() {
         this.load.image("cartaReverso", "assets/images/Cartas/CartaD1Esc.jpg"); // Imagen para cartas dadas vuelta
-        this.load.image("cartaControles1", "assets/images/Cartas/Horizonal.jpg");
-        this.load.image("cartaControles2", "assets/images/Cartas/cartaControles2.png");
-        this.load.image("cartaControles3", "assets/images/Cartas/cartaControles3.png");
-        this.load.image("cartaStats1", "assets/images/Cartas/cartaStats1.png");
-        this.load.image("cartaStats2", "assets/images/Cartas/cartaStats2.png");
-        this.load.image("cartaStats3", "assets/images/Cartas/cartaStats3.png");
-        this.load.image("cartaMapa1", "assets/images/Cartas/cartaMapa1.png");
-        this.load.image("cartaMapa2", "assets/images/Cartas/cartaMapa2.png");
-        this.load.image("cartaMapa3", "assets/images/Cartas/cartaMapa3.png");
+        this.load.image("cartaControles1", "assets/images/Cartas/HorizontalEsc.jpg");
+        this.load.image("cartaControles2", "assets/images/Cartas/VerticalEsc.jpg");
+        this.load.image("cartaControles3", "assets/images/Cartas/DeslizamientoEsc.jpg");
+        this.load.image("cartaStats1", "assets/images/Cartas/VelocidadEsc.jpg");
+        this.load.image("cartaStats2", "assets/images/Cartas/SaltoEsc.jpg");
+        this.load.image("cartaStats3", "assets/images/Cartas/VidaEsc.jpg");
+        this.load.image("cartaMapa1", "assets/images/Cartas/GravedadEsc.jpg");
+        this.load.image("cartaMapa2", "assets/images/Cartas/GlitchEsc.jpg");
+        this.load.image("cartaMapa3", "assets/images/Cartas/RelampagoEsc.jpg");
     }
 
     create() {
@@ -32,19 +32,19 @@ export default class CardScene extends Phaser.Scene {
         this.crearCartas("controles", 100, [
             new Carta("controles", "invertirIzquierdaDerecha", "Invierte los controles izquierda-derecha"),
             new Carta("controles", "invertirArribaAbajo", "Invierte los controles arriba-abajo"),
-            new Carta("controles", "deslizante", "Movimiento resbaladizo al detenerse")
+            new Carta("controles", "deslizante", "¡Cuidado! , ahora el suelo puede resbalar")
         ]);
 
         this.crearCartas("stats", 300, [
-            new Carta("stats", "velocidadExtra", "Incrementa la velocidad"),
-            new Carta("stats", "saltoExtra", "Incrementa el salto"),
+            new Carta("stats", "velocidadExtra", "Incrementa la velocidad de movimiento"),
+            new Carta("stats", "saltoExtra", "Incrementa el poder de salto"),
             new Carta("stats", "vidaExtra", "Gana una vida adicional")
         ]);
 
         this.crearCartas("mapa", 500, [
-            new Carta("mapa", "gravedadReducida", "Reduce la gravedad"),
-            new Carta("mapa", "lluviaChampiñones", "Lluvia de champiñones"),
-            new Carta("mapa", "relampagoPantalla", "Pantalla parpadeante")
+            new Carta("mapa", "gravedadReducida", "Reduce la gravedad cada 10 segundos durante 3 segundos"),
+            new Carta("mapa", "glitch", "Hay fallos en el juego de manera inesperada ¡ CUIDADO !"),
+            new Carta("mapa", "relampagoPantalla", "La pantalla se verá afectada por un efecto de relámpago")
         ]);
 
         // Botón de continuar
@@ -102,7 +102,7 @@ export default class CardScene extends Phaser.Scene {
             },
             mapa: {
                 gravedadReducida: "cartaMapa1",
-                lluviaChampiñones: "cartaMapa2",
+                glitch: "cartaMapa2",
                 relampagoPantalla: "cartaMapa3"
             }
         };
@@ -127,7 +127,7 @@ export default class CardScene extends Phaser.Scene {
 
         // Mostrar cartas seleccionadas con descripciones antes de iniciar el juego
         this.mostrarResumenCartas(cartasSeleccionadas, () => {
-            this.scene.start("GameScene", { cartasSeleccionadas });
+            this.scene.start("game", { cartasSeleccionadas });
         });
     }
 
