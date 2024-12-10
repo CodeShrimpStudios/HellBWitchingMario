@@ -22,19 +22,28 @@ export default class GameScene extends Phaser.Scene {
   }
 
   preload() {
-    this.load.image("background", "/assets/images/space.png");
+    this.load.image("bg1", "/assets/images/Cave_BG/image1.png");
+    this.load.image("bg2", "/assets/images/Cave_BG/image2.png");
+    this.load.image("bg3", "/assets/images/Cave_BG/3fx.png");
+    this.load.image("bg4", "/assets/images/Cave_BG/image4.png");
+    this.load.image("bg5", "/assets/images/Cave_BG/image5.png");
+    this.load.image("bg6", "/assets/images/Cave_BG/6fx.png");
+    this.load.image("bg7", "/assets/images/Cave_BG/image7.png");
+    this.load.image("bg8", "/assets/images/Cave_BG/8fx.png");
+    this.load.image("bg9", "/assets/images/Cave_BG/image9.png");
+
     this.load.image("tiles", "/assets/tiles/FireSet.png");
     this.load.tilemapTiledJSON('tilemap', 'assets/tilemap/DemoTilemap.json');
     this.load.spritesheet("mario", "/assets/images/mario_small.png", { frameHeight: 18, frameWidth: 18});
-    //Cambien a Yennefer
     this.load.spritesheet("yennefer", "/assets/images/Yennefer.png", { frameHeight: 32, frameWidth: 90});
+
     this.load.image('fireballIcon', 'assets/images/Retro-Fire-Ball.64.png');
     this.load.image('mario_icon', 'assets/images/Mario_Icon.png');
     this.load.image('yennefer_icon', 'assets/images/Yennefer_Icon.png');
     this.load.image('heart_full', 'assets/images/Full_Heart.png');
     this.load.image('heart_empty', 'assets/images/Cracked_Heart.png');
+
     this.load.image("prueba", "/assets/images/patatas.jpg");
-    this.load.image("background", "/assets/images/space.png")
     this.load.image("platformplaceholder", "/assets/images/platformplaceholder.png")
     this.load.spritesheet("powertile", "/assets/tiles/FireSet.png", { frameHeight: 16, frameWidth: 16 });
     this.load.spritesheet("fireball", "/assets/images/FireBall.png", { frameHeight: 100, frameWidth: 100 });
@@ -68,9 +77,20 @@ export default class GameScene extends Phaser.Scene {
       });
     //Fin Cartas
     
-    
-    //Cambien el fondo cuando tengan la imagen
-    let bg = this.add.image(400, 250, 'background');
+
+    //Background
+      const backgroundImages = ["bg1", "bg2", "bg3", "bg4", "bg5", "bg6", "bg7", "bg8", "bg9"];
+      this.backgroundGroupMario = this.add.group();
+      this.backgroundGroupYennefer = this.add.group();
+      for (const bg of backgroundImages) {
+        const sprite = this.add.tileSprite(400, 300, 800, 600, bg).setOrigin(0.5, 0.5);
+        this.backgroundGroupMario.add(sprite);
+      }
+      for (const bg of backgroundImages) {
+        const sprite = this.add.tileSprite(400, 300, 800, 600, bg).setOrigin(0.5, 0.5);
+        this.backgroundGroupYennefer.add(sprite);
+      }
+    //Fin Background
 
 
     //Tilemap
@@ -84,6 +104,9 @@ export default class GameScene extends Phaser.Scene {
       this.bgLayer = this.map.createLayer('Fondo', tileset1);
       this.groundLayer = this.map.createLayer('Ground', tileset1);
       this.trampasLayer = this.map.createLayer('Trampas', tileset1);
+
+      this.bgLayer.setTint(0xAAAAAA);
+      this.bgLayer.setAlpha(0.9);
 
       // Crear una instancia del PowerUp 
       const tilesPerRow = 5;
@@ -197,8 +220,11 @@ export default class GameScene extends Phaser.Scene {
           this.fireballIcon,
           this.cooldownCircle,
           this.marioHearts,
-          this.yenneferHearts
+          this.yenneferHearts,
+          this.backgroundGroupYennefer
       ]);
+      console.log(this.backgroundGroupYennefer);
+      const mainCameraBounds = this.cameras.main.worldView; this.backgroundGroupMario.children.iterate((child) => { const isVisible = mainCameraBounds.contains(child.x, child.y); console.log('Main Camera - Mario Background:', { x: child.x, y: child.y, visible: isVisible }); });
 
       const camera2 = this.cameras.add(400, 0, 400, 600, false, 'camera2')
         .setZoom(2.25)
@@ -212,8 +238,11 @@ export default class GameScene extends Phaser.Scene {
           this.fireballIcon,
           this.cooldownCircle,
           this.marioHearts,
-          this.yenneferHearts
-      ]);
+          this.yenneferHearts,
+          this.backgroundGroupMario
+        ]);
+      console.log(this.backgroundGroupMario);
+      const camera2Bounds = camera2.worldView; this.backgroundGroupYennefer.children.iterate((child) => { const isVisible = camera2Bounds.contains(child.x, child.y); console.log('Camera 2 - Yennefer Background:', { x: child.x, y: child.y, visible: isVisible }); });
 
       this.uiCamera = this.cameras.add(0, 0, this.screenWidth, this.screenHeight)
       .setScroll(0, 0)
@@ -226,7 +255,8 @@ export default class GameScene extends Phaser.Scene {
         this.yennefer,
         this.powerUp,
         this.mushroomGroup,
-        bg
+        this.backgroundGroupMario,
+        this.backgroundGroupYennefer
       ]);
     //Fin Camera   
   }
@@ -236,11 +266,9 @@ export default class GameScene extends Phaser.Scene {
   }
 
   fireballHitsMario(mario, fireball) {
-    console.log('Fireball hit Mario!');
     if (fireball.active) {
       fireball.setActive(false);
       fireball.setVisible(false);
-      console.log('Fireball destroyed');
       if (mario.active) { 
         mario.damage(); 
       }
@@ -372,7 +400,15 @@ export default class GameScene extends Phaser.Scene {
 
     // Actualizar cada champiñón
     this.mushroomGroup.children.iterate((mushroom) => {
-    mushroom.update();
-  });
+      mushroom.update();
+    });
+
+    this.backgroundGroupMario.getChildren().forEach((backgroundLayer, index) => {
+      backgroundLayer.tilePositionX = this.mario.x * (index + 1) * 0.01;
+    });
+
+    this.backgroundGroupYennefer.getChildren().forEach((backgroundLayer, index) => {
+      backgroundLayer.tilePositionX = this.yennefer.x * (index + 1) * 0.01;
+    });
   }
 }

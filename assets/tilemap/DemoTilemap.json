@@ -26,7 +26,7 @@
          "height":20,
          "id":2,
          "name":"Fondo",
-         "opacity":0.41,
+         "opacity":1,
          "type":"tilelayer",
          "visible":true,
          "width":45,
