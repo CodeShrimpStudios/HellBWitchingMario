@@ -141,23 +141,23 @@ export default class Mario extends Phaser.Physics.Arcade.Sprite
         }
     }
 
-    enableSliding(duration) {
-        this.isSliding = true;
-        this.scene.time.delayedCall(duration, () => {
-            this.isSliding = false;
-            this.setAccelerationX(0); // Resetear aceleración al final
-        });
-    }
+    // enableSliding(duration) {
+    //     this.isSliding = true;
+    //     this.scene.time.delayedCall(duration, () => {
+    //         this.isSliding = false;
+    //         this.setAccelerationX(0); // Resetear aceleración al final
+    //     });
+    // }
 
-    activatePeriodicSliding(interval, duration) {
-        this.scene.time.addEvent({
-            delay: interval,
-            callback: () => {
-                this.enableSliding(duration);
-            },
-            loop: true
-        });
-    }
+    // activatePeriodicSliding(interval, duration) {
+    //     this.scene.time.addEvent({
+    //         delay: interval,
+    //         callback: () => {
+    //             this.enableSliding(duration);
+    //         },
+    //         loop: true
+    //     });
+    // }
 
     inputManager() {
         if (this.cursors.left.isDown && !this.cursors.right.isDown) {
@@ -172,16 +172,16 @@ export default class Mario extends Phaser.Physics.Arcade.Sprite
             this.walking = true;
         }
 
-        if (this.isSliding) {
-            // Movimiento deslizante
-            if (cursors.left.isDown) {
-                this.setAccelerationX(-200);
-            } else if (cursors.right.isDown) {
-                this.setAccelerationX(200);
-            } else {
-                this.setAccelerationX(0);
-            }
-        }
+        // if (this.isSliding) {
+        //     // Movimiento deslizante
+        //     if (cursors.left.isDown) {
+        //         this.setAccelerationX(-200);
+        //     } else if (cursors.right.isDown) {
+        //         this.setAccelerationX(200);
+        //     } else {
+        //         this.setAccelerationX(0);
+        //     }
+        // }
 
 
         else if (this.cursors.right.isDown && !this.cursors.left.isDown) {
