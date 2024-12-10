@@ -13,7 +13,7 @@ export default class CardScene extends Phaser.Scene {
     }
 
     preload() {
-        this.load.image("cartaReverso", "assets/images/cartaReverso.png"); // Imagen para cartas dadas vuelta
+        this.load.image("cartaReverso", "assets/images/Cartas/DeslizamientoEsc.jpg"); // Imagen para cartas dadas vuelta
         this.load.image("cartaControles1", "assets/images/cartaControles1.png");
         this.load.image("cartaControles2", "assets/images/cartaControles2.png");
         this.load.image("cartaControles3", "assets/images/cartaControles3.png");
