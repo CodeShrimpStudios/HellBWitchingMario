@@ -13,16 +13,16 @@ export default class CardScene extends Phaser.Scene {
     }
 
     preload() {
-        this.load.image("cartaReverso", "assets/images/Cartas/DeslizamientoEsc.jpg"); // Imagen para cartas dadas vuelta
-        this.load.image("cartaControles1", "assets/images/cartaControles1.png");
-        this.load.image("cartaControles2", "assets/images/cartaControles2.png");
-        this.load.image("cartaControles3", "assets/images/cartaControles3.png");
-        this.load.image("cartaStats1", "assets/images/cartaStats1.png");
-        this.load.image("cartaStats2", "assets/images/cartaStats2.png");
-        this.load.image("cartaStats3", "assets/images/cartaStats3.png");
-        this.load.image("cartaMapa1", "assets/images/cartaMapa1.png");
-        this.load.image("cartaMapa2", "assets/images/cartaMapa2.png");
-        this.load.image("cartaMapa3", "assets/images/cartaMapa3.png");
+        this.load.image("cartaReverso", "assets/images/Cartas/CartaD1Esc.jpg"); // Imagen para cartas dadas vuelta
+        this.load.image("cartaControles1", "assets/images/Cartas/Horizonal.jpg");
+        this.load.image("cartaControles2", "assets/images/Cartas/cartaControles2.png");
+        this.load.image("cartaControles3", "assets/images/Cartas/cartaControles3.png");
+        this.load.image("cartaStats1", "assets/images/Cartas/cartaStats1.png");
+        this.load.image("cartaStats2", "assets/images/Cartas/cartaStats2.png");
+        this.load.image("cartaStats3", "assets/images/Cartas/cartaStats3.png");
+        this.load.image("cartaMapa1", "assets/images/Cartas/cartaMapa1.png");
+        this.load.image("cartaMapa2", "assets/images/Cartas/cartaMapa2.png");
+        this.load.image("cartaMapa3", "assets/images/Cartas/cartaMapa3.png");
     }
 
     create() {
@@ -65,7 +65,7 @@ export default class CardScene extends Phaser.Scene {
         }
 
         cartas.forEach((carta, index) => {
-            const cartaSprite = this.add.image(x, 150 + index * 100, "cartaReverso").setInteractive();
+            const cartaSprite = this.add.image(x, 150 + index * 180, "cartaReverso").setInteractive();
 
             cartaSprite.on("pointerdown", () => {
                 this.seleccionarCarta(tipo, carta, cartaSprite);
