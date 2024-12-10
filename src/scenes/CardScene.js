@@ -145,14 +145,18 @@ export default class CardScene extends Phaser.Scene {
         this.time.delayedCall(500, () => {
             this.cameras.main.fadeIn(500, 0, 0, 0);
 
-            this.add.text(400, 50, "Las cartas seleccionadas para esta partida \nserán la siguientes:", { font: "30px Arial", fill: "#ffffff" }).setOrigin(0.5);
-
+            //this.add.text(400, 50, "Las cartas seleccionadas para esta partida \nserán la siguientes:", { font: "30px Arial", fill: "#ffffff" }).setOrigin(0.5);
+            const cartaText= this.getWrappedText("LAS CARTAS SELECCIONADAS Y SUS EFECTOS PARA ESTA PARTIDA SERÁN LOS SIGUIENTES:");
+            this.add.text(400, 50, cartaText, { font: "25px Arial", fill: "#ffffff", align: "center", wordWrap: { width: 700 } }).setOrigin(0.5); 
             cartas.forEach((carta, index) => {
                 const x = 100; // Posición X para las cartas
                 const y = 150 + index * 150; // Espaciado vertical entre cartas
 
-                this.add.image(x, y, carta.spriteKey).setOrigin(0.5).setScale(0.75); // Mostrar carta seleccionada
-                this.add.text(x + 350, y, carta.descripcion, { font: "25px Arial", fill: "#ffffff" }).setOrigin(0.5); // Mostrar descripción
+                this.add.image(x, y, carta.spriteKey).setOrigin(0.5).setScale(1); // Mostrar carta seleccionada
+                //this.add.text(x + 350, y, carta.descripcion, { font: "25px Arial", fill: "#ffffff" }).setOrigin(0.5); // Mostrar descripción
+            // Ajustar descripción para que haga saltos de línea
+            const wrappedText = this.getWrappedText(carta.descripcion, 40); // Ajustar ancho máximo a 40 caracteres
+            this.add.text(x + 350, y, wrappedText, { font: "25px Arial", fill: "#ffffff", align: "center", wordWrap: { width: 200 } }).setOrigin(0.5); // Mostrar descripción
             });
 
             this.add.text(400, 550, "Iniciar juego", { font: "30px Arial", fill: "#ffffff" })
@@ -160,6 +164,27 @@ export default class CardScene extends Phaser.Scene {
                 .setInteractive()
                 .on("pointerdown", callback);
         });
+    }
+
+    getWrappedText(text, maxLength) {
+        const words = text.split(" ");
+        let lines = [];
+        let currentLine = "";
+
+        words.forEach(word => {
+            if ((currentLine + word).length > maxLength) {
+                lines.push(currentLine.trim());
+                currentLine = word + " ";
+            } else {
+                currentLine += word + " ";
+            }
+        });
+
+        if (currentLine.length > 0) {
+            lines.push(currentLine.trim());
+        }
+
+        return lines.join("\n");
     }
 }
 
