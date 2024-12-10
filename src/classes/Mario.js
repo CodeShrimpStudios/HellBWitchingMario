@@ -29,7 +29,6 @@ export default class Mario extends Phaser.Physics.Arcade.Sprite
         this.canbedamaged = true;
         this.isdamaged = false;
         this.isSlowed = false;
-        this.isSliding = false;
 
         this.maxHp = 4;
         this.hp = 4;
@@ -147,24 +146,6 @@ export default class Mario extends Phaser.Physics.Arcade.Sprite
         }
     }
 
-    enableSliding(duration) {
-        this.isSliding = true;
-        this.scene.time.delayedCall(duration, () => {
-            this.isSliding = false;
-            this.setAccelerationX(0); // Resetear aceleración al final
-        });
-    }
-
-    activatePeriodicSliding(interval, duration) {
-        this.scene.time.addEvent({
-            delay: interval,
-            callback: () => {
-                this.enableSliding(duration);
-            },
-            loop: true
-        });
-    }
-
     inputManager() {
         if (this.cursors.left.isDown && !this.cursors.right.isDown) {
             if(this.isSlowed==true){
@@ -177,19 +158,6 @@ export default class Mario extends Phaser.Physics.Arcade.Sprite
             this.flipX = true;
             this.walking = true;
         }
-
-        if (this.isSliding) {
-            // Movimiento deslizante
-            if (cursors.left.isDown) {
-                this.setAccelerationX(-200);
-            } else if (cursors.right.isDown) {
-                this.setAccelerationX(200);
-            } else {
-                this.setAccelerationX(0);
-            }
-        }
-
-
         else if (this.cursors.right.isDown && !this.cursors.left.isDown) {
             if(this.isSlowed==true){
                 this.setVelocityX(30)
