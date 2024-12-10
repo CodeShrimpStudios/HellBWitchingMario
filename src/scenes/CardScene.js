@@ -24,6 +24,7 @@ export default class CardScene extends Phaser.Scene {
         this.load.image("cartaMapa2", "assets/images/Cartas/GlitchEsc.jpg");
         this.load.image("cartaMapa3", "assets/images/Cartas/RelampagoEsc.jpg");
         this.load.image("continuar", "assets/images/BContinuar.png");
+        this.load.image("inicio", "assets/images/iniciarPartida.jpg");
     }
 
     create() {
@@ -81,16 +82,36 @@ export default class CardScene extends Phaser.Scene {
         this.cartas = cartas; // Guardar cartas para referencia
     }
 
+
+    //NO BORREIS ESTO QUE LO HE CREADO POR ERROR PERO MOLA UN HUEVO QUE PUEDAN SELECCIONARSE Y DESELECCIONARSE
+    //Y ADEMÁS CON LA LÓGICA QUE HAY MÁS ADELANTE PUEDE SER INTERESANTE TENERLO AQUÍ
+
+    // seleccionarCarta(tipo, carta, cartaSprite) {
+    //     if (this.selectedCards[tipo]) {
+    //         this.selectedCards[tipo].sprite.setTexture("cartaReverso"); // Volver a dar vuelta la anterior
+    //     }
+
+    //     this.selectedCards[tipo] = { carta, sprite: cartaSprite };
+    //     cartaSprite.setTexture(carta.spriteKey); // Mostrar la carta seleccionada
+
+    //     this.actualizarBotonContinuar();
+    // }
+
     seleccionarCarta(tipo, carta, cartaSprite) {
+        // Si ya hay una carta seleccionada en esta categoría, no permitir cambiarla
         if (this.selectedCards[tipo]) {
-            this.selectedCards[tipo].sprite.setTexture("cartaReverso"); // Volver a dar vuelta la anterior
+            return; // Salir si ya hay una carta seleccionada para este tipo
         }
 
         this.selectedCards[tipo] = { carta, sprite: cartaSprite };
         cartaSprite.setTexture(carta.spriteKey); // Mostrar la carta seleccionada
+        cartaSprite.disableInteractive(); // Desactivar interacción de la carta seleccionada
 
         this.actualizarBotonContinuar();
     }
+
+
+
 
     obtenerSpritePorTipoYEfecto(tipo, efecto) {
         const mapping = {
@@ -126,6 +147,7 @@ export default class CardScene extends Phaser.Scene {
         return Object.values(this.selectedCards).every(seleccion => seleccion !== null);
     }
 
+    //inicio del juego
     transicionarAlJuego() {
         const cartasSeleccionadas = Object.values(this.selectedCards).map(seleccion => seleccion.carta);
 
@@ -135,10 +157,10 @@ export default class CardScene extends Phaser.Scene {
         });
     }
 
+    //para crear una pantalla intermedia con las cartas seleccionadas para la partida
     mostrarResumenCartas(cartas, callback) {
-        // Eliminar todas las cartas y el botón de continuar
-        // this.cartas.forEach(carta => carta.sprite?.destroy());
-        // this.continueButton.destroy();
+        
+
         this.children.removeAll(); //ESTO ES LA LECHE
 
         this.cameras.main.fadeOut(500, 0, 0, 0);
@@ -149,23 +171,27 @@ export default class CardScene extends Phaser.Scene {
             const cartaText= this.getWrappedText("LAS CARTAS SELECCIONADAS Y SUS EFECTOS PARA ESTA PARTIDA SERÁN LOS SIGUIENTES:");
             this.add.text(400, 50, cartaText, { font: "25px Arial", fill: "#ffffff", align: "center", wordWrap: { width: 700 } }).setOrigin(0.5); 
             cartas.forEach((carta, index) => {
-                const x = 100; // Posición X para las cartas
-                const y = 150 + index * 150; // Espaciado vertical entre cartas
+                const x = 50+ index*70; // Posición X para las cartas
+                const y = 180 + index * 150; // Espaciado vertical entre cartas
 
-                this.add.image(x, y, carta.spriteKey).setOrigin(0.5).setScale(1); // Mostrar carta seleccionada
-                //this.add.text(x + 350, y, carta.descripcion, { font: "25px Arial", fill: "#ffffff" }).setOrigin(0.5); // Mostrar descripción
+                this.add.image(x, y, carta.spriteKey).setOrigin(0.5).setScale(0.95); // Mostrar carta seleccionada
+                
             // Ajustar descripción para que haga saltos de línea
             const wrappedText = this.getWrappedText(carta.descripcion, 40); // Ajustar ancho máximo a 40 caracteres
-            this.add.text(x + 350, y, wrappedText, { font: "25px Arial", fill: "#ffffff", align: "center", wordWrap: { width: 200 } }).setOrigin(0.5); // Mostrar descripción
+            this.add.text(x + 350 - index*70, y, wrappedText, { font: "25px Arial", fill: "#ffffff", align: "center", wordWrap: { width: 200 } }).setOrigin(0.5); // Mostrar descripción
             });
 
-            this.add.text(400, 550, "Iniciar juego", { font: "30px Arial", fill: "#ffffff" })
-                .setOrigin(0.5)
-                .setInteractive()
-                .on("pointerdown", callback);
+            this.juegoButton = this.add.image(700, 320, "inicio")
+            .setScale(0.25)
+            .setOrigin(0.5)
+            .setInteractive()
+            .on("pointerdown", callback);
+
+            
         });
     }
 
+    //para alinear el texto de las descripciones y que no se sobrpongan si son largas
     getWrappedText(text, maxLength) {
         const words = text.split(" ");
         let lines = [];
