@@ -23,10 +23,12 @@ export default class CardScene extends Phaser.Scene {
         this.load.image("cartaMapa1", "assets/images/Cartas/GravedadEsc.jpg");
         this.load.image("cartaMapa2", "assets/images/Cartas/GlitchEsc.jpg");
         this.load.image("cartaMapa3", "assets/images/Cartas/RelampagoEsc.jpg");
+        this.load.image("continuar", "assets/images/BContinuar.png");
     }
 
     create() {
-        this.add.text(400, 50, "Selecciona tus cartas", { font: "20px Arial", fill: "#ffffff" }).setOrigin(0.5);
+        //this.add.text(400, 30, "Selecciona tus cartas", { font: "30px Arial", fill: "#ffffff" }).setOrigin(0.5);
+        this.headerText = this.add.text(400, 50, "Selecciona tus cartas", { font: "20px Arial", fill: "#ffffff" }).setOrigin(0.5);
 
         // Crear columnas de cartas
         this.crearCartas("controles", 100, [
@@ -42,13 +44,14 @@ export default class CardScene extends Phaser.Scene {
         ]);
 
         this.crearCartas("mapa", 500, [
-            new Carta("mapa", "gravedadReducida", "Reduce la gravedad cada 10 segundos durante 3 segundos"),
+            new Carta("mapa", "gravedadReducida", "Reduce la gravedad cada 10 segundos\n durante 3 segundos"),
             new Carta("mapa", "glitch", "Hay fallos en el juego de manera inesperada ¡ CUIDADO !"),
             new Carta("mapa", "relampagoPantalla", "La pantalla se verá afectada por un efecto de relámpago")
         ]);
 
         // Botón de continuar
-        this.continueButton = this.add.text(400, 550, "Continuar", { font: "20px Arial", fill: "#ffffff" })
+        this.continueButton = this.add.image(700, 300, "continuar")
+            .setScale(0.25)
             .setOrigin(0.5)
             .setInteractive()
             .setAlpha(0.5)
@@ -65,13 +68,14 @@ export default class CardScene extends Phaser.Scene {
         }
 
         cartas.forEach((carta, index) => {
-            const cartaSprite = this.add.image(x, 150 + index * 180, "cartaReverso").setInteractive();
+            const cartaSprite = this.add.image(x, 150 + index * 170, "cartaReverso").setInteractive();
 
             cartaSprite.on("pointerdown", () => {
                 this.seleccionarCarta(tipo, carta, cartaSprite);
             });
 
             carta.spriteKey = this.obtenerSpritePorTipoYEfecto(tipo, carta.efecto); // Asignar sprite específico
+            carta.sprite = cartaSprite; //referencia del sprite
         });
 
         this.cartas = cartas; // Guardar cartas para referencia
@@ -132,16 +136,26 @@ export default class CardScene extends Phaser.Scene {
     }
 
     mostrarResumenCartas(cartas, callback) {
+        // Eliminar todas las cartas y el botón de continuar
+        // this.cartas.forEach(carta => carta.sprite?.destroy());
+        // this.continueButton.destroy();
+        this.children.removeAll(); //ESTO ES LA LECHE
+
         this.cameras.main.fadeOut(500, 0, 0, 0);
         this.time.delayedCall(500, () => {
             this.cameras.main.fadeIn(500, 0, 0, 0);
-            this.add.text(400, 50, "Cartas seleccionadas:", { font: "20px Arial", fill: "#ffffff" }).setOrigin(0.5);
+
+            this.add.text(400, 50, "Las cartas seleccionadas para esta partida \nserán la siguientes:", { font: "30px Arial", fill: "#ffffff" }).setOrigin(0.5);
 
             cartas.forEach((carta, index) => {
-                this.add.text(400, 150 + index * 100, carta.descripcion, { font: "16px Arial", fill: "#ffffff" }).setOrigin(0.5);
+                const x = 100; // Posición X para las cartas
+                const y = 150 + index * 150; // Espaciado vertical entre cartas
+
+                this.add.image(x, y, carta.spriteKey).setOrigin(0.5).setScale(0.75); // Mostrar carta seleccionada
+                this.add.text(x + 350, y, carta.descripcion, { font: "25px Arial", fill: "#ffffff" }).setOrigin(0.5); // Mostrar descripción
             });
 
-            const continuar = this.add.text(400, 550, "Iniciar juego", { font: "20px Arial", fill: "#ffffff" })
+            this.add.text(400, 550, "Iniciar juego", { font: "30px Arial", fill: "#ffffff" })
                 .setOrigin(0.5)
                 .setInteractive()
                 .on("pointerdown", callback);
