@@ -44,10 +44,14 @@ export default class GameScene extends Phaser.Scene {
     this.load.image('heart_empty', 'assets/images/Cracked_Heart.png');
 
     this.load.image("prueba", "/assets/images/patatas.jpg");
-    this.load.image("platformplaceholder", "/assets/images/platformplaceholder.png")
+    this.load.image("platformplaceholder", "/assets/images/platformplaceholder.png");
     this.load.spritesheet("powertile", "/assets/tiles/FireSet.png", { frameHeight: 16, frameWidth: 16 });
     this.load.spritesheet("fireball", "/assets/images/FireBall.png", { frameHeight: 100, frameWidth: 100 });
     this.load.spritesheet('mushroom_walk', '/assets/images/Big Mushroom_Walk.png', {frameWidth: 28,frameHeight: 28});
+
+    this.load.audio("sfx_hurt", "/assets/sfx/hurt.mp3");
+    this.load.audio("sfx_explosion_1", "/assets/sfx/explosion_1.mp3");
+    this.load.audio("sfx_explosion_2", "/assets/sfx/explosion_2.mp3");
   }
 
   create() {
@@ -223,8 +227,6 @@ export default class GameScene extends Phaser.Scene {
           this.yenneferHearts,
           this.backgroundGroupYennefer
       ]);
-      console.log(this.backgroundGroupYennefer);
-      const mainCameraBounds = this.cameras.main.worldView; this.backgroundGroupMario.children.iterate((child) => { const isVisible = mainCameraBounds.contains(child.x, child.y); console.log('Main Camera - Mario Background:', { x: child.x, y: child.y, visible: isVisible }); });
 
       const camera2 = this.cameras.add(400, 0, 400, 600, false, 'camera2')
         .setZoom(2.25)
@@ -240,9 +242,7 @@ export default class GameScene extends Phaser.Scene {
           this.marioHearts,
           this.yenneferHearts,
           this.backgroundGroupMario
-        ]);
-      console.log(this.backgroundGroupMario);
-      const camera2Bounds = camera2.worldView; this.backgroundGroupYennefer.children.iterate((child) => { const isVisible = camera2Bounds.contains(child.x, child.y); console.log('Camera 2 - Yennefer Background:', { x: child.x, y: child.y, visible: isVisible }); });
+      ]);
 
       this.uiCamera = this.cameras.add(0, 0, this.screenWidth, this.screenHeight)
       .setScroll(0, 0)
