@@ -50,6 +50,9 @@ export default class GameScene extends Phaser.Scene {
     this.load.spritesheet('mushroom_walk', '/assets/images/Big Mushroom_Walk.png', {frameWidth: 28,frameHeight: 28});
 
     this.load.audio("sfx_hurt", "/assets/sfx/hurt.mp3");
+    this.load.audio("sfx_healing", "/assets/sfx/healing.mp3");
+    this.load.audio("sfx_death", "/assets/sfx/death.mp3");
+    this.load.audio("sfx_revive", "/assets/sfx/revive.mp3");
     this.load.audio("sfx_explosion_1", "/assets/sfx/explosion_1.mp3");
     this.load.audio("sfx_explosion_2", "/assets/sfx/explosion_2.mp3");
   }
@@ -122,13 +125,31 @@ export default class GameScene extends Phaser.Scene {
     //Fin Tilemap
 
 
+    //SFX
+      this.sfx_yennefer = {
+        hurt: this.sound.add("sfx_hurt"),
+        explosion_1: this.sound.add("sfx_explosion_1"),
+        explosion_2: this.sound.add("sfx_explosion_2")
+      };
+
+      this.sfx_mario = {
+        hurt: this.sound.add("sfx_hurt"),
+        healing: this.sound.add("sfx_healing", { loop: true }),
+        death: this.sound.add("sfx_death"),
+        revive: this.sound.add("sfx_revive")
+      };
+
+      this.adjustVolumeSettings();
+    //Fin SFX
+
+
     //Personajes & Fisicas
-      this.mario = new Mario(this, 0, 0);
+      this.mario = new Mario(this, 0, 0, this.sfx_mario);
       this.physics.add.collider(this.mario, this.groundLayer);
       this.physics.add.overlap(this.mario, this.trampasLayer, this.damageMario, null, this);
       //Voy a dejar groundLayer comentado hasta que funcione correctamente.
 
-      this.yennefer = new Yennefer(this, 600, 0);
+      this.yennefer = new Yennefer(this, 600, 0, this.sfx_yennefer);
       this.physics.add.collider(this.yennefer, this.groundLayer);
       this.physics.add.collider(this.mario, this.yennefer, this.marioWin, null, this);
 
@@ -149,7 +170,7 @@ export default class GameScene extends Phaser.Scene {
       });
       for (let i = 0; i < 5; i++) {
         const x = Phaser.Math.Between(200, 800);
-        const y = Phaser.Math.Between(100,150);
+        const y = Phaser.Math.Between(100, 150);
         const mushroom = new Mushroom(this, x, y);
         this.mushroomGroup.add(mushroom);
       }
@@ -258,7 +279,7 @@ export default class GameScene extends Phaser.Scene {
         this.backgroundGroupMario,
         this.backgroundGroupYennefer
       ]);
-    //Fin Camera   
+    //Fin Camera
   }
 
   damageMario(mario, tile) { 
@@ -270,7 +291,8 @@ export default class GameScene extends Phaser.Scene {
       fireball.setActive(false);
       fireball.setVisible(false);
       if (mario.active) { 
-        mario.damage(); 
+        mario.damage();
+        this.sfx_yennefer.explosion_2.play();
       }
     }
   }
@@ -387,6 +409,23 @@ export default class GameScene extends Phaser.Scene {
     });
   }
 
+  adjustVolumeSettings() {
+    let sfxVolume = parseFloat(localStorage.getItem('sfxVolume')) / 100;
+    if (isNaN(sfxVolume)) {
+      sfxVolume = 1;
+    }
+    this.setSfxVolume(sfxVolume);
+  }
+
+  setSfxVolume(volume) {
+    for (let key in this.sfx_yennefer) {
+      this.sfx_yennefer[key].setVolume(volume);
+    }
+    for (let key in this.sfx_mario) {
+      this.sfx_mario[key].setVolume(volume);
+    }
+  }
+
   update() {
     this.mario.update();
     this.yennefer.update();
@@ -410,5 +449,7 @@ export default class GameScene extends Phaser.Scene {
     this.backgroundGroupYennefer.getChildren().forEach((backgroundLayer, index) => {
       backgroundLayer.tilePositionX = this.yennefer.x * (index + 1) * 0.01;
     });
+
+    console.log(localStorage.getItem("sfxVolume"));
   }
 }

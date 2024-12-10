@@ -1,9 +1,10 @@
 export default class Mario extends Phaser.Physics.Arcade.Sprite
 {
-    constructor (scene, x, y)
+    constructor (scene, x, y, sfx)
     {
         super(scene, x, y, 'mario');
-        //this.setScale(1, 1);
+
+        this.sfx = sfx;
 
         scene.add.existing(this);
         scene.physics.add.existing(this);
@@ -80,9 +81,12 @@ export default class Mario extends Phaser.Physics.Arcade.Sprite
             this.hp -= 1;
             this.blink();
             if (this.hp <= 0) {
+                this.sfx.healing.play();
+                this.sfx.death.play();
                 this.recover();
             }
             else {
+                this.sfx.hurt.play();
                 this.scene.time.delayedCall(this.damageanimcd, () => {
                     this.isdamaged = false;
                     this.anims.stop();
@@ -116,6 +120,8 @@ export default class Mario extends Phaser.Physics.Arcade.Sprite
                         this.body.enable = true;
                         this.blink();
                         this.clearTint();
+                        this.sfx.healing.stop();
+                        this.sfx.revive.play();
 
                         //2 sec de invulnerabilidad
                         this.scene.time.delayedCall(this.damagecdval, () => {

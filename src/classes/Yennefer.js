@@ -4,9 +4,11 @@ import Fireball from "./Fireball.js";
 
 export default class Yennefer extends Phaser.Physics.Arcade.Sprite
 {
-    constructor (scene, x, y)
+    constructor (scene, x, y, sfx)
     {
         super(scene, x, y, 'yennefer');
+
+        this.sfx = sfx;
 
         scene.add.existing(this);
         scene.physics.add.existing(this);
@@ -168,6 +170,7 @@ export default class Yennefer extends Phaser.Physics.Arcade.Sprite
 
         if (this.cursors.fireball.isDown && !this.fireballCooldown) {
             this.shootFireball();
+            this.sfx.explosion_1.play();
         }
     }
 
