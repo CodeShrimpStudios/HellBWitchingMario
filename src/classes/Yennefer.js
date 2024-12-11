@@ -154,7 +154,15 @@ export default class Yennefer extends Phaser.Physics.Arcade.Sprite
             this.walking = true;
         } 
         else {
-            this.setVelocityX(0);
+            if (this.body.velocity.x > 5) {
+                this.body.velocity.x -= 5;
+            }
+            else if (this.body.velocity.x < -5) {
+                this.body.velocity.x += 5;
+            }
+            else {
+                this.setVelocityX(0);
+            }
             this.walking = false;
             this.walkAnim = false;
         }
