@@ -60,13 +60,18 @@ export default class MenuScene extends Phaser.Scene {
             this.sound.sfxVolume = this.savedsfxVolume / 100;
             this.settingsContainer = this.add.container();  
         //Fin Ajustes
+
+        //BGM
+            this.bgm = {
+
+            }
+
+            this.adjustVolumeSettings();
+        //Fin BGM
     }
 
     update() {
-        console.log("BGM: " + this.sound.bgmVolume);
-        console.log(this.savedbgmVolume);
-        console.log("SFX: " + this.sound.sfxVolume);
-        console.log(this.savedsfxVolume);
+
     }
 
     CardSelect() {
@@ -153,5 +158,28 @@ export default class MenuScene extends Phaser.Scene {
         this.settingsButton.setInteractive();
 
         this.settingsContainer.removeAll(true);
+    }
+
+    adjustVolumeSettings() {
+        let sfxVolume = parseFloat(localStorage.getItem('sfxVolume')) / 100;
+        if (isNaN(sfxVolume)) {
+          sfxVolume = 1;
+        }
+        this.setSfxVolume(sfxVolume);
+        let bgmVolume = parseFloat(localStorage.getItem('bgmVolume')) / 100;
+        if (isNaN(bgmVolume)) {
+          bgmVolume = 1;
+        }
+        this.setBgmVolume(bgmVolume);
+    }
+    
+    setSfxVolume(volume) {
+
+    }
+    
+    setBgmVolume(volume) {
+        for (let key in this.bgm) {
+            this.bgm[key].setVolume(volume);
+        }
     }
 }

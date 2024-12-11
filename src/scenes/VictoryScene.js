@@ -9,8 +9,6 @@ export default class MenuScene extends Phaser.Scene {
     }
 
     preload() {
-        this.load.image("Victory1", "/assets/images/Victory1.png");
-        this.load.image("Victory2", "/assets/images/Victory1.png");//Cambiar a Player2 wins
         this.load.image("BContinuar", "/assets/images/BContinuar.png");
     }
 

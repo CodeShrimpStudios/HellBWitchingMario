@@ -55,11 +55,15 @@ export default class GameScene extends Phaser.Scene {
     this.load.audio("sfx_revive", "/assets/sfx/revive.mp3");
     this.load.audio("sfx_explosion_1", "/assets/sfx/explosion_1.mp3");
     this.load.audio("sfx_explosion_2", "/assets/sfx/explosion_2.mp3");
+
+    this.load.audio("bgm_1", "/assets/bgm/01_Press_Play.mp3");
+    this.load.audio("bgm_2", "/assets/bgm/06_Punch_Out.mp3");
   }
 
   create() {
 
     this.physics.world.setBoundsCollision(true, true, true, true);
+    this.physics.world.setBounds(0, 0, 2000, 600);
     this.screenWidth = this.scale.width;
     this.screenHeight = this.scale.height;
     this.worldWidth = this.physics.world.bounds.width;
@@ -150,9 +154,19 @@ export default class GameScene extends Phaser.Scene {
         death: this.sound.add("sfx_death"),
         revive: this.sound.add("sfx_revive")
       };
+    //Fin SFX
+
+
+    //BGM
+      this.bgm = {
+        bgm1: this.sound.add("bgm_1"),
+        bgm2: this.sound.add("bgm_2"),
+      }
+
+      this.bgm.bgm1.play();
 
       this.adjustVolumeSettings();
-    //Fin SFX
+    //Fin BGM
 
 
     //Personajes & Fisicas
@@ -164,8 +178,6 @@ export default class GameScene extends Phaser.Scene {
       this.yennefer = new Yennefer(this, 600, 370, this.sfx_yennefer);
       this.physics.add.collider(this.yennefer, this.groundLayer);
       this.physics.add.collider(this.mario, this.yennefer, this.marioWin, null, this);
-
-      this.physics.world.setBounds(0, 0, 2000, 600);
 
       this.mario.setCollideWorldBounds(true);
       this.yennefer.setCollideWorldBounds(true);
@@ -400,8 +412,8 @@ export default class GameScene extends Phaser.Scene {
     }
 
     //Barra de progreso
-    const marioPosition = (this.mario.x / 2000) * this.progressBarWidth;
-    const yenneferPosition = (this.yennefer.x / 2000) * this.progressBarWidth;
+    const marioPosition = (this.mario.x / this.worldWidth) * this.progressBarWidth;
+    const yenneferPosition = (this.yennefer.x / this.worldWidth) * this.progressBarWidth;
 
     this.progressBar.clear();
     this.progressBar.fillStyle(0xC84361, 1);
@@ -448,6 +460,11 @@ export default class GameScene extends Phaser.Scene {
       sfxVolume = 1;
     }
     this.setSfxVolume(sfxVolume);
+    let bgmVolume = parseFloat(localStorage.getItem('bgmVolume')) / 100;
+    if (isNaN(bgmVolume)) {
+      bgmVolume = 1;
+    }
+    this.setBgmVolume(bgmVolume);
   }
 
   setSfxVolume(volume) {
@@ -456,6 +473,12 @@ export default class GameScene extends Phaser.Scene {
     }
     for (let key in this.sfx_mario) {
       this.sfx_mario[key].setVolume(volume);
+    }
+  }
+
+  setBgmVolume(volume) {
+    for (let key in this.bgm) {
+      this.bgm[key].setVolume(volume);
     }
   }
 
@@ -482,7 +505,5 @@ export default class GameScene extends Phaser.Scene {
     this.backgroundGroupYennefer.getChildren().forEach((backgroundLayer, index) => {
       backgroundLayer.tilePositionX = this.yennefer.x * (index + 1) * 0.01;
     });
-
-    //console.log(localStorage.getItem("sfxVolume"));
   }
 }

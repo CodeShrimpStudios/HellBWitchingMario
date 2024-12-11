@@ -12,9 +12,6 @@ export default class Powerup extends Phaser.GameObjects.Sprite{
         scene.physics.world.enable(this); 
         this.body.setCollideWorldBounds(true);
         this.body.allowGravity = false;
-        this.body.setImmovable(true);
-        
+        this.body.setImmovable(true);   
     }
-
-
 }
