@@ -10,6 +10,7 @@ export default class Mario extends Phaser.Physics.Arcade.Sprite
         scene.physics.add.existing(this);
         this.body.setSize(16, 16);
         this.body.setOffset(0, 2);
+        this.baseSpeed = 50;
         this.topSpeed = 250;
         this.accelSpeed = 200;
         this.baseJumpStrength = 400;
@@ -157,6 +158,9 @@ export default class Mario extends Phaser.Physics.Arcade.Sprite
             }
              else{
                 this.body.maxSpeed = this.topSpeed;
+                if (this.body.velocity.x > -this.baseSpeed) {
+                    this.setVelocityX(-this.baseSpeed);
+                }
                 this.setAccelerationX(-this.accelSpeed);
              }
             if(this.isdamaged == true){
@@ -170,10 +174,13 @@ export default class Mario extends Phaser.Physics.Arcade.Sprite
                 this.body.maxSpeed = this.topSpeed / 2;
                 this.setAccelerationX(this.accelSpeed);
             }
-             else{
+            else{
                 this.body.maxSpeed = this.topSpeed;
+                if (this.body.velocity.x < this.baseSpeed) {
+                    this.setVelocityX(this.baseSpeed);
+                }
                 this.setAccelerationX(this.accelSpeed);
-             }
+            }
             if(this.isdamaged == true){
                 this.body.velocity.x *= 0.2;
             }
