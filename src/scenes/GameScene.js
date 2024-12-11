@@ -304,6 +304,11 @@ const jugador = [this.mario, this.yennefer];
         console.log("Jugadores para el glitch:", jugador);
         this.iniciarIntervaloGlitch(jugador); // Llamar al efecto recurrente
     }
+
+    if (carta.efecto === "gravedadReducida") {
+      console.log("Aplicando efecto: Gravedad reducida");
+      this.iniciarIntervaloGravedadReducida(); // Llamar al intervalo
+  }
   });
   }
  //__________________________________CARTAS Y EFECTOS______________________________________________
@@ -404,6 +409,38 @@ iniciarIntervaloGlitch(jugadores) {
 
   // Inicia el primer glitch
   activarGlitchConIntervalo();
+}
+
+iniciarIntervaloGravedadReducida() {
+  console.log("Intervalo de gravedad reducida iniciado");
+
+  const aplicarGravedadReducida = () => {
+      this.reducirGravedad(); // Llamada al efecto principal
+
+      // Configurar el siguiente intervalo
+      const nuevoIntervalo = Phaser.Math.Between(10000, 15000); // 10-15 segundos
+      this.time.delayedCall(nuevoIntervalo, aplicarGravedadReducida);
+  };
+
+  // Inicia el primer efecto
+  aplicarGravedadReducida();
+}
+
+reducirGravedad() {
+  console.log("Gravedad reducida activada");
+
+  const gravedadOriginal = this.physics.world.gravity.y; // Guardar la gravedad original
+  const nuevaGravedad = gravedadOriginal * 0.7; // Reducir la gravedad al 50%
+
+  // Cambiar la gravedad del mundo
+  this.physics.world.gravity.y = nuevaGravedad;
+  console.log("Gravedad actual:", nuevaGravedad);
+
+  // Restaurar la gravedad tras 3 segundos
+  this.time.delayedCall(3000, () => {
+      this.physics.world.gravity.y = gravedadOriginal;
+      console.log("Gravedad restaurada:", gravedadOriginal);
+  });
 }
 //__________________________________CARTAS Y EFECTOS______________________________________________
   damageMario(mario, tile) { 
