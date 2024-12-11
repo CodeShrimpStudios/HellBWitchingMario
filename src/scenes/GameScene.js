@@ -312,6 +312,7 @@ export default class GameScene extends Phaser.Scene {
 
   damageMario(mario, tile) { 
     if (tile.properties.trampa) { mario.damage(); }
+    if (tile.properties.trampa && true) {mario.bounceOnLava()}; // cambiar true a si es lava en el suelo
   }
 
   fireballHitsMario(mario, fireball) {

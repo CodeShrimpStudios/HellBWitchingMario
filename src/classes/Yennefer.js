@@ -89,7 +89,7 @@ export default class Yennefer extends Phaser.Physics.Arcade.Sprite
     }
 
     bounceOnLava() {
-        this.setVelocityY(-this.baseJumpStrength)
+        this.setVelocityY(-200);
     }
 
     shootFireball() {
