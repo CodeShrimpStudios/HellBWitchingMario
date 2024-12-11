@@ -222,22 +222,28 @@ export default class GameScene extends Phaser.Scene {
 
       this.marioHearts = [];
       this.yenneferHearts = [];
-      
-      this.add.image(this.screenWidth * 0.05, this.screenHeight * 0.25, 'mario_icon').setScale(3.5).setScrollFactor(0);
-      for (let i = 0; i < this.mario.maxHp; i++) {
-        this.marioHearts.push(this.add.image(this.screenWidth * 0.05, this.screenHeight * 0.35 + (i * 60), 'heart_full')
-          .setScale(2)
-          .setScrollFactor(0)
-        );
-      }
 
-      this.add.image(this.screenWidth * 0.95, this.screenHeight * 0.25, 'yennefer_icon').setScale(3).setScrollFactor(0);
-      for (let i = 0; i < this.yennefer.maxHp; i++) {
-        this.yenneferHearts.push(this.add.image(this.screenWidth * 0.95, this.screenHeight * 0.35 + (i * 60), 'heart_full')
-          .setScale(2)
-          .setScrollFactor(0)
-        );
-      }
+    
+
+        
+      // this.add.image(this.screenWidth * 0.05, this.screenHeight * 0.25, 'mario_icon').setScale(3.5).setScrollFactor(0);
+      // for (let i = 0; i < this.mario.maxHp; i++) {
+      //   this.marioHearts.push(this.add.image(this.screenWidth * 0.05, this.screenHeight * 0.35 + (i * 60), 'heart_full')
+      //     .setScale(2)
+      //     .setScrollFactor(0)
+      //   );
+      // }
+
+      // this.add.image(this.screenWidth * 0.95, this.screenHeight * 0.25, 'yennefer_icon').setScale(3).setScrollFactor(0);
+      // for (let i = 0; i < this.yennefer.maxHp; i++) {
+      //   this.yenneferHearts.push(this.add.image(this.screenWidth * 0.95, this.screenHeight * 0.35 + (i * 60), 'heart_full')
+      //     .setScale(2)
+      //     .setScrollFactor(0)
+      //   );
+      // }
+
+
+
     //Fin UI
 
 
@@ -317,7 +323,29 @@ const jugador = [this.mario, this.yennefer];
         console.log("Aplicando efecto: Salto extra");
         this.aplicarSaltoExtra();
       }
+      if (carta.efecto === "vidaExtra") {
+        console.log("Aplicando efecto: Vida extra");
+        this.aplicarVidaExtra();
+      }
   });
+
+
+  //Pintado de las vidas de los jugadores
+  this.add.image(this.screenWidth * 0.05, this.screenHeight * 0.25, 'mario_icon').setScale(3.5).setScrollFactor(0);
+  for (let i = 0; i < this.mario.maxHp; i++) {
+    this.marioHearts.push(this.add.image(this.screenWidth * 0.05, this.screenHeight * 0.35 + (i * 60), 'heart_full')
+      .setScale(2)
+      .setScrollFactor(0)
+    );
+  }
+
+  this.add.image(this.screenWidth * 0.95, this.screenHeight * 0.25, 'yennefer_icon').setScale(3).setScrollFactor(0);
+  for (let i = 0; i < this.yennefer.maxHp; i++) {
+    this.yenneferHearts.push(this.add.image(this.screenWidth * 0.95, this.screenHeight * 0.35 + (i * 60), 'heart_full')
+      .setScale(2)
+      .setScrollFactor(0)
+    );
+  }
   }
  //__________________________________CARTAS Y EFECTOS______________________________________________
 
@@ -483,6 +511,19 @@ aplicarSaltoExtra() {
 }
 
 //VIDA EXTRA
+aplicarVidaExtra() {
+  console.log("Efecto de vida extra aplicado");
+
+  // Aumentar la vida máxima y actual de los jugadores
+  this.mario.maxHp += 1;
+  this.mario.hp = this.mario.maxHp;
+
+  this.yennefer.maxHp += 1;
+  this.yennefer.hp = this.yennefer.maxHp;
+
+  console.log("Vida Mario:", this.mario.hp, "/", this.mario.maxHp);
+  console.log("Vida Yennefer:", this.yennefer.hp, "/", this.yennefer.maxHp);
+}
 //__________________________________CARTAS Y EFECTOS______________________________________________
   damageMario(mario, tile) { 
     if (tile.properties.trampa) { mario.damage(); }
