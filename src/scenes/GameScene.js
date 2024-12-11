@@ -15,16 +15,21 @@ export default class GameScene extends Phaser.Scene {
   }
 
   init(data) {
-    this.cartasSeleccionadas = data.cartasSeleccionadas || []; //a ver si funciona
-
+    this.cartasSeleccionadas = data.cartasSeleccionadas || []; //a ver si funciona    
     console.log ("cartas recibidas", this.cartasSeleccionadas);
 
-    this.cartasSeleccionadas.forEach((carta) => {
-      if (carta.efecto === "relampagoPantalla") {
-          console.log("Aplicando efecto: Relámpago en pantalla");
-          this.iniciarIntervaloRelampagos(); // Llamada al intervalo
-      }
-  });
+  //   this.cartasSeleccionadas.forEach((carta) => {
+  //     if (carta.efecto === "relampagoPantalla") {
+  //         console.log("Aplicando efecto: Relámpago en pantalla");
+  //         this.iniciarIntervaloRelampagos(); // Llamada al intervalo
+  //     }
+
+  //     if (carta.efecto === "glitch") {
+  //       console.log("Aplicando efecto: Glitch");
+  //       console.log("Jugadores para el glitch:", jugadores);
+  //       this.iniciarIntervaloGlitch(); // Llamar al efecto recurrente
+  //   }
+  // });
 
     this.fireballCooldownTime = 0; //Para el icono de la fireball
     this.maxCooldownTime = 5000;
@@ -78,24 +83,26 @@ export default class GameScene extends Phaser.Scene {
     this.worldWidth = this.physics.world.bounds.width;
 
     //Cartas
-      //del array de cartas que se han seleccionado de la pantalla de cartas 
-      //las sacamos a consola para ver que se vean, tendremos que añadirlas bien cuand
-      //diseñemos las stats de los personajes
-      this.cartasSeleccionadas.forEach((carta) => {
-        if (carta.efecto.vidaExtra) {
-          // Lógica para aumentar la vida del jugador          
-          console.log(`Aumentando la vida en ${carta.efecto.vidaExtra}`);
-        }
-        if (carta.efecto.velocidadExtra) {
-          // Lógica para aumentar la velocidad del jugador
-          console.log(`Aumentando la velocidad en ${carta.efecto.velocidadExtra}`);
-        }
-        if (carta.efecto.saltoExtra) {
-          // Lógica para aumentar el salto del jugador
-          console.log(`Aumentando el salto en ${carta.efecto.saltoExtra}`);
-        }
-      });
+      // //del array de cartas que se han seleccionado de la pantalla de cartas 
+      // //las sacamos a consola para ver que se vean, tendremos que añadirlas bien cuand
+      // //diseñemos las stats de los personajes
+      // this.cartasSeleccionadas.forEach((carta) => {
+      //   if (carta.efecto.vidaExtra) {
+      //     // Lógica para aumentar la vida del jugador          
+      //     console.log(`Aumentando la vida en ${carta.efecto.vidaExtra}`);
+      //   }
+      //   if (carta.efecto.velocidadExtra) {
+      //     // Lógica para aumentar la velocidad del jugador
+      //     console.log(`Aumentando la velocidad en ${carta.efecto.velocidadExtra}`);
+      //   }
+      //   if (carta.efecto.saltoExtra) {
+      //     // Lógica para aumentar el salto del jugador
+      //     console.log(`Aumentando el salto en ${carta.efecto.saltoExtra}`);
+      //   }
+      // });
     //Fin Cartas
+
+    
     
 
     //Background
@@ -317,8 +324,24 @@ export default class GameScene extends Phaser.Scene {
         this.backgroundGroupYennefer
       ]);
     //Fin Camera
+
+
+//CARTAS Y EFECTOS EN CREATE
+const jugador = [this.mario, this.yennefer];
+    this.cartasSeleccionadas.forEach((carta) => {
+      if (carta.efecto === "relampagoPantalla") {
+          console.log("Aplicando efecto: Relámpago en pantalla");
+          this.iniciarIntervaloRelampagos(); // Llamada al intervalo
+      }
+
+      if (carta.efecto === "glitch") {
+        console.log("Aplicando efecto: Glitch");
+        console.log("Jugadores para el glitch:", jugador);
+        this.iniciarIntervaloGlitch(jugador); // Llamar al efecto recurrente
+    }
+  });
   }
- //CARTAS Y EFECTOS
+ //__________________________________CARTAS Y EFECTOS______________________________________________
 
   activarRelampago() {
     console.log("Efecto de relámpago activado");
@@ -326,7 +349,7 @@ export default class GameScene extends Phaser.Scene {
     // Crear un destello blanco en la pantalla
     const flash = this.add.rectangle(400, 300, 800, 600, 0xffffff, 1).setDepth(10).setAlpha(0);
     const flash2 = this.add.rectangle(400, 300, 800, 600, 0xffffff, 1).setDepth(10).setAlpha(0);
-    
+
     const flashTween = this.tweens.add({
         targets: flash,
         alpha: { from: 1, to: 0 },
@@ -362,9 +385,62 @@ iniciarIntervaloRelampagos() {
 
   // Inicia el primer relámpago
   activarRelampagoConIntervalo();
+
+  
+}
+activarGlitch(jugadores) {
+  console.log("Efecto de glitch activado");
+  console.log("Jugadores dentro del metodo glitch:", jugadores);
+  // Efecto visual: Cambiar tintes rápidos de los jugadores
+  jugadores.forEach((jugador) => {
+      if (jugador) {
+          this.tweens.add({
+              targets: jugador,
+              tint: { from: 0xffffff, to: 0x00ff00 },
+              duration: 50,
+              yoyo: true,
+              repeat: 5,
+              onComplete: () => jugador.clearTint()
+          });
+
+          // Efecto mecánico: Teletransportar ligeramente
+          const xShift = Phaser.Math.Between(-30, 30);
+          const yShift = Phaser.Math.Between(-10, 10);
+
+          const nuevoX = Phaser.Math.Clamp(jugador.x + xShift, 0, this.worldWidth);
+          const nuevoY = Phaser.Math.Clamp(jugador.y + yShift, 0, this.physics.world.bounds.height);
+
+          jugador.setPosition(nuevoX, nuevoY);
+      }
+  });
+
+  // Efecto visual: Flash rápido de la pantalla (opcional)
+  const flash = this.add.rectangle(400, 300, 800, 600, 0xff0000, 0.2).setDepth(10).setAlpha(0);
+  this.tweens.add({
+      targets: flash,
+      alpha: { from: 0.5, to: 0 },
+      duration: 300,
+      onComplete: () => flash.destroy()
+  });
 }
 
-//CARTAS Y EFECTOS
+iniciarIntervaloGlitch(jugadores) {
+  console.log("Intervalo de glitch iniciado");
+
+  const activarGlitchConIntervalo = () => {
+      this.activarGlitch(jugadores); // Pasar los jugadores al glitch
+
+      // Elegir un nuevo intervalo aleatorio entre 5 y 8 segundos
+      const nuevoIntervalo = Phaser.Math.Between(5000, 8000);
+
+      // Configurar el siguiente glitch
+      this.time.delayedCall(nuevoIntervalo, activarGlitchConIntervalo);
+  };
+
+  // Inicia el primer glitch
+  activarGlitchConIntervalo();
+}
+//__________________________________CARTAS Y EFECTOS______________________________________________
   damageMario(mario, tile) { 
     if (tile.properties.trampa) { mario.damage(); }
   }
