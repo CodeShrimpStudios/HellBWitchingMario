@@ -303,16 +303,21 @@ const jugador = [this.mario, this.yennefer];
         console.log("Aplicando efecto: Glitch");
         console.log("Jugadores para el glitch:", jugador);
         this.iniciarIntervaloGlitch(jugador); // Llamar al efecto recurrente
-    }
+      }
 
-    if (carta.efecto === "gravedadReducida") {
-      console.log("Aplicando efecto: Gravedad reducida");
-      this.iniciarIntervaloGravedadReducida(); // Llamar al intervalo
-  }
+      if (carta.efecto === "gravedadReducida") {
+        console.log("Aplicando efecto: Gravedad reducida");
+        this.iniciarIntervaloGravedadReducida(); // Llamar al intervalo
+      }
+      if (carta.efecto === "velocidadExtra") {
+        console.log("Aplicando efecto: Velocidad extra");
+        this.aplicarVelocidadExtra();
+      }
   });
   }
  //__________________________________CARTAS Y EFECTOS______________________________________________
 
+ //RELAMPAGO
   activarRelampago() {
     console.log("Efecto de relámpago activado");
 
@@ -358,6 +363,8 @@ iniciarIntervaloRelampagos() {
 
   
 }
+
+//GLITCH
 activarGlitch(jugadores) {
   console.log("Efecto de glitch activado");
   console.log("Jugadores dentro del metodo glitch:", jugadores);
@@ -411,6 +418,7 @@ iniciarIntervaloGlitch(jugadores) {
   activarGlitchConIntervalo();
 }
 
+//GRAVEDAD
 iniciarIntervaloGravedadReducida() {
   console.log("Intervalo de gravedad reducida iniciado");
 
@@ -441,6 +449,21 @@ reducirGravedad() {
       this.physics.world.gravity.y = gravedadOriginal;
       console.log("Gravedad restaurada:", gravedadOriginal);
   });
+}
+
+//VELOCIDAD EXTRA
+aplicarVelocidadExtra() {
+  console.log("Efecto de velocidad extra aplicado");
+
+  // Aumentar la velocidad base y máxima de los jugadores
+  this.mario.baseSpeed += 30;
+  this.mario.topSpeed += 60;
+
+  this.yennefer.baseSpeed += 30;
+  this.yennefer.topSpeed += 60;
+
+  console.log("Velocidad Mario:", this.mario.baseSpeed, this.mario.topSpeed);
+  console.log("Velocidad Yennefer:", this.yennefer.baseSpeed, this.yennefer.topSpeed);
 }
 //__________________________________CARTAS Y EFECTOS______________________________________________
   damageMario(mario, tile) { 
