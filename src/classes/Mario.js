@@ -31,6 +31,8 @@ export default class Mario extends Phaser.Physics.Arcade.Sprite
         this.isdamaged = false;
         this.isSlowed = false;
         this.isSliding = false;
+        this.invertirControlesHorizontales = false;
+        console.log(this.invertirControlesHorizontales);
 
         this.powerup = false;
 
@@ -151,40 +153,45 @@ export default class Mario extends Phaser.Physics.Arcade.Sprite
     }
 
     inputManager() {
+
+        console.log("dentro de input invertir = ", this.invertirControlesHorizontales)
         if (this.cursors.left.isDown && !this.cursors.right.isDown) {
+            const direction = this.invertirControlesHorizontales ? -1 : 1;
             if(this.isSlowed==true){
                 this.body.maxSpeed = this.topSpeed / 2;
-                this.setAccelerationX(-this.accelSpeed);
+                this.setAccelerationX(-this.accelSpeed*direction);
             }
              else{
                 this.body.maxSpeed = this.topSpeed;
                 if (this.body.velocity.x > -this.baseSpeed) {
-                    this.setVelocityX(-this.baseSpeed);
+                    this.setVelocityX(-this.baseSpeed*direction);
                 }
-                this.setAccelerationX(-this.accelSpeed);
+                this.setAccelerationX(-this.accelSpeed*direction);
              }
             if(this.isdamaged == true){
                 this.body.velocity.x *= 0.2;
             }
-            this.flipX = true;
+            this.flipX = -direction === -1;
             this.walking = true;
         }
         else if (this.cursors.right.isDown && !this.cursors.left.isDown) {
+            const direction = this.invertirControlesHorizontales ? -1 : 1;
+
             if(this.isSlowed==true){
                 this.body.maxSpeed = this.topSpeed / 2;
-                this.setAccelerationX(this.accelSpeed);
+                this.setAccelerationX(this.accelSpeed*direction);
             }
             else{
                 this.body.maxSpeed = this.topSpeed;
                 if (this.body.velocity.x < this.baseSpeed) {
-                    this.setVelocityX(this.baseSpeed);
+                    this.setVelocityX(this.baseSpeed*direction);
                 }
-                this.setAccelerationX(this.accelSpeed);
+                this.setAccelerationX(this.accelSpeed*direction);
             }
             if(this.isdamaged == true){
                 this.body.velocity.x *= 0.2;
             }
-            this.flipX = false;
+            this.flipX = direction === -1;
             this.walking = true;
         } 
         else {

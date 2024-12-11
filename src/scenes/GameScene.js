@@ -327,6 +327,10 @@ const jugador = [this.mario, this.yennefer];
         console.log("Aplicando efecto: Vida extra");
         this.aplicarVidaExtra();
       }
+      if (carta.efecto === "invertirIzquierdaDerecha") {
+        console.log("Aplicando efecto: Invertir controles izquierda-derecha");
+        this.invertirControlesHorizontales();
+      }
   });
 
 
@@ -524,7 +528,21 @@ aplicarVidaExtra() {
   console.log("Vida Mario:", this.mario.hp, "/", this.mario.maxHp);
   console.log("Vida Yennefer:", this.yennefer.hp, "/", this.yennefer.maxHp);
 }
+
+//CONTROLES HORIZONTALES INVERTIDOS
+invertirControlesHorizontales() {
+  console.log("Efecto de invertir controles izquierda-derecha activado");
+
+  [this.mario, this.yennefer].forEach((jugador) => {
+      jugador.invertirControlesHorizontales = true; // Activar la bandera de inversión
+  });
+}
 //__________________________________CARTAS Y EFECTOS______________________________________________
+
+
+
+
+
   damageMario(mario, tile) { 
     if (tile.properties.trampa) { mario.damage(); }
   }

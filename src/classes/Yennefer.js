@@ -33,6 +33,7 @@ export default class Yennefer extends Phaser.Physics.Arcade.Sprite
         this.hasAirJumped = false;
 
         this.isSlowed=false;
+        this.invertirControlesHorizontales = false;
         
         this.powerup = false;
 
