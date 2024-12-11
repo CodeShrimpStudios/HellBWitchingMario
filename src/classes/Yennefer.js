@@ -88,6 +88,10 @@ export default class Yennefer extends Phaser.Physics.Arcade.Sprite
         this.animManager();
     }
 
+    bounceOnLava() {
+        this.setVelocityY(-this.baseJumpStrength)
+    }
+
     shootFireball() {
         console.log('Fireball shot!');
 
@@ -178,16 +182,16 @@ export default class Yennefer extends Phaser.Physics.Arcade.Sprite
             if (this.body.onFloor()) {
                 //Primer salto
                 if(this.isSlowed==true){
-                    this.setVelocityY(-120)
+                    this.setVelocityY(-this.baseJumpStrength)
                 }
-                else{this.setVelocityY(-200);}
+                else{this.setVelocityY(-this.baseJumpStrength);}
             }
             else if (!this.hasAirJumped) {
                 //Salto en aire
                 if(this.isSlowed==true){
-                    this.setVelocityY(-120)
+                    this.setVelocityY(-this.baseJumpStrength)
                 }
-                else{this.setVelocityY(-200);}
+                else{this.setVelocityY(-this.baseJumpStrength);}
                 this.hasAirJumped = true;
             }
         }

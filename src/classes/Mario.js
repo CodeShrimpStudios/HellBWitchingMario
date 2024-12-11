@@ -104,8 +104,8 @@ export default class Mario extends Phaser.Physics.Arcade.Sprite
         }
     }
 
-    bounce() {
-        this.setVelocityY()
+    bounceOnLava() {
+        this.setVelocityY(-this.baseJumpStrength)
     }
 
     recover() {
