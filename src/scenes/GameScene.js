@@ -118,8 +118,20 @@ export default class GameScene extends Phaser.Scene {
       // Crear una instancia del PowerUp 
       const tilesPerRow = 5;
       const frame= (4 - 1) + ((5 - 1) * tilesPerRow);
-      this.powerUp = new Powerup(this, 100, 150, 'powertile', frame);
+      //this.powerUp = new Powerup(this, 100, 150, 'powertile', frame);
+      this.powerups = [ 
+        new Powerup(this, 100, 150, 'powertile', frame), 
+        new Powerup(this, 100, 100, 'powertile', frame), 
+        new Powerup(this, 100, 200, 'powertile', frame) ];;
 
+
+        /*this.powerupGroup = this.physics.add.group({collideWorldBounds: true });
+      const powerup = new Powerup(this, 100, 150, 'powertile', frame); this.powerupGroup.add(powerup);
+
+      //this.powerups = [ 
+      //  new Powerup(this, 100, 150, 'powertile', frame), 
+      //  new Powerup(this, 100, 100, 'powertile', frame), 
+      //  new Powerup(this, 100, 200, 'powertile', frame) ]; */
       this.groundLayer.setCollisionByProperty({ colisiona: true });
       this.trampasLayer.setCollisionByProperty({ colisiona: true });
     //Fin Tilemap
@@ -184,6 +196,9 @@ export default class GameScene extends Phaser.Scene {
       // Detectar colisión con los jugadores
       this.physics.add.collider(this.mushroomGroup, this.mario, this.handleMushroomCollision, null, this);
       this.physics.add.collider(this.mushroomGroup, this.yennefer, this.handleMushroomCollision, null, this);
+
+      //Yennefer colision con Powerup
+      this.physics.add.overlap(this.yennefer, this.powerups, this.onPowerupCollisionY, null, this);
     //Fin Personajes & Fisicas
 
 
@@ -274,7 +289,7 @@ export default class GameScene extends Phaser.Scene {
         this.trampasLayer,
         this.mario,
         this.yennefer,
-        this.powerUp,
+        this.powerups,
         this.mushroomGroup,
         this.backgroundGroupMario,
         this.backgroundGroupYennefer
@@ -294,6 +309,14 @@ export default class GameScene extends Phaser.Scene {
         mario.damage();
         this.sfx_yennefer.explosion_2.play();
       }
+    }
+  }
+
+  onPowerupCollisionY(yennefer, powerup){
+    if (powerup && powerup.Yennefer){
+      this.yennefer.powerup = true;
+      powerup.Yennefer = false;
+      console.log("powerup Yennefer")
     }
   }
 
