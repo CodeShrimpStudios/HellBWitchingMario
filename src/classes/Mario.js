@@ -165,7 +165,6 @@ export default class Mario extends Phaser.Physics.Arcade.Sprite
             this.flipX = true;
             this.walking = true;
         }
-
         else if (this.cursors.right.isDown && !this.cursors.left.isDown) {
             if(this.isSlowed==true){
                 this.body.maxSpeed = this.topSpeed / 2;
@@ -182,7 +181,15 @@ export default class Mario extends Phaser.Physics.Arcade.Sprite
             this.walking = true;
         } 
         else {
-            this.setVelocityX(0);
+            if (this.body.velocity.x > 5) {
+                this.body.velocity.x -= 5;
+            }
+            else if (this.body.velocity.x < -5) {
+                this.body.velocity.x += 5;
+            }
+            else {
+                this.setVelocityX(0);
+            }
             this.walking = false;
             this.walkAnim = false;
         }
