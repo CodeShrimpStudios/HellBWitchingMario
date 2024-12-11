@@ -28,6 +28,15 @@ export default class CardScene extends Phaser.Scene {
     }
 
     create() {
+
+        this.selectedCards = {
+            controles: null,
+            stats: null,
+            mapa: null
+            
+        }; // Resetear selección
+        console.log("Estado de cartas reseteado en CardScene");
+
         //this.add.text(400, 30, "Selecciona tus cartas", { font: "30px Arial", fill: "#ffffff" }).setOrigin(0.5);
         this.headerText = this.add.text(400, 50, "Selecciona tus cartas", { font: "20px Arial", fill: "#ffffff" }).setOrigin(0.5);
 
@@ -150,6 +159,8 @@ export default class CardScene extends Phaser.Scene {
     //inicio del juego
     transicionarAlJuego() {
         const cartasSeleccionadas = Object.values(this.selectedCards).map(seleccion => seleccion.carta);
+
+        console.log ("cartas seleccionadas",cartasSeleccionadas);
 
         // Mostrar cartas seleccionadas con descripciones antes de iniciar el juego
         this.mostrarResumenCartas(cartasSeleccionadas, () => {

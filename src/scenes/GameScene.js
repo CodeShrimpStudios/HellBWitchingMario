@@ -17,6 +17,15 @@ export default class GameScene extends Phaser.Scene {
   init(data) {
     this.cartasSeleccionadas = data.cartasSeleccionadas || []; //a ver si funciona
 
+    console.log ("cartas recibidas", this.cartasSeleccionadas);
+
+    this.cartasSeleccionadas.forEach((carta) => {
+      if (carta.efecto === "relampagoPantalla") {
+          console.log("Aplicando efecto: Relámpago en pantalla");
+          this.iniciarIntervaloRelampagos(); // Llamada al intervalo
+      }
+  });
+
     this.fireballCooldownTime = 0; //Para el icono de la fireball
     this.maxCooldownTime = 5000;
   }
@@ -309,7 +318,53 @@ export default class GameScene extends Phaser.Scene {
       ]);
     //Fin Camera
   }
+ //CARTAS Y EFECTOS
 
+  activarRelampago() {
+    console.log("Efecto de relámpago activado");
+
+    // Crear un destello blanco en la pantalla
+    const flash = this.add.rectangle(400, 300, 800, 600, 0xffffff, 1).setDepth(10).setAlpha(0);
+    const flash2 = this.add.rectangle(400, 300, 800, 600, 0xffffff, 1).setDepth(10).setAlpha(0);
+    
+    const flashTween = this.tweens.add({
+        targets: flash,
+        alpha: { from: 1, to: 0 },
+        duration: 150,
+        repeat: 8,
+        onComplete: () => flash.destroy()
+    });
+    const flashTweensing = this.tweens.add({
+      targets: flash2,
+      alpha: { from: 1, to: 0 },
+      duration: 500,
+      repeat: 1,
+      onComplete: () => flash.destroy()
+  });
+
+    // Opcional: Añadir un sonido de relámpago
+    //this.sound.play("sfx_explosion_1", { volume: 0.5 });
+}
+
+iniciarIntervaloRelampagos() {
+  console.log("Intervalo de relámpagos iniciado");
+
+  // Función que ejecuta el relámpago y reinicia el temporizador
+  const activarRelampagoConIntervalo = () => {
+      this.activarRelampago();
+
+      // Elegir un nuevo intervalo aleatorio entre 6 y 10 segundos
+      const nuevoIntervalo = Phaser.Math.Between(6000, 10000);
+
+      // Configurar el siguiente relámpago
+      this.time.delayedCall(nuevoIntervalo, activarRelampagoConIntervalo);
+  };
+
+  // Inicia el primer relámpago
+  activarRelampagoConIntervalo();
+}
+
+//CARTAS Y EFECTOS
   damageMario(mario, tile) { 
     if (tile.properties.trampa) { mario.damage(); }
   }
