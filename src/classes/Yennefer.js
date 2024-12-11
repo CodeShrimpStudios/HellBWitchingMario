@@ -138,11 +138,10 @@ export default class Yennefer extends Phaser.Physics.Arcade.Sprite
             this.flipX = true;
             this.walking = true;
         }
-
         else if (this.cursors.right.isDown && !this.cursors.left.isDown) {
             if(this.isSlowed==true){
                 this.body.maxSpeed = this.topSpeed / 2;
-                this.setAccelerationX(-this.accelSpeed);
+                this.setAccelerationX(this.accelSpeed);
             }
              else{
                 this.body.maxSpeed = this.topSpeed;
