@@ -18,19 +18,6 @@ export default class GameScene extends Phaser.Scene {
     this.cartasSeleccionadas = data.cartasSeleccionadas || []; //a ver si funciona    
     console.log ("cartas recibidas", this.cartasSeleccionadas);
 
-  //   this.cartasSeleccionadas.forEach((carta) => {
-  //     if (carta.efecto === "relampagoPantalla") {
-  //         console.log("Aplicando efecto: Relámpago en pantalla");
-  //         this.iniciarIntervaloRelampagos(); // Llamada al intervalo
-  //     }
-
-  //     if (carta.efecto === "glitch") {
-  //       console.log("Aplicando efecto: Glitch");
-  //       console.log("Jugadores para el glitch:", jugadores);
-  //       this.iniciarIntervaloGlitch(); // Llamar al efecto recurrente
-  //   }
-  // });
-
     this.fireballCooldownTime = 0; //Para el icono de la fireball
     this.maxCooldownTime = 5000;
   }
@@ -80,29 +67,7 @@ export default class GameScene extends Phaser.Scene {
     this.physics.world.setBounds(0, 0, 4000, 600);
     this.screenWidth = this.scale.width;
     this.screenHeight = this.scale.height;
-    this.worldWidth = this.physics.world.bounds.width;
-
-    //Cartas
-      // //del array de cartas que se han seleccionado de la pantalla de cartas 
-      // //las sacamos a consola para ver que se vean, tendremos que añadirlas bien cuand
-      // //diseñemos las stats de los personajes
-      // this.cartasSeleccionadas.forEach((carta) => {
-      //   if (carta.efecto.vidaExtra) {
-      //     // Lógica para aumentar la vida del jugador          
-      //     console.log(`Aumentando la vida en ${carta.efecto.vidaExtra}`);
-      //   }
-      //   if (carta.efecto.velocidadExtra) {
-      //     // Lógica para aumentar la velocidad del jugador
-      //     console.log(`Aumentando la velocidad en ${carta.efecto.velocidadExtra}`);
-      //   }
-      //   if (carta.efecto.saltoExtra) {
-      //     // Lógica para aumentar el salto del jugador
-      //     console.log(`Aumentando el salto en ${carta.efecto.saltoExtra}`);
-      //   }
-      // });
-    //Fin Cartas
-
-    
+    this.worldWidth = this.physics.world.bounds.width;   
     
 
     //Background
@@ -479,17 +444,7 @@ iniciarIntervaloGlitch(jugadores) {
       player.slowDown(0.5, 3000); // Aplicar la ralentización al jugador usando el nuevo método
       console.log(`${player.constructor.name} colisionó con un champiñón y fue ralentizado.`);
     }
-    // if (player instanceof Mario || player instanceof Yennefer) {
-    //   player.setVelocityX(player.body.velocity.x * 0.5); // Ralentizar al jugador
-    //   console.log(player.body.velocity.x);
-    //   console.log(`${player.constructor.name} colisionó con un champiñón y fue ralentizado.`);
-    //   //Aplicar el efecto de ralentización durante 3 segundos
-    //   player.scene.time.delayedCall(3000, () => {
-    //     if (player.active) {
-    //       player.setVelocityX(player.body.velocity.x > 0 ? player.body.velocity.x * 2 : -player.body.velocity.x * 2); // Restaurar la velocidad del jugador
-    //     }
-    //   });
-    // }
+
   }
 
   marioWin() {
