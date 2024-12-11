@@ -63,7 +63,7 @@ export default class GameScene extends Phaser.Scene {
   create() {
 
     this.physics.world.setBoundsCollision(true, true, true, true);
-    this.physics.world.setBounds(0, 0, 2000, 600);
+    this.physics.world.setBounds(0, 0, 4000, 600);
     this.screenWidth = this.scale.width;
     this.screenHeight = this.scale.height;
     this.worldWidth = this.physics.world.bounds.width;
@@ -264,7 +264,7 @@ export default class GameScene extends Phaser.Scene {
       this.cameras.main.setSize(400, 600)
         .setZoom(2.25)
         .startFollow(this.mario)
-        .setBounds(0, 0, 2000, 600)
+        .setBounds(0, 0, this.worldWidth, 600)
         .ignore([
           this.progressBarBg,
           this.progressBar,
@@ -280,7 +280,7 @@ export default class GameScene extends Phaser.Scene {
       const camera2 = this.cameras.add(400, 0, 400, 600, false, 'camera2')
         .setZoom(2.25)
         .startFollow(this.yennefer)
-        .setBounds(0, 0, 2000, 600)
+        .setBounds(0, 0, this.worldWidth, 600)
         .ignore([
           this.progressBarBg,
           this.progressBar,
@@ -505,5 +505,5 @@ export default class GameScene extends Phaser.Scene {
     this.backgroundGroupYennefer.getChildren().forEach((backgroundLayer, index) => {
       backgroundLayer.tilePositionX = this.yennefer.x * (index + 1) * 0.01;
     });
-  }
+    }
 }
