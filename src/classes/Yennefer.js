@@ -15,6 +15,7 @@ export default class Yennefer extends Phaser.Physics.Arcade.Sprite
         this.setDisplaySize(this.width * 2/3, this.height * 2/3);
         this.body.setSize((16) * 3/2, (16) * 3/2);
         this.body.setOffset(33, 8);
+        this.baseSpeed = 50;
         this.topSpeed = 175;
         this.accelSpeed = 200;
         this.baseJumpStrength = 400;
@@ -130,6 +131,9 @@ export default class Yennefer extends Phaser.Physics.Arcade.Sprite
             }
              else{
                 this.body.maxSpeed = this.topSpeed;
+                if (this.body.velocity.x > -this.baseSpeed) {
+                    this.setVelocityX(-this.baseSpeed);
+                }
                 this.setAccelerationX(-this.accelSpeed);
              }
             if(this.isdamaged == true){
@@ -143,10 +147,13 @@ export default class Yennefer extends Phaser.Physics.Arcade.Sprite
                 this.body.maxSpeed = this.topSpeed / 2;
                 this.setAccelerationX(this.accelSpeed);
             }
-             else{
+            else{
                 this.body.maxSpeed = this.topSpeed;
+                if (this.body.velocity.x < this.baseSpeed) {
+                    this.setVelocityX(this.baseSpeed);
+                }
                 this.setAccelerationX(this.accelSpeed);
-             }
+            }
             if(this.isdamaged == true){
                 this.body.velocity.x *= 0.2;
             }
