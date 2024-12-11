@@ -15,13 +15,13 @@ export default class Yennefer extends Phaser.Physics.Arcade.Sprite
         this.setDisplaySize(this.width * 2/3, this.height * 2/3);
         this.body.setSize((16) * 3/2, (16) * 3/2);
         this.body.setOffset(33, 8);
+        this.topSpeed = 175;
+        this.accelSpeed = 200;
+        this.baseJumpStrength = 400;
 
         this.setCollideWorldBounds(true);
 
         this.isAlive = false;
-
-        this.maxHorizontalSpeed = 1;
-        this.baseJumpStrength = 400;
 
         this.groundedlastFrame = false;
         this.grounded = false;
@@ -123,25 +123,41 @@ export default class Yennefer extends Phaser.Physics.Arcade.Sprite
     }
 
     inputManager() {
-        if (this.cursors.left.isDown && !this.cursors.right.isDown ) {
+        if (this.cursors.left.isDown && !this.cursors.right.isDown) {
             if(this.isSlowed==true){
-                this.setVelocityX(-30)
+                this.body.maxSpeed = this.topSpeed / 2;
+                this.setAccelerationX(-this.accelSpeed);
             }
-             else{this.setVelocityX(-100)}
+             else{
+                this.body.maxSpeed = this.topSpeed;
+                this.setAccelerationX(-this.accelSpeed);
+             }
+            if(this.isdamaged == true){
+                this.body.velocity.x *= 0.2;
+            }
             this.flipX = true;
             this.walking = true;
         }
+
         else if (this.cursors.right.isDown && !this.cursors.left.isDown) {
             if(this.isSlowed==true){
-                this.setVelocityX(30)
+                this.body.maxSpeed = this.topSpeed / 2;
+                this.setAccelerationX(-this.accelSpeed);
             }
-             else{this.setVelocityX(100)}
+             else{
+                this.body.maxSpeed = this.topSpeed;
+                this.setAccelerationX(this.accelSpeed);
+             }
+            if(this.isdamaged == true){
+                this.body.velocity.x *= 0.2;
+            }
             this.flipX = false;
             this.walking = true;
         } 
         else {
             this.setVelocityX(0);
             this.walking = false;
+            this.walkAnim = false;
         }
 
         if (Phaser.Input.Keyboard.JustDown(this.cursors.up)) {

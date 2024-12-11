@@ -10,13 +10,13 @@ export default class Mario extends Phaser.Physics.Arcade.Sprite
         scene.physics.add.existing(this);
         this.body.setSize(16, 16);
         this.body.setOffset(0, 2);
+        this.topSpeed = 250;
+        this.accelSpeed = 200;
+        this.baseJumpStrength = 400;
 
         this.setCollideWorldBounds(true);
 
         this.isAlive = false;
-
-        this.maxHorizontalSpeed = 1;
-        this.baseJumpStrength = 400;
 
         this.groundedlastFrame = false;
         this.grounded = false;
@@ -150,9 +150,13 @@ export default class Mario extends Phaser.Physics.Arcade.Sprite
     inputManager() {
         if (this.cursors.left.isDown && !this.cursors.right.isDown) {
             if(this.isSlowed==true){
-                this.setVelocityX(-30)
+                this.body.maxSpeed = this.topSpeed / 2;
+                this.setAccelerationX(-this.accelSpeed);
             }
-             else{this.setVelocityX(-100)}
+             else{
+                this.body.maxSpeed = this.topSpeed;
+                this.setAccelerationX(-this.accelSpeed);
+             }
             if(this.isdamaged == true){
                 this.body.velocity.x *= 0.2;
             }
@@ -162,9 +166,13 @@ export default class Mario extends Phaser.Physics.Arcade.Sprite
 
         else if (this.cursors.right.isDown && !this.cursors.left.isDown) {
             if(this.isSlowed==true){
-                this.setVelocityX(30)
+                this.body.maxSpeed = this.topSpeed / 2;
+                this.setAccelerationX(-this.accelSpeed);
             }
-             else{this.setVelocityX(100)}
+             else{
+                this.body.maxSpeed = this.topSpeed;
+                this.setAccelerationX(this.accelSpeed);
+             }
             if(this.isdamaged == true){
                 this.body.velocity.x *= 0.2;
             }
