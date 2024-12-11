@@ -33,7 +33,7 @@ export default class GameScene extends Phaser.Scene {
     this.load.image("bg9", "/assets/images/Cave_BG/image9.png");
 
     this.load.image("tiles", "/assets/tiles/FireSet.png");
-    this.load.tilemapTiledJSON('tilemap', 'assets/tilemap/DemoTilemap.json');
+    this.load.tilemapTiledJSON('tilemap', 'assets/tilemap/FinalTilemap.json');
     this.load.spritesheet("mario", "/assets/images/mario_small.png", { frameHeight: 18, frameWidth: 18});
     this.load.spritesheet("yennefer", "/assets/images/Yennefer.png", { frameHeight: 32, frameWidth: 90});
 
@@ -120,9 +120,9 @@ export default class GameScene extends Phaser.Scene {
       const frame= (4 - 1) + ((5 - 1) * tilesPerRow);
       //this.powerUp = new Powerup(this, 100, 150, 'powertile', frame);
       this.powerups = [ 
-        new Powerup(this, 100, 150, 'powertile', frame), 
-        new Powerup(this, 100, 100, 'powertile', frame), 
-        new Powerup(this, 100, 200, 'powertile', frame) ];;
+        new Powerup(this, 100, 450, 'powertile', frame), 
+        new Powerup(this, 100, 400, 'powertile', frame), 
+        new Powerup(this, 100, 500, 'powertile', frame) ];;
 
 
         /*this.powerupGroup = this.physics.add.group({collideWorldBounds: true });
@@ -156,16 +156,16 @@ export default class GameScene extends Phaser.Scene {
 
 
     //Personajes & Fisicas
-      this.mario = new Mario(this, 0, 0, this.sfx_mario);
+      this.mario = new Mario(this, 0, 400, this.sfx_mario);
       this.physics.add.collider(this.mario, this.groundLayer);
       this.physics.add.overlap(this.mario, this.trampasLayer, this.damageMario, null, this);
       //Voy a dejar groundLayer comentado hasta que funcione correctamente.
 
-      this.yennefer = new Yennefer(this, 600, 0, this.sfx_yennefer);
+      this.yennefer = new Yennefer(this, 600, 370, this.sfx_yennefer);
       this.physics.add.collider(this.yennefer, this.groundLayer);
       this.physics.add.collider(this.mario, this.yennefer, this.marioWin, null, this);
 
-      this.physics.world.setBounds(0, 0, 800, 600);
+      this.physics.world.setBounds(0, 0, 2000, 600);
 
       this.mario.setCollideWorldBounds(true);
       this.yennefer.setCollideWorldBounds(true);
@@ -197,8 +197,9 @@ export default class GameScene extends Phaser.Scene {
       this.physics.add.collider(this.mushroomGroup, this.mario, this.handleMushroomCollision, null, this);
       this.physics.add.collider(this.mushroomGroup, this.yennefer, this.handleMushroomCollision, null, this);
 
-      //Yennefer colision con Powerup
+      //Yennefer y Mario colision con Powerup
       this.physics.add.overlap(this.yennefer, this.powerups, this.onPowerupCollisionY, null, this);
+      this.physics.add.overlap(this.mario, this.powerups, this.onPowerupCollisionM, null, this);
     //Fin Personajes & Fisicas
 
 
@@ -251,7 +252,7 @@ export default class GameScene extends Phaser.Scene {
       this.cameras.main.setSize(400, 600)
         .setZoom(2.25)
         .startFollow(this.mario)
-        .setBounds(0, 0, 800, 600)
+        .setBounds(0, 0, 2000, 600)
         .ignore([
           this.progressBarBg,
           this.progressBar,
@@ -267,7 +268,7 @@ export default class GameScene extends Phaser.Scene {
       const camera2 = this.cameras.add(400, 0, 400, 600, false, 'camera2')
         .setZoom(2.25)
         .startFollow(this.yennefer)
-        .setBounds(0, 0, 800, 600)
+        .setBounds(0, 0, 2000, 600)
         .ignore([
           this.progressBarBg,
           this.progressBar,
@@ -319,6 +320,15 @@ export default class GameScene extends Phaser.Scene {
       console.log("powerup Yennefer")
     }
   }
+
+  onPowerupCollisionM(mario, powerup){
+    if (powerup && powerup.Mario){
+      this.mario.powerup = true;
+      powerup.Mario = false;
+      console.log("powerup Mario")
+    }
+  }
+
 
   handleMushroomCollision(player, mushroom) {
     console.log(player.body.velocity.x);
@@ -390,8 +400,8 @@ export default class GameScene extends Phaser.Scene {
     }
 
     //Barra de progreso
-    const marioPosition = (this.mario.x / this.worldWidth) * this.progressBarWidth;
-    const yenneferPosition = (this.yennefer.x / this.worldWidth) * this.progressBarWidth;
+    const marioPosition = (this.mario.x / 2000) * this.progressBarWidth;
+    const yenneferPosition = (this.yennefer.x / 2000) * this.progressBarWidth;
 
     this.progressBar.clear();
     this.progressBar.fillStyle(0xC84361, 1);
@@ -473,6 +483,6 @@ export default class GameScene extends Phaser.Scene {
       backgroundLayer.tilePositionX = this.yennefer.x * (index + 1) * 0.01;
     });
 
-    console.log(localStorage.getItem("sfxVolume"));
+    //console.log(localStorage.getItem("sfxVolume"));
   }
 }
