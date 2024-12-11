@@ -203,9 +203,9 @@ export default class Mario extends Phaser.Physics.Arcade.Sprite
     
         if (Phaser.Input.Keyboard.JustDown(this.cursors.up) && this.body.onFloor()) {
             if(this.isSlowed==true){
-                this.setVelocityY(-120)
+                this.setVelocityY(-this.baseJumpStrength/3.5)
             }
-            else{this.setVelocityY(-200);}
+            else{this.setVelocityY(-this.baseJumpStrength/2);}
         }
 
         if (!this.body.onFloor()) {

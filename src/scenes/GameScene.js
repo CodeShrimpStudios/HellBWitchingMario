@@ -313,6 +313,10 @@ const jugador = [this.mario, this.yennefer];
         console.log("Aplicando efecto: Velocidad extra");
         this.aplicarVelocidadExtra();
       }
+      if (carta.efecto === "saltoExtra") {
+        console.log("Aplicando efecto: Salto extra");
+        this.aplicarSaltoExtra();
+      }
   });
   }
  //__________________________________CARTAS Y EFECTOS______________________________________________
@@ -465,6 +469,20 @@ aplicarVelocidadExtra() {
   console.log("Velocidad Mario:", this.mario.baseSpeed, this.mario.topSpeed);
   console.log("Velocidad Yennefer:", this.yennefer.baseSpeed, this.yennefer.topSpeed);
 }
+
+//SALTO AUMENTADO
+aplicarSaltoExtra() {
+  console.log("Efecto de salto extra aplicado");
+
+  // Aumentar la fuerza del salto de los jugadores
+  this.mario.baseJumpStrength += 100;
+  this.yennefer.baseJumpStrength += 100;
+
+  console.log("Fuerza de salto Mario:", this.mario.baseJumpStrength);
+  console.log("Fuerza de salto Yennefer:", this.yennefer.baseJumpStrength);
+}
+
+//VIDA EXTRA
 //__________________________________CARTAS Y EFECTOS______________________________________________
   damageMario(mario, tile) { 
     if (tile.properties.trampa) { mario.damage(); }

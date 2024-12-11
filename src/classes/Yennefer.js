@@ -178,16 +178,16 @@ export default class Yennefer extends Phaser.Physics.Arcade.Sprite
             if (this.body.onFloor()) {
                 //Primer salto
                 if(this.isSlowed==true){
-                    this.setVelocityY(-120)
+                    this.setVelocityY(-this.baseJumpStrength/3.5)
                 }
-                else{this.setVelocityY(-200);}
+                else{this.setVelocityY(-this.baseJumpStrength/2);}
             }
             else if (!this.hasAirJumped) {
                 //Salto en aire
                 if(this.isSlowed==true){
-                    this.setVelocityY(-120)
+                    this.setVelocityY(-this.baseJumpStrength/3.5)
                 }
-                else{this.setVelocityY(-200);}
+                else{this.setVelocityY(-this.baseJumpStrength/2);}
                 this.hasAirJumped = true;
             }
         }
