@@ -1,6 +1,6 @@
 export default class Mario extends Phaser.Physics.Arcade.Sprite
 {
-    constructor (scene, x, y, sfx,invertirControlesHorizontales,invertirControlesVerticales)
+    constructor (scene, x, y, sfx,invertirControlesHorizontales,invertirControlesVerticales,deslizamiento)
     {
         super(scene, x, y, 'mario');
 
@@ -30,7 +30,7 @@ export default class Mario extends Phaser.Physics.Arcade.Sprite
         this.canbedamaged = true;
         this.isdamaged = false;
         this.isSlowed = false;
-        this.isSliding = false;
+        this.isSliding = deslizamiento;
         
        
 
@@ -217,6 +217,7 @@ export default class Mario extends Phaser.Physics.Arcade.Sprite
             this.walking = true;
         } 
         else {
+            console.log("deslizamiento: ", this.isSliding)
             this.setAccelerationX(0);
             if (this.body.velocity.x > 5) {
                 this.body.velocity.x -= 5;
@@ -224,9 +225,15 @@ export default class Mario extends Phaser.Physics.Arcade.Sprite
             else if (this.body.velocity.x < -5) {
                 this.body.velocity.x += 5;
             }
+            else if(this.isSliding) {
+                
+                // Aplicar inercia cuando no hay teclas de dirección presionadas
+                this.setVelocityX(this.body.velocity.x /0.3);
+            }
             else {
                 this.setVelocityX(0);
             }
+            
             this.walking = false;
             this.walkAnim = false;
         }

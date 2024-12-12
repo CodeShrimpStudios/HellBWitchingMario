@@ -70,6 +70,7 @@ export default class GameScene extends Phaser.Scene {
     this.worldWidth = this.physics.world.bounds.width;   
     this.controlesHorizontalesInvertidos = false;
     this.controlesVerticalesInvertidos = false;
+    this.deslizamiento=false;
     
 
     //Background
@@ -171,14 +172,23 @@ export default class GameScene extends Phaser.Scene {
     }
 });
 
+this.cartasSeleccionadas.forEach((carta) => {
+  if (carta.efecto === "deslizante") {
+      console.log("Aplicando efecto: Suelo deslizante");
+      this.activarDeslizamiento();
+  }
+});
+
   //_______________________CARTAS DE CONTROLES___________________________
     //Personajes & Fisicas
-      this.mario = new Mario(this, 0, 400, this.sfx_mario,this.controlesHorizontalesInvertidos,this.controlesVerticalesInvertidos);
+      this.mario = new Mario(this, 0, 400, this.sfx_mario,this.controlesHorizontalesInvertidos,
+        this.controlesVerticalesInvertidos,this.deslizamiento);
       this.physics.add.collider(this.mario, this.groundLayer);
       this.physics.add.overlap(this.mario, this.trampasLayer, this.damageMario, null, this);
       //Voy a dejar groundLayer comentado hasta que funcione correctamente.
 
-      this.yennefer = new Yennefer(this, 600, 370, this.sfx_yennefer,this.controlesHorizontalesInvertidos,this.controlesVerticalesInvertidos);
+      this.yennefer = new Yennefer(this, 600, 370, this.sfx_yennefer,this.controlesHorizontalesInvertidos,
+        this.controlesVerticalesInvertidos,this.deslizamiento);
       this.physics.add.collider(this.yennefer, this.groundLayer);
       this.physics.add.collider(this.mario, this.yennefer, this.marioWin, null, this);
 
@@ -517,8 +527,7 @@ aplicarVelocidadExtra() {
   this.yennefer.baseSpeed += 30;
   this.yennefer.topSpeed += 60;
 
-  console.log("Velocidad Mario:", this.mario.baseSpeed, this.mario.topSpeed);
-  console.log("Velocidad Yennefer:", this.yennefer.baseSpeed, this.yennefer.topSpeed);
+  
 }
 
 //SALTO AUMENTADO
@@ -529,8 +538,7 @@ aplicarSaltoExtra() {
   this.mario.baseJumpStrength += 100;
   this.yennefer.baseJumpStrength += 100;
 
-  console.log("Fuerza de salto Mario:", this.mario.baseJumpStrength);
-  console.log("Fuerza de salto Yennefer:", this.yennefer.baseJumpStrength);
+  
 }
 
 //VIDA EXTRA
@@ -544,8 +552,7 @@ aplicarVidaExtra() {
   this.yennefer.maxHp += 1;
   this.yennefer.hp = this.yennefer.maxHp;
 
-  console.log("Vida Mario:", this.mario.hp, "/", this.mario.maxHp);
-  console.log("Vida Yennefer:", this.yennefer.hp, "/", this.yennefer.maxHp);
+  
 }
 
 //CONTROLES HORIZONTALES INVERTIDOS
@@ -563,6 +570,15 @@ invertirControlesVerticales() {
       this.controlesVerticalesInvertidos=true;
   });
 }
+//ACTIVAR DESLIZAMIENTO
+activarDeslizamiento() {
+  console.log("Efecto de suelo deslizante activado");
+
+  [this.mario, this.yennefer].forEach((jugador) => {
+      this.deslizamiento = true; // Activar deslizamiento
+  });
+}
+
 //__________________________________CARTAS Y EFECTOS______________________________________________
 
 
