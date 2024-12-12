@@ -56,9 +56,11 @@ export default class GameScene extends Phaser.Scene {
     this.load.audio("sfx_thunder", "/assets/sfx/thunder.mp3");
     this.load.audio("sfx_glitch", "/assets/sfx/glitch.mp3");
     this.load.audio("sfx_powerup", "/assets/sfx/powerup.mp3");
+    this.load.audio("sfx_enemy_death", "/assets/sfx/enemy_death.mp3");
 
     this.load.audio("bgm_3", "/assets/bgm/01_Press_Play.mp3");
     this.load.audio("bgm_4", "/assets/bgm/06_Punch_Out.mp3");
+    this.load.audio("bgm_5", "/assets/bgm/18_Level_Up.mp3");
   }
 
   create() {
@@ -149,7 +151,9 @@ export default class GameScene extends Phaser.Scene {
       this.sfx_map = {
         thunder: this.sound.add("sfx_thunder"),
         glitch: this.sound.add("sfx_glitch"),
-        powerup: this.sound.add("sfx_powerup")
+        powerup: this.sound.add("sfx_powerup"),
+        enemy_death: this.sound.add("sfx_enemy_death"),
+        bgm5: this.sound.add("bgm_5", { loop: true })
       }
     //Fin SFX
 
@@ -157,7 +161,7 @@ export default class GameScene extends Phaser.Scene {
     //BGM
       this.bgm = {
         bgm3: this.sound.add("bgm_3", { loop: true }),
-        bgm4: this.sound.add("bgm_4", { loop: true }),
+        bgm4: this.sound.add("bgm_4", { loop: true })
       }
 
       const bgmKeys = Object.keys(this.bgm);
@@ -165,6 +169,15 @@ export default class GameScene extends Phaser.Scene {
       this.selectedBgm = this.bgm[randomBgmKey];
       
       this.selectedBgm.play();
+
+      this.sfxVolume = parseFloat(localStorage.getItem('bgmVolume')) / 100;
+      if (isNaN(this.sfxVolume)) {
+        this.sfxVolume = 1;
+      }
+      this.bgmVolume = parseFloat(localStorage.getItem('bgmVolume')) / 100;
+      if (isNaN(this.bgmVolume)) {
+        this.bgmVolume = 1;
+      }
 
       this.adjustVolumeSettings();
     //Fin BGM
@@ -625,6 +638,7 @@ export default class GameScene extends Phaser.Scene {
     if (fireball.active) {
       fireball.setActive(false);
       fireball.setVisible(false);
+      fireball.disableBody(true);
       if (mario.active) { 
         mario.damage();
         this.sfx_yennefer.explosion_2.play();
@@ -653,8 +667,16 @@ export default class GameScene extends Phaser.Scene {
   handleMushroomCollision(player, mushroom) {
     console.log(player.body.velocity.x);
     if (player instanceof Mario || player instanceof Yennefer) {
-      player.slowDown(0.5, 3000); // Aplicar la ralentización al jugador usando el nuevo método
-      //console.log(`${player.constructor.name} colisionó con un champiñón y fue ralentizado.`);
+      if (player instanceof Mario && this.mario.isInvincible) {
+        this.sfx_map.enemy_death.play();
+        mushroom.setActive(false);
+        mushroom.setVisible(false);
+        mushroom.disableBody(true);
+      }
+      else {
+        player.slowDown(0.5, 3000); // Aplicar la ralentización al jugador usando el nuevo método
+        //console.log(`${player.constructor.name} colisionó con un champiñón y fue ralentizado.`);
+      }
     }
 
   }
@@ -662,14 +684,14 @@ export default class GameScene extends Phaser.Scene {
   marioWin() {
     //Añadan animaciones antes de cambiar de escena
     console.log("Colision!!!");
-    this.selectedBgm.stop();
+    this.sound.stopAll();
     this.WinnerP1 = true;
     this.scene.switch('victory', { WinnerP1: this.WinnerP1, cartasSeleccionadas: this.cartasSeleccionadas });
   }
 
   yenneferWin() {
     console.log("Yennefer");
-    this.selectedBgm.stop();
+    this.sound.stopAll();
     this.WinnerP1 = false;
     this.scene.switch('victory', { WinnerP1: this.WinnerP1, cartasSeleccionadas: this.cartasSeleccionadas });
   }
@@ -767,16 +789,8 @@ export default class GameScene extends Phaser.Scene {
   }
 
   adjustVolumeSettings() {
-    let sfxVolume = parseFloat(localStorage.getItem('sfxVolume')) / 100;
-    if (isNaN(sfxVolume)) {
-      sfxVolume = 1;
-    }
-    this.setSfxVolume(sfxVolume);
-    let bgmVolume = parseFloat(localStorage.getItem('bgmVolume')) / 100;
-    if (isNaN(bgmVolume)) {
-      bgmVolume = 1;
-    }
-    this.setBgmVolume(bgmVolume);
+    this.setSfxVolume(this.sfxVolume);
+    this.setBgmVolume(this.bgmVolume);
   }
 
   setSfxVolume(volume) {
@@ -797,6 +811,14 @@ export default class GameScene extends Phaser.Scene {
     }
   }
 
+  fadeOutBgm(bgm ,volume) {
+    this.tweens.add({
+      targets: bgm,
+      volume: volume,
+      duration: 2000,
+    });
+  }
+
   update() {
     this.mario.update();
     this.yennefer.update();
@@ -812,6 +834,20 @@ export default class GameScene extends Phaser.Scene {
     this.mushroomGroup.children.iterate((mushroom) => {
       mushroom.update();
     });
+
+    if (!this.lastInvincible && this.mario.isInvincible) {
+      this.fadeOutBgm(this.selectedBgm, 0);
+      this.sfx_map.bgm5.setVolume(0);
+      this.sfx_map.bgm5.play();
+      this.fadeOutBgm(this.sfx_map.bgm5, this.bgmVolume)
+    }
+
+    if (this.lastInvincible && !this.mario.isInvincible) {
+        this.fadeOutBgm(this.sfx_map.bgm5, 0)
+        this.fadeOutBgm(this.selectedBgm, this.bgmVolume);
+    }
+   
+    this.lastInvincible = this.mario.isInvincible;
 
     //this.backgroundGroupMario.getChildren().forEach((backgroundLayer, index) => {
     //  backgroundLayer.tilePositionX = this.mario.x * (index + 1) * 0.01;

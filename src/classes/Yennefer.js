@@ -118,8 +118,10 @@ export default class Yennefer extends Phaser.Physics.Arcade.Sprite
     }
 
     update() {
-        this.inputManager();
-        this.animManager();
+        if (!this.isRecovering) {
+            this.inputManager();
+            this.animManager();
+        }        
     }
 
     damage() {   
