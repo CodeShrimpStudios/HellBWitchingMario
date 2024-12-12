@@ -110,9 +110,11 @@ export default class GameScene extends Phaser.Scene {
       const frame= (4 - 1) + ((5 - 1) * tilesPerRow);
       //this.powerUp = new Powerup(this, 100, 150, 'powertile', frame);
       this.powerups = [ 
-        new Powerup(this, 100, 450, 'powertile', frame), 
-        new Powerup(this, 100, 400, 'powertile', frame), 
-        new Powerup(this, 100, 500, 'powertile', frame) ];;
+        new Powerup(this, 150, 370, 'powertile', frame), 
+        new Powerup(this, 1100, 120, 'powertile', frame), 
+        new Powerup(this, 1824, 500, 'powertile', frame),
+        new Powerup(this, 2176, 500, 'powertile', frame),
+        new Powerup(this, 2336, 140, 'powertile', frame), ];;
 
 
         /*this.powerupGroup = this.physics.add.group({collideWorldBounds: true });
