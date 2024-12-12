@@ -15,7 +15,7 @@ export default class MenuScene extends Phaser.Scene {
     }
 
     preload() {
-        this.load.image("bg1", "/assets/images/Cave_BG/1.png");
+        this.load.image("bg1", "assets/images/Cave_BG/1.png");
         this.load.image("bg2", "/assets/images/Cave_BG/2.png");
         this.load.image("bg3", "/assets/images/Cave_BG/3fx.png");
         this.load.image("bg4", "/assets/images/Cave_BG/4.png");
