@@ -16,24 +16,24 @@ export default class MenuScene extends Phaser.Scene {
 
     preload() {
         this.load.image("bg1", "assets/images/Cave_BG/1.png");
-        this.load.image("bg2", "/assets/images/Cave_BG/2.png");
-        this.load.image("bg3", "/assets/images/Cave_BG/3fx.png");
-        this.load.image("bg4", "/assets/images/Cave_BG/4.png");
-        this.load.image("bg5", "/assets/images/Cave_BG/5.png");
-        this.load.image("bg6", "/assets/images/Cave_BG/6fx.png");
-        this.load.image("bg7", "/assets/images/Cave_BG/7.png");
-        this.load.image("bg8", "/assets/images/Cave_BG/8fx.png");
-        this.load.image("bg9", "/assets/images/Cave_BG/9.png");
+        this.load.image("bg2", "assets/images/Cave_BG/2.png");
+        this.load.image("bg3", "assets/images/Cave_BG/3fx.png");
+        this.load.image("bg4", "assets/images/Cave_BG/4.png");
+        this.load.image("bg5", "assets/images/Cave_BG/5.png");
+        this.load.image("bg6", "assets/images/Cave_BG/6fx.png");
+        this.load.image("bg7", "assets/images/Cave_BG/7.png");
+        this.load.image("bg8", "assets/images/Cave_BG/8fx.png");
+        this.load.image("bg9", "assets/images/Cave_BG/9.png");
 
-        this.load.image("logo", "/assets/images/logo.png");
-        this.load.image("BStart", "/assets/images/BStart.png");
-        this.load.image("portrait", "/assets/images/Portrait_Border.png");
-        this.load.spritesheet("pMario", "/assets/images/Portrait_Mario.png", { frameHeight: 27, frameWidth: 18});
-        this.load.image("pYennefer", "/assets/images/Yennefer_Portada_Recortado.png");
+        this.load.image("logo", "assets/images/logo.png");
+        this.load.image("BStart", "assets/images/BStart.png");
+        this.load.image("portrait", "assets/images/Portrait_Border.png");
+        this.load.spritesheet("pMario", "assets/images/Portrait_Mario.png", { frameHeight: 27, frameWidth: 18});
+        this.load.image("pYennefer", "assets/images/Yennefer_Portada_Recortado.png");
 
-        this.load.audio("bgm_1", "/assets/bgm/13_Mana_Refill.mp3");
-        this.load.audio("sfx_1", "/assets/sfx/menu_1.mp3");
-        this.load.audio("sfx_2", "/assets/sfx/menu_2.mp3");
+        this.load.audio("bgm_1", "assets/bgm/13_Mana_Refill.mp3");
+        this.load.audio("sfx_1", "assets/sfx/menu_1.mp3");
+        this.load.audio("sfx_2", "assets/sfx/menu_2.mp3");
     }
 
     create() {
