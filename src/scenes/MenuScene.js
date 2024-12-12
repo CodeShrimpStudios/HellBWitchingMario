@@ -25,6 +25,7 @@ export default class MenuScene extends Phaser.Scene {
         this.load.image("bg8", "/assets/images/Cave_BG/8fx.png");
         this.load.image("bg9", "/assets/images/Cave_BG/9.png");
 
+        this.load.image("logo", "/assets/images/logo.png");
         this.load.image("BStart", "/assets/images/BStart.png");
         this.load.image("portrait", "/assets/images/Portrait_Border.png");
         this.load.spritesheet("pMario", "/assets/images/Portrait_Mario.png", { frameHeight: 27, frameWidth: 18});
@@ -46,27 +47,32 @@ export default class MenuScene extends Phaser.Scene {
 
             //const randomBinary = Math.round(Math.random());
             const randomBinary = (Math.random() < 0.1) ? 1 : 0;
-            let pmario = this.add.sprite(150, 255, 'pMario', randomBinary);
-            pmario.setScale(10)
+            let pmario = this.add.sprite(150, 405, 'pMario', randomBinary);
+            pmario.setScale(7.5)
 
-            let portrait = this.add.image(150, 250, 'portrait');
-            portrait.setScale(4)
+            let portrait = this.add.image(150, 400, 'portrait');
+            portrait.setScale(3)
 
-            let pyen = this.add.image(650, 252, 'pYennefer');
-            pyen.setScale(4)
+            let pyen = this.add.image(650, 402, 'pYennefer');
+            pyen.setScale(3)
 
-            let portrait2 = this.add.image(650, 250, 'portrait');
-            portrait2.setScale(4)
+            let portrait2 = this.add.image(650, 400, 'portrait');
+            portrait2.setScale(3)
+
+            let logo = this.add.image(400, 400, 'logo');
+            
+            logo.setScale(2.25);
+            logo.setOrigin(0.5,1.6);
         //Fin Background
 
         //Botones
-            let BStart = new Bstart(this, 380, 250);
+            let BStart = new Bstart(this, 380, 385);
             BStart.on('pointerdown', () => this.CardSelect());
             BStart.setOrigin(0.4, 0.4);
             BStart.setScale(0.15, 0.15);
             this.BStart = BStart
 
-            this.settingsButton = this.add.text(400, 400, 'Settings', { fontSize: '32px', fill: '#ffffff' })
+            this.settingsButton = this.add.text(400, 550, 'Settings', { fontSize: '32px', fill: '#ffffff' })
                 .setOrigin(0.5)
                 .setInteractive()
                 .on('pointerdown', () => this.showSettings()
