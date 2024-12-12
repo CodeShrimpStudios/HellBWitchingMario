@@ -60,8 +60,8 @@ export default class Carta {
           case 'gravedadReducida':
               escena.physics.world.gravity.y *= 0.5; // Reducir gravedad
               break;
-          case 'lluviaChampiñones':
-              escena.lluviaDeChampiñones(); // Invocar método de la escena
+          case 'glitch':
+              escena.glitch(); // Invocar método de la escena
               break;
           case 'relampagoPantalla':
               escena.activarRelampago(); // Efecto visual de relámpagos

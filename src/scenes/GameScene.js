@@ -15,7 +15,8 @@ export default class GameScene extends Phaser.Scene {
   }
 
   init(data) {
-    this.cartasSeleccionadas = data.cartasSeleccionadas || []; //a ver si funciona
+    this.cartasSeleccionadas = data.cartasSeleccionadas || []; //a ver si funciona    
+    console.log ("cartas recibidas", this.cartasSeleccionadas);
 
     this.fireballCooldownTime = 0; //Para el icono de la fireball
     this.maxCooldownTime = 5000;
@@ -66,27 +67,9 @@ export default class GameScene extends Phaser.Scene {
     this.physics.world.setBounds(0, 0, 4000, 600);
     this.screenWidth = this.scale.width;
     this.screenHeight = this.scale.height;
-    this.worldWidth = this.physics.world.bounds.width;
-
-    //Cartas
-      //del array de cartas que se han seleccionado de la pantalla de cartas 
-      //las sacamos a consola para ver que se vean, tendremos que añadirlas bien cuand
-      //diseñemos las stats de los personajes
-      this.cartasSeleccionadas.forEach((carta) => {
-        if (carta.efecto.vidaExtra) {
-          // Lógica para aumentar la vida del jugador          
-          console.log(`Aumentando la vida en ${carta.efecto.vidaExtra}`);
-        }
-        if (carta.efecto.velocidadExtra) {
-          // Lógica para aumentar la velocidad del jugador
-          console.log(`Aumentando la velocidad en ${carta.efecto.velocidadExtra}`);
-        }
-        if (carta.efecto.saltoExtra) {
-          // Lógica para aumentar el salto del jugador
-          console.log(`Aumentando el salto en ${carta.efecto.saltoExtra}`);
-        }
-      });
-    //Fin Cartas
+    this.worldWidth = this.physics.world.bounds.width;   
+    this.controlesHorizontalesInvertidos = false;
+    this.controlesVerticalesInvertidos = false;
     
 
     //Background
@@ -171,15 +154,31 @@ export default class GameScene extends Phaser.Scene {
 
       this.adjustVolumeSettings();
     //Fin BGM
+//_________________________CARTAS DE CONTROLES_________________________
+    this.cartasSeleccionadas.forEach((carta) => {
+     
+      if (carta.efecto === "invertirIzquierdaDerecha") {
+        console.log("Aplicando efecto: Invertir controles izquierda-derecha");
+        this.invertirControlesHorizontales();
+      }
+  });
 
+  this.cartasSeleccionadas.forEach((carta) => {
+     
+    if (carta.efecto === "invertirArribaAbajo") {
+      console.log("Aplicando efecto: Invertir controles arriba-abajo");
+      this.invertirControlesVerticales();
+    }
+});
 
+  //_______________________CARTAS DE CONTROLES___________________________
     //Personajes & Fisicas
-      this.mario = new Mario(this, 0, 400, this.sfx_mario);
+      this.mario = new Mario(this, 0, 400, this.sfx_mario,this.controlesHorizontalesInvertidos,this.controlesVerticalesInvertidos);
       this.physics.add.collider(this.mario, this.groundLayer);
       this.physics.add.overlap(this.mario, this.trampasLayer, this.damageMario, null, this);
       //Voy a dejar groundLayer comentado hasta que funcione correctamente.
 
-      this.yennefer = new Yennefer(this, 600, 370, this.sfx_yennefer);
+      this.yennefer = new Yennefer(this, 600, 370, this.sfx_yennefer,this.controlesHorizontalesInvertidos,this.controlesVerticalesInvertidos);
       this.physics.add.collider(this.yennefer, this.groundLayer);
       this.physics.add.collider(this.mario, this.yennefer, this.marioWin, null, this);
 
@@ -245,22 +244,28 @@ export default class GameScene extends Phaser.Scene {
 
       this.marioHearts = [];
       this.yenneferHearts = [];
-      
-      this.add.image(this.screenWidth * 0.05, this.screenHeight * 0.25, 'mario_icon').setScale(3.5).setScrollFactor(0);
-      for (let i = 0; i < this.mario.maxHp; i++) {
-        this.marioHearts.push(this.add.image(this.screenWidth * 0.05, this.screenHeight * 0.35 + (i * 60), 'heart_full')
-          .setScale(2)
-          .setScrollFactor(0)
-        );
-      }
 
-      this.add.image(this.screenWidth * 0.95, this.screenHeight * 0.25, 'yennefer_icon').setScale(3).setScrollFactor(0);
-      for (let i = 0; i < this.yennefer.maxHp; i++) {
-        this.yenneferHearts.push(this.add.image(this.screenWidth * 0.95, this.screenHeight * 0.35 + (i * 60), 'heart_full')
-          .setScale(2)
-          .setScrollFactor(0)
-        );
-      }
+    
+
+        
+      // this.add.image(this.screenWidth * 0.05, this.screenHeight * 0.25, 'mario_icon').setScale(3.5).setScrollFactor(0);
+      // for (let i = 0; i < this.mario.maxHp; i++) {
+      //   this.marioHearts.push(this.add.image(this.screenWidth * 0.05, this.screenHeight * 0.35 + (i * 60), 'heart_full')
+      //     .setScale(2)
+      //     .setScrollFactor(0)
+      //   );
+      // }
+
+      // this.add.image(this.screenWidth * 0.95, this.screenHeight * 0.25, 'yennefer_icon').setScale(3).setScrollFactor(0);
+      // for (let i = 0; i < this.yennefer.maxHp; i++) {
+      //   this.yenneferHearts.push(this.add.image(this.screenWidth * 0.95, this.screenHeight * 0.35 + (i * 60), 'heart_full')
+      //     .setScale(2)
+      //     .setScrollFactor(0)
+      //   );
+      // }
+
+
+
     //Fin UI
 
 
@@ -312,7 +317,257 @@ export default class GameScene extends Phaser.Scene {
         this.backgroundGroupYennefer
       ]);
     //Fin Camera
+
+
+//CARTAS Y EFECTOS EN CREATE
+const jugador = [this.mario, this.yennefer];
+    this.cartasSeleccionadas.forEach((carta) => {
+      if (carta.efecto === "relampagoPantalla") {
+          console.log("Aplicando efecto: Relámpago en pantalla");
+          this.iniciarIntervaloRelampagos(); // Llamada al intervalo
+      }
+
+      if (carta.efecto === "glitch") {
+        console.log("Aplicando efecto: Glitch");
+        console.log("Jugadores para el glitch:", jugador);
+        this.iniciarIntervaloGlitch(jugador); // Llamar al efecto recurrente
+      }
+
+      if (carta.efecto === "gravedadReducida") {
+        console.log("Aplicando efecto: Gravedad reducida");
+        this.iniciarIntervaloGravedadReducida(); // Llamar al intervalo
+      }
+      if (carta.efecto === "velocidadExtra") {
+        console.log("Aplicando efecto: Velocidad extra");
+        this.aplicarVelocidadExtra();
+      }
+      if (carta.efecto === "saltoExtra") {
+        console.log("Aplicando efecto: Salto extra");
+        this.aplicarSaltoExtra();
+      }
+      if (carta.efecto === "vidaExtra") {
+        console.log("Aplicando efecto: Vida extra");
+        this.aplicarVidaExtra();
+      }
+      
+  });
+
+
+  //Pintado de las vidas de los jugadores
+  this.add.image(this.screenWidth * 0.05, this.screenHeight * 0.25, 'mario_icon').setScale(3.5).setScrollFactor(0);
+  for (let i = 0; i < this.mario.maxHp; i++) {
+    this.marioHearts.push(this.add.image(this.screenWidth * 0.05, this.screenHeight * 0.35 + (i * 60), 'heart_full')
+      .setScale(2)
+      .setScrollFactor(0)
+    );
   }
+
+  this.add.image(this.screenWidth * 0.95, this.screenHeight * 0.25, 'yennefer_icon').setScale(3).setScrollFactor(0);
+  for (let i = 0; i < this.yennefer.maxHp; i++) {
+    this.yenneferHearts.push(this.add.image(this.screenWidth * 0.95, this.screenHeight * 0.35 + (i * 60), 'heart_full')
+      .setScale(2)
+      .setScrollFactor(0)
+    );
+  }
+  }
+ //__________________________________CARTAS Y EFECTOS______________________________________________
+
+ //RELAMPAGO
+  activarRelampago() {
+    console.log("Efecto de relámpago activado");
+
+    // Crear un destello blanco en la pantalla
+    const flash = this.add.rectangle(400, 300, 800, 600, 0xffffff, 1).setDepth(10).setAlpha(0);
+    const flash2 = this.add.rectangle(400, 300, 800, 600, 0xffffff, 1).setDepth(10).setAlpha(0);
+
+    const flashTween = this.tweens.add({
+        targets: flash,
+        alpha: { from: 1, to: 0 },
+        duration: 150,
+        repeat: 8,
+        onComplete: () => flash.destroy()
+    });
+    const flashTweensing = this.tweens.add({
+      targets: flash2,
+      alpha: { from: 1, to: 0 },
+      duration: 500,
+      repeat: 1,
+      onComplete: () => flash.destroy()
+  });
+
+    // Opcional: Añadir un sonido de relámpago
+    //this.sound.play("sfx_explosion_1", { volume: 0.5 });
+}
+
+iniciarIntervaloRelampagos() {
+  console.log("Intervalo de relámpagos iniciado");
+
+  // Función que ejecuta el relámpago y reinicia el temporizador
+  const activarRelampagoConIntervalo = () => {
+      this.activarRelampago();
+
+      // Elegir un nuevo intervalo aleatorio entre 6 y 10 segundos
+      const nuevoIntervalo = Phaser.Math.Between(6000, 10000);
+
+      // Configurar el siguiente relámpago
+      this.time.delayedCall(nuevoIntervalo, activarRelampagoConIntervalo);
+  };
+
+  // Inicia el primer relámpago
+  activarRelampagoConIntervalo();
+
+  
+}
+
+//GLITCH
+activarGlitch(jugadores) {
+  console.log("Efecto de glitch activado");
+  console.log("Jugadores dentro del metodo glitch:", jugadores);
+  // Efecto visual: Cambiar tintes rápidos de los jugadores
+  jugadores.forEach((jugador) => {
+      if (jugador) {
+          this.tweens.add({
+              targets: jugador,
+              tint: { from: 0xffffff, to: 0x00ff00 },
+              duration: 50,
+              yoyo: true,
+              repeat: 5,
+              onComplete: () => jugador.clearTint()
+          });
+
+          // Efecto mecánico: Teletransportar ligeramente
+          const xShift = Phaser.Math.Between(-30, 30);
+          const yShift = Phaser.Math.Between(-10, 10);
+
+          const nuevoX = Phaser.Math.Clamp(jugador.x + xShift, 0, this.worldWidth);
+          const nuevoY = Phaser.Math.Clamp(jugador.y + yShift, 0, this.physics.world.bounds.height);
+
+          jugador.setPosition(nuevoX, nuevoY);
+      }
+  });
+
+  // Efecto visual: Flash rápido de la pantalla (opcional)
+  const flash = this.add.rectangle(400, 300, 800, 600, 0xff0000, 0.2).setDepth(10).setAlpha(0);
+  this.tweens.add({
+      targets: flash,
+      alpha: { from: 0.5, to: 0 },
+      duration: 300,
+      onComplete: () => flash.destroy()
+  });
+}
+
+iniciarIntervaloGlitch(jugadores) {
+  console.log("Intervalo de glitch iniciado");
+
+  const activarGlitchConIntervalo = () => {
+      this.activarGlitch(jugadores); // Pasar los jugadores al glitch
+
+      // Elegir un nuevo intervalo aleatorio entre 5 y 8 segundos
+      const nuevoIntervalo = Phaser.Math.Between(5000, 8000);
+
+      // Configurar el siguiente glitch
+      this.time.delayedCall(nuevoIntervalo, activarGlitchConIntervalo);
+  };
+
+  // Inicia el primer glitch
+  activarGlitchConIntervalo();
+}
+
+//GRAVEDAD
+iniciarIntervaloGravedadReducida() {
+  console.log("Intervalo de gravedad reducida iniciado");
+
+  const aplicarGravedadReducida = () => {
+      this.reducirGravedad(); // Llamada al efecto principal
+
+      // Configurar el siguiente intervalo
+      const nuevoIntervalo = Phaser.Math.Between(10000, 15000); // 10-15 segundos
+      this.time.delayedCall(nuevoIntervalo, aplicarGravedadReducida);
+  };
+
+  // Inicia el primer efecto
+  aplicarGravedadReducida();
+}
+
+reducirGravedad() {
+  console.log("Gravedad reducida activada");
+
+  const gravedadOriginal = this.physics.world.gravity.y; // Guardar la gravedad original
+  const nuevaGravedad = gravedadOriginal * 0.7; // Reducir la gravedad al 50%
+
+  // Cambiar la gravedad del mundo
+  this.physics.world.gravity.y = nuevaGravedad;
+  console.log("Gravedad actual:", nuevaGravedad);
+
+  // Restaurar la gravedad tras 3 segundos
+  this.time.delayedCall(3000, () => {
+      this.physics.world.gravity.y = gravedadOriginal;
+      console.log("Gravedad restaurada:", gravedadOriginal);
+  });
+}
+
+//VELOCIDAD EXTRA
+aplicarVelocidadExtra() {
+  console.log("Efecto de velocidad extra aplicado");
+
+  // Aumentar la velocidad base y máxima de los jugadores
+  this.mario.baseSpeed += 30;
+  this.mario.topSpeed += 60;
+
+  this.yennefer.baseSpeed += 30;
+  this.yennefer.topSpeed += 60;
+
+  console.log("Velocidad Mario:", this.mario.baseSpeed, this.mario.topSpeed);
+  console.log("Velocidad Yennefer:", this.yennefer.baseSpeed, this.yennefer.topSpeed);
+}
+
+//SALTO AUMENTADO
+aplicarSaltoExtra() {
+  console.log("Efecto de salto extra aplicado");
+
+  // Aumentar la fuerza del salto de los jugadores
+  this.mario.baseJumpStrength += 100;
+  this.yennefer.baseJumpStrength += 100;
+
+  console.log("Fuerza de salto Mario:", this.mario.baseJumpStrength);
+  console.log("Fuerza de salto Yennefer:", this.yennefer.baseJumpStrength);
+}
+
+//VIDA EXTRA
+aplicarVidaExtra() {
+  console.log("Efecto de vida extra aplicado");
+
+  // Aumentar la vida máxima y actual de los jugadores
+  this.mario.maxHp += 1;
+  this.mario.hp = this.mario.maxHp;
+
+  this.yennefer.maxHp += 1;
+  this.yennefer.hp = this.yennefer.maxHp;
+
+  console.log("Vida Mario:", this.mario.hp, "/", this.mario.maxHp);
+  console.log("Vida Yennefer:", this.yennefer.hp, "/", this.yennefer.maxHp);
+}
+
+//CONTROLES HORIZONTALES INVERTIDOS
+invertirControlesHorizontales() {
+  [this.mario, this.yennefer].forEach((jugador) => {
+    
+      this.controlesHorizontalesInvertidos=true;
+  });
+}
+
+//CONTROLES VERTICALES INVERTIDOS
+invertirControlesVerticales() {
+  [this.mario, this.yennefer].forEach((jugador) => {
+    
+      this.controlesVerticalesInvertidos=true;
+  });
+}
+//__________________________________CARTAS Y EFECTOS______________________________________________
+
+
+
+
 
   damageMario(mario, tile) { 
     if (tile.properties.trampa) { mario.damage(); }
@@ -353,17 +608,7 @@ export default class GameScene extends Phaser.Scene {
       player.slowDown(0.5, 3000); // Aplicar la ralentización al jugador usando el nuevo método
       console.log(`${player.constructor.name} colisionó con un champiñón y fue ralentizado.`);
     }
-    // if (player instanceof Mario || player instanceof Yennefer) {
-    //   player.setVelocityX(player.body.velocity.x * 0.5); // Ralentizar al jugador
-    //   console.log(player.body.velocity.x);
-    //   console.log(`${player.constructor.name} colisionó con un champiñón y fue ralentizado.`);
-    //   //Aplicar el efecto de ralentización durante 3 segundos
-    //   player.scene.time.delayedCall(3000, () => {
-    //     if (player.active) {
-    //       player.setVelocityX(player.body.velocity.x > 0 ? player.body.velocity.x * 2 : -player.body.velocity.x * 2); // Restaurar la velocidad del jugador
-    //     }
-    //   });
-    // }
+
   }
 
   marioWin() {

@@ -4,7 +4,7 @@ import Fireball from "./Fireball.js";
 
 export default class Yennefer extends Phaser.Physics.Arcade.Sprite
 {
-    constructor (scene, x, y, sfx)
+    constructor (scene, x, y, sfx,invertirControlesHorizontales,invertirControlesVerticales)
     {
         super(scene, x, y, 'yennefer');
 
@@ -34,18 +34,45 @@ export default class Yennefer extends Phaser.Physics.Arcade.Sprite
 
         this.isSlowed=false;
         
+        
         this.powerup = false;
 
         this.maxHp = 4;
         this.hp = 4;
 
         this.cursors = this.scene.input.keyboard.createCursorKeys();
-        this.cursors = this.scene.input.keyboard.addKeys({
-            up:Phaser.Input.Keyboard.KeyCodes.UP,
-            left:Phaser.Input.Keyboard.KeyCodes.LEFT,
-            right:Phaser.Input.Keyboard.KeyCodes.RIGHT,
-            fireball:Phaser.Input.Keyboard.KeyCodes.DOWN
-        });
+
+        console.log("CONTROLES DE YENNEFER INVERTIDOS: ", this.invertirControlesHorizontales)
+
+        if(invertirControlesHorizontales){
+            console.log ("controles invertidos")
+            this.cursors = this.scene.input.keyboard.addKeys({
+                up:Phaser.Input.Keyboard.KeyCodes.UP,
+                left:Phaser.Input.Keyboard.KeyCodes.RIGHT,
+                right:Phaser.Input.Keyboard.KeyCodes.LEFT,
+                fireball:Phaser.Input.Keyboard.KeyCodes.DOWN
+            });
+        }
+        else if(invertirControlesVerticales)
+            {
+                this.cursors = this.scene.input.keyboard.addKeys({
+                    up:Phaser.Input.Keyboard.KeyCodes.DOWN,
+                    left:Phaser.Input.Keyboard.KeyCodes.LEFT,
+                    right:Phaser.Input.Keyboard.KeyCodes.RIGHT,
+                    fireball:Phaser.Input.Keyboard.KeyCodes.UP
+                });
+        }
+        else{
+            console.log ("controles normales")
+
+            this.cursors = this.scene.input.keyboard.addKeys({
+                up:Phaser.Input.Keyboard.KeyCodes.UP,
+                left:Phaser.Input.Keyboard.KeyCodes.LEFT,
+                right:Phaser.Input.Keyboard.KeyCodes.RIGHT,
+                fireball:Phaser.Input.Keyboard.KeyCodes.DOWN
+            });
+        }
+        
 
         this.anims.create({
             key: "yen_idle",
@@ -182,16 +209,16 @@ export default class Yennefer extends Phaser.Physics.Arcade.Sprite
             if (this.body.onFloor()) {
                 //Primer salto
                 if(this.isSlowed==true){
-                    this.setVelocityY(-this.baseJumpStrength)
+                    this.setVelocityY(-this.baseJumpStrength/3.5)
                 }
-                else{this.setVelocityY(-this.baseJumpStrength);}
+                else{this.setVelocityY(-this.baseJumpStrength/2);}
             }
             else if (!this.hasAirJumped) {
                 //Salto en aire
                 if(this.isSlowed==true){
-                    this.setVelocityY(-this.baseJumpStrength)
+                    this.setVelocityY(-this.baseJumpStrength/3.5)
                 }
-                else{this.setVelocityY(-this.baseJumpStrength);}
+                else{this.setVelocityY(-this.baseJumpStrength/2);}
                 this.hasAirJumped = true;
             }
         }

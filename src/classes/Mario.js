@@ -1,6 +1,6 @@
 export default class Mario extends Phaser.Physics.Arcade.Sprite
 {
-    constructor (scene, x, y, sfx)
+    constructor (scene, x, y, sfx,invertirControlesHorizontales,invertirControlesVerticales)
     {
         super(scene, x, y, 'mario');
 
@@ -31,6 +31,8 @@ export default class Mario extends Phaser.Physics.Arcade.Sprite
         this.isdamaged = false;
         this.isSlowed = false;
         this.isSliding = false;
+        
+       
 
         this.powerup = false;
 
@@ -39,12 +41,33 @@ export default class Mario extends Phaser.Physics.Arcade.Sprite
 
         this.cursors = this.scene.input.keyboard.createCursorKeys();
         //Añadi esto para para cambiar a Mario a WASD - Davide
-        this.cursors = this.scene.input.keyboard.addKeys({
-            up:Phaser.Input.Keyboard.KeyCodes.W,
-            left:Phaser.Input.Keyboard.KeyCodes.A,
-            right:Phaser.Input.Keyboard.KeyCodes.D,
-            boost:Phaser.Input.Keyboard.KeyCodes.S
-        });
+        if(invertirControlesHorizontales){
+            console.log ("controles invertidos")
+            this.cursors = this.scene.input.keyboard.addKeys({
+                up:Phaser.Input.Keyboard.KeyCodes.W,
+                left:Phaser.Input.Keyboard.KeyCodes.D,
+                right:Phaser.Input.Keyboard.KeyCodes.A,
+                fireball:Phaser.Input.Keyboard.KeyCodes.S
+            });
+        }
+        else if (invertirControlesVerticales){
+            this.cursors = this.scene.input.keyboard.addKeys({
+                up:Phaser.Input.Keyboard.KeyCodes.S,
+                left:Phaser.Input.Keyboard.KeyCodes.A,
+                right:Phaser.Input.Keyboard.KeyCodes.D,
+                fireball:Phaser.Input.Keyboard.KeyCodes.W
+            });
+        }
+        else{
+            console.log ("controles normales")
+
+            this.cursors = this.scene.input.keyboard.addKeys({
+                up:Phaser.Input.Keyboard.KeyCodes.W,
+                left:Phaser.Input.Keyboard.KeyCodes.A,
+                right:Phaser.Input.Keyboard.KeyCodes.D,
+                fireball:Phaser.Input.Keyboard.KeyCodes.S
+            });
+        }
 
         this.anims.create({
             key: "mar_idle",
@@ -155,6 +178,7 @@ export default class Mario extends Phaser.Physics.Arcade.Sprite
     }
 
     inputManager() {
+
         if (this.cursors.left.isDown && !this.cursors.right.isDown) {
             if(this.isSlowed==true){
                 this.body.maxSpeed = this.topSpeed / 2;
@@ -174,6 +198,7 @@ export default class Mario extends Phaser.Physics.Arcade.Sprite
             this.walking = true;
         }
         else if (this.cursors.right.isDown && !this.cursors.left.isDown) {
+
             if(this.isSlowed==true){
                 this.body.maxSpeed = this.topSpeed / 2;
                 this.setAccelerationX(this.accelSpeed);
@@ -207,9 +232,9 @@ export default class Mario extends Phaser.Physics.Arcade.Sprite
     
         if (Phaser.Input.Keyboard.JustDown(this.cursors.up) && this.body.onFloor()) {
             if(this.isSlowed==true){
-                this.setVelocityY(-this.baseJumpStrength * 2)
+                this.setVelocityY(-this.baseJumpStrength/3.5)
             }
-            else{this.setVelocityY(-this.baseJumpStrength);}
+            else{this.setVelocityY(-this.baseJumpStrength/2);}
         }
 
         if (!this.body.onFloor()) {
