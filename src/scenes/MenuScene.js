@@ -15,8 +15,17 @@ export default class MenuScene extends Phaser.Scene {
     }
 
     preload() {
+        this.load.image("bg1", "/assets/images/Cave_BG/1.png");
+        this.load.image("bg2", "/assets/images/Cave_BG/2.png");
+        this.load.image("bg3", "/assets/images/Cave_BG/3fx.png");
+        this.load.image("bg4", "/assets/images/Cave_BG/4.png");
+        this.load.image("bg5", "/assets/images/Cave_BG/5.png");
+        this.load.image("bg6", "/assets/images/Cave_BG/6fx.png");
+        this.load.image("bg7", "/assets/images/Cave_BG/7.png");
+        this.load.image("bg8", "/assets/images/Cave_BG/8fx.png");
+        this.load.image("bg9", "/assets/images/Cave_BG/9.png");
+
         this.load.image("BStart", "/assets/images/BStart.png");
-        this.load.image("background", "/assets/images/space.png");
         this.load.image("portrait", "/assets/images/Portrait_Border.png");
         this.load.spritesheet("pMario", "/assets/images/Portrait_Mario.png", { frameHeight: 27, frameWidth: 18});
         this.load.image("pYennefer", "/assets/images/Yennefer_Portada_Recortado.png");
@@ -28,7 +37,12 @@ export default class MenuScene extends Phaser.Scene {
 
     create() {
         //Background
-            this.add.image(400, 250, 'background');
+            const backgroundImages = ["bg1", "bg2", "bg3", "bg4", "bg5", "bg6", "bg7", "bg8", "bg9"];
+            this.backgroundGroup = this.add.group();
+            for (const bg of backgroundImages) {
+                const sprite = this.add.tileSprite(400, 300, 800, 600, bg).setOrigin(0.5, 0.5);
+                this.backgroundGroup.add(sprite).setTint(0x888888);
+            }
 
             //const randomBinary = Math.round(Math.random());
             const randomBinary = (Math.random() < 0.1) ? 1 : 0;
@@ -91,6 +105,10 @@ export default class MenuScene extends Phaser.Scene {
         }
         this.lastSfxVolume = this.sound.sfxVolume;
         this.lastBgmVolume = this.sound.bgmVolume;
+
+        this.backgroundGroup.getChildren().forEach((backgroundLayer, index) => {
+            backgroundLayer.tilePositionX += (index + 1) * 0.01;
+        });
     }
 
     CardSelect() {
