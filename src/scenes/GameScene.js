@@ -64,7 +64,7 @@ export default class GameScene extends Phaser.Scene {
   create() {
 
     this.physics.world.setBoundsCollision(true, true, true, true);
-    this.physics.world.setBounds(0, 0, 4000, 600);
+    this.physics.world.setBounds(0, 0, 7000, 600);
     this.screenWidth = this.scale.width;
     this.screenHeight = this.scale.height;
     this.worldWidth = this.physics.world.bounds.width;   
@@ -587,7 +587,7 @@ activarDeslizamiento() {
 
   damageMario(mario, tile) { 
     if (tile.properties.trampa) { mario.damage(); }
-    if (tile.properties.trampa && true) {mario.bounceOnLava()}; // cambiar true a si es lava en el suelo
+    if (tile.properties.trampa && tile.properties.Flava) {mario.bounceOnLava()}; // cambiar true a si es lava en el suelo
   }
 
   fireballHitsMario(mario, fireball) {
