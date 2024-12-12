@@ -56,8 +56,8 @@ export default class GameScene extends Phaser.Scene {
     this.load.audio("sfx_explosion_1", "/assets/sfx/explosion_1.mp3");
     this.load.audio("sfx_explosion_2", "/assets/sfx/explosion_2.mp3");
 
-    this.load.audio("bgm_1", "/assets/bgm/01_Press_Play.mp3");
-    this.load.audio("bgm_2", "/assets/bgm/06_Punch_Out.mp3");
+    this.load.audio("bgm_3", "/assets/bgm/01_Press_Play.mp3");
+    this.load.audio("bgm_4", "/assets/bgm/06_Punch_Out.mp3");
   }
 
   create() {
@@ -94,11 +94,11 @@ export default class GameScene extends Phaser.Scene {
       this.backgroundGroupMario = this.add.group();
       this.backgroundGroupYennefer = this.add.group();
       for (const bg of backgroundImages) {
-        const sprite = this.add.tileSprite(400, 300, 800, 600, bg).setOrigin(0.5, 0.5);
+        const sprite = this.add.tileSprite(400, 300, this.worldWidth, 600, bg).setOrigin(0.5, 0.5);
         this.backgroundGroupMario.add(sprite);
       }
       for (const bg of backgroundImages) {
-        const sprite = this.add.tileSprite(400, 300, 800, 600, bg).setOrigin(0.5, 0.5);
+        const sprite = this.add.tileSprite(400, 300, this.worldWidth, 600, bg).setOrigin(0.5, 0.5);
         this.backgroundGroupYennefer.add(sprite);
       }
     //Fin Background
@@ -159,11 +159,15 @@ export default class GameScene extends Phaser.Scene {
 
     //BGM
       this.bgm = {
-        bgm1: this.sound.add("bgm_1"),
-        bgm2: this.sound.add("bgm_2"),
+        bgm3: this.sound.add("bgm_3", { loop: true }),
+        bgm4: this.sound.add("bgm_4", { loop: true }),
       }
 
-      this.bgm.bgm1.play();
+      const bgmKeys = Object.keys(this.bgm);
+      const randomBgmKey = bgmKeys[Math.floor(Math.random() * bgmKeys.length)];
+      this.selectedBgm = this.bgm[randomBgmKey];
+      
+      this.selectedBgm.play();
 
       this.adjustVolumeSettings();
     //Fin BGM
@@ -365,12 +369,14 @@ export default class GameScene extends Phaser.Scene {
   marioWin() {
     //Añadan animaciones antes de cambiar de escena
     console.log("Colision!!!");
+    this.selectedBgm.stop();
     this.WinnerP1 = true;
     this.scene.switch('victory', { WinnerP1: this.WinnerP1, cartasSeleccionadas: this.cartasSeleccionadas });
   }
 
   yenneferWin() {
     console.log("Yennefer");
+    this.selectedBgm.stop();
     this.WinnerP1 = false;
     this.scene.switch('victory', { WinnerP1: this.WinnerP1, cartasSeleccionadas: this.cartasSeleccionadas });
   }

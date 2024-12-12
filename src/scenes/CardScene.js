@@ -25,6 +25,8 @@ export default class CardScene extends Phaser.Scene {
         this.load.image("cartaMapa3", "assets/images/Cartas/RelampagoEsc.jpg");
         this.load.image("continuar", "assets/images/BContinuar.png");
         this.load.image("inicio", "assets/images/iniciarPartida.jpg");
+
+        this.load.audio("bgm_2", "/assets/bgm/20_Pixel_Party.mp3");
     }
 
     create() {
@@ -61,6 +63,15 @@ export default class CardScene extends Phaser.Scene {
                     this.transicionarAlJuego();
                 }
             });
+
+
+        this.bgm = {
+            bgm2: this.sound.add("bgm_2", { loop: true })
+        }
+
+        this.bgm.bgm2.play();
+
+        this.adjustVolumeSettings();
     }
 
     crearCartas(tipo, x, cartas) {
@@ -153,6 +164,7 @@ export default class CardScene extends Phaser.Scene {
 
         // Mostrar cartas seleccionadas con descripciones antes de iniciar el juego
         this.mostrarResumenCartas(cartasSeleccionadas, () => {
+            this.bgm.bgm2.stop();
             this.scene.start("game", { cartasSeleccionadas });
         });
     }
@@ -186,8 +198,6 @@ export default class CardScene extends Phaser.Scene {
             .setOrigin(0.5)
             .setInteractive()
             .on("pointerdown", callback);
-
-            
         });
     }
 
@@ -211,6 +221,29 @@ export default class CardScene extends Phaser.Scene {
         }
 
         return lines.join("\n");
+    }
+
+    adjustVolumeSettings() {
+        let sfxVolume = parseFloat(localStorage.getItem('sfxVolume')) / 100;
+        if (isNaN(sfxVolume)) {
+          sfxVolume = 1;
+        }
+        this.setSfxVolume(sfxVolume);
+        let bgmVolume = parseFloat(localStorage.getItem('bgmVolume')) / 100;
+        if (isNaN(bgmVolume)) {
+          bgmVolume = 1;
+        }
+        this.setBgmVolume(bgmVolume);
+    }
+    
+    setSfxVolume(volume) {
+
+    }
+    
+    setBgmVolume(volume) {
+        for (let key in this.bgm) {
+            this.bgm[key].setVolume(volume);
+        }
     }
 }
 

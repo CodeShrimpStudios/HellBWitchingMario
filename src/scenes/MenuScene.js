@@ -10,7 +10,7 @@ export default class MenuScene extends Phaser.Scene {
     }
 
     init() {
-        this.savedbgmVolume = localStorage.getItem('bgmVolume') || 100;
+        this.savedbgmVolume = localStorage.getItem('bgmVolume') || 50;
         this.savedsfxVolume = localStorage.getItem('sfxVolume') || 100;
     }
 
@@ -18,8 +18,10 @@ export default class MenuScene extends Phaser.Scene {
         this.load.image("BStart", "/assets/images/BStart.png");
         this.load.image("background", "/assets/images/space.png");
         this.load.image("portrait", "/assets/images/Portrait_Border.png");
-        this.load.spritesheet("pMario", "/assets/images/Portrait_Mario.png", { frameHeight: 27, frameWidth: 18}) ;
-        this.load.image("pYennefer", "/assets/images/Yennefer_Portada_Recortado.png")
+        this.load.spritesheet("pMario", "/assets/images/Portrait_Mario.png", { frameHeight: 27, frameWidth: 18});
+        this.load.image("pYennefer", "/assets/images/Yennefer_Portada_Recortado.png");
+
+        this.load.audio("bgm_1", "/assets/bgm/13_Mana_Refill.mp3");
     }
 
     create() {
@@ -63,21 +65,30 @@ export default class MenuScene extends Phaser.Scene {
 
         //BGM
             this.bgm = {
-
+                bgm1: this.sound.add("bgm_1", { loop: true })
             }
 
+            this.bgm.bgm1.play();
+
             this.adjustVolumeSettings();
+            this.lastSfxVolume = this.sound.sfxVolume;
+            this.lastBgmVolume = this.sound.bgmVolume;
         //Fin BGM
     }
 
     update() {
-
+        if (this.lastSfxVolume != this.sound.sfxVolume || this.lastBgmVolume != this.sound.bgmVolume) {
+            this.adjustVolumeSettings();
+        }
+        this.lastSfxVolume = this.sound.sfxVolume;
+        this.lastBgmVolume = this.sound.bgmVolume;
     }
 
     CardSelect() {
         console.log("boton");
         //this.scene.remove('MenuScene'); // I remove the scene, because I will add again when start the game
         //this.scene.stop('scene_ui');
+        this.bgm.bgm1.stop();
         this.scene.switch('card');
     }
 
@@ -125,7 +136,6 @@ export default class MenuScene extends Phaser.Scene {
             this.sound.sfxVolume = volumePercentage / 100;
             localStorage.setItem('sfxVolume', volumePercentage);
         });
-
 
         const controlsP1Text = this.add.text(400, 350, 'Controls Player 1: WASD', { fontSize: '24px', fill: '#ffffff' }).setOrigin(0.5);
         const controlsP2Text = this.add.text(400, 400, 'Controls Player 2: Arrows', { fontSize: '24px', fill: '#ffffff' }).setOrigin(0.5);
