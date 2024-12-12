@@ -67,7 +67,7 @@ export default class GameScene extends Phaser.Scene {
   create() {
 
     this.physics.world.setBoundsCollision(true, true, true, true);
-    this.physics.world.setBounds(0, 0, 7000, 600);
+    this.physics.world.setBounds(0, 0, 7264, 600);
     this.screenWidth = this.scale.width;
     this.screenHeight = this.scale.height;
     this.worldWidth = this.physics.world.bounds.width;   
