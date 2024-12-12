@@ -68,7 +68,8 @@ export default class GameScene extends Phaser.Scene {
     this.screenWidth = this.scale.width;
     this.screenHeight = this.scale.height;
     this.worldWidth = this.physics.world.bounds.width;   
-    this.controlesA = false;
+    this.controlesHorizontalesInvertidos = false;
+    this.controlesVerticalesInvertidos = false;
     
 
     //Background
@@ -158,14 +159,22 @@ export default class GameScene extends Phaser.Scene {
       }
   });
 
+  this.cartasSeleccionadas.forEach((carta) => {
+     
+    if (carta.efecto === "invertirArribaAbajo") {
+      console.log("Aplicando efecto: Invertir controles arriba-abajo");
+      this.invertirControlesVerticales();
+    }
+});
+
   //_______________________CARTAS DE CONTROLES___________________________
     //Personajes & Fisicas
-      this.mario = new Mario(this, 0, 400, this.sfx_mario,this.controlesA);
+      this.mario = new Mario(this, 0, 400, this.sfx_mario,this.controlesHorizontalesInvertidos,this.controlesVerticalesInvertidos);
       this.physics.add.collider(this.mario, this.groundLayer);
       this.physics.add.overlap(this.mario, this.trampasLayer, this.damageMario, null, this);
       //Voy a dejar groundLayer comentado hasta que funcione correctamente.
 
-      this.yennefer = new Yennefer(this, 600, 370, this.sfx_yennefer,this.controlesA);
+      this.yennefer = new Yennefer(this, 600, 370, this.sfx_yennefer,this.controlesHorizontalesInvertidos,this.controlesVerticalesInvertidos);
       this.physics.add.collider(this.yennefer, this.groundLayer);
       this.physics.add.collider(this.mario, this.yennefer, this.marioWin, null, this);
 
@@ -539,7 +548,15 @@ aplicarVidaExtra() {
 invertirControlesHorizontales() {
   [this.mario, this.yennefer].forEach((jugador) => {
     
-      this.controlesA=true;
+      this.controlesHorizontalesInvertidos=true;
+  });
+}
+
+//CONTROLES VERTICALES INVERTIDOS
+invertirControlesVerticales() {
+  [this.mario, this.yennefer].forEach((jugador) => {
+    
+      this.controlesVerticalesInvertidos=true;
   });
 }
 //__________________________________CARTAS Y EFECTOS______________________________________________

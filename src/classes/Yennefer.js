@@ -4,7 +4,7 @@ import Fireball from "./Fireball.js";
 
 export default class Yennefer extends Phaser.Physics.Arcade.Sprite
 {
-    constructor (scene, x, y, sfx,invertirControlesHorizontales)
+    constructor (scene, x, y, sfx,invertirControlesHorizontales,invertirControlesVerticales)
     {
         super(scene, x, y, 'yennefer');
 
@@ -52,6 +52,15 @@ export default class Yennefer extends Phaser.Physics.Arcade.Sprite
                 right:Phaser.Input.Keyboard.KeyCodes.LEFT,
                 fireball:Phaser.Input.Keyboard.KeyCodes.DOWN
             });
+        }
+        else if(invertirControlesVerticales)
+            {
+                this.cursors = this.scene.input.keyboard.addKeys({
+                    up:Phaser.Input.Keyboard.KeyCodes.DOWN,
+                    left:Phaser.Input.Keyboard.KeyCodes.LEFT,
+                    right:Phaser.Input.Keyboard.KeyCodes.RIGHT,
+                    fireball:Phaser.Input.Keyboard.KeyCodes.UP
+                });
         }
         else{
             console.log ("controles normales")

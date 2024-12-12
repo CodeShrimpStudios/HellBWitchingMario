@@ -1,6 +1,6 @@
 export default class Mario extends Phaser.Physics.Arcade.Sprite
 {
-    constructor (scene, x, y, sfx,invertirControlesHorizontales)
+    constructor (scene, x, y, sfx,invertirControlesHorizontales,invertirControlesVerticales)
     {
         super(scene, x, y, 'mario');
 
@@ -50,14 +50,22 @@ export default class Mario extends Phaser.Physics.Arcade.Sprite
                 fireball:Phaser.Input.Keyboard.KeyCodes.S
             });
         }
+        else if (invertirControlesVerticales){
+            this.cursors = this.scene.input.keyboard.addKeys({
+                up:Phaser.Input.Keyboard.KeyCodes.S,
+                left:Phaser.Input.Keyboard.KeyCodes.A,
+                right:Phaser.Input.Keyboard.KeyCodes.D,
+                fireball:Phaser.Input.Keyboard.KeyCodes.W
+            });
+        }
         else{
             console.log ("controles normales")
 
             this.cursors = this.scene.input.keyboard.addKeys({
                 up:Phaser.Input.Keyboard.KeyCodes.W,
                 left:Phaser.Input.Keyboard.KeyCodes.A,
-                right:Phaser.Input.Keyboard.KeyCodes.S,
-                fireball:Phaser.Input.Keyboard.KeyCodes.D
+                right:Phaser.Input.Keyboard.KeyCodes.D,
+                fireball:Phaser.Input.Keyboard.KeyCodes.S
             });
         }
 
