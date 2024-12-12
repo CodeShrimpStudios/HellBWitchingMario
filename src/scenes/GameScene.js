@@ -247,56 +247,6 @@ export default class GameScene extends Phaser.Scene {
     //Fin Personajes & Fisicas
 
 
-    //Camera
-      this.cameras.main.setSize(400, 600)
-        .setZoom(2.25)
-        .startFollow(this.mario)
-        .setBounds(0, 0, this.worldWidth, 600)
-        .ignore([
-          this.progressBarBg,
-          this.progressBar,
-          this.marioIndicator,
-          this.yenneferIndicator,
-          this.fireballIcon,
-          this.cooldownCircle,
-          this.marioHearts,
-          this.yenneferHearts,
-          this.backgroundGroupYennefer
-      ]);
-
-      const camera2 = this.cameras.add(400, 0, 400, 600, false, 'camera2')
-        .setZoom(2.25)
-        .startFollow(this.yennefer)
-        .setBounds(0, 0, this.worldWidth, 600)
-        .ignore([
-          this.progressBarBg,
-          this.progressBar,
-          this.marioIndicator,
-          this.yenneferIndicator,
-          this.fireballIcon,
-          this.cooldownCircle,
-          this.marioHearts,
-          this.yenneferHearts,
-          this.backgroundGroupMario
-      ]);
-
-      this.uiCamera = this.cameras.add(0, 0, this.screenWidth, this.screenHeight)
-      .setScroll(0, 0)
-      .ignore([
-        this.map,
-        this.bgLayer,
-        this.groundLayer,
-        this.trampasLayer,
-        this.mario,
-        this.yennefer,
-        this.powerups,
-        this.mushroomGroup,
-        this.backgroundGroupMario,
-        this.backgroundGroupYennefer
-      ]);
-    //Fin Camera
-
-
     //CARTAS Y EFECTOS EN CREATE
       const jugador = [this.mario, this.yennefer];
       this.cartasSeleccionadas.forEach((carta) => {
@@ -378,6 +328,56 @@ export default class GameScene extends Phaser.Scene {
         );
       }
     //Fin UI
+
+
+    //Camera
+      this.cameras.main.setSize(400, 600)
+        .setZoom(2.25)
+        .startFollow(this.mario)
+        .setBounds(0, 0, this.worldWidth, 600)
+        .ignore([
+          this.progressBarBg,
+          this.progressBar,
+          this.marioIndicator,
+          this.yenneferIndicator,
+          this.fireballIcon,
+          this.cooldownCircle,
+          this.marioHearts,
+          this.yenneferHearts,
+          this.backgroundGroupYennefer
+      ]);
+
+      const camera2 = this.cameras.add(400, 0, 400, 600, false, 'camera2')
+        .setZoom(2.25)
+        .startFollow(this.yennefer)
+        .setBounds(0, 0, this.worldWidth, 600)
+        .ignore([
+          this.progressBarBg,
+          this.progressBar,
+          this.marioIndicator,
+          this.yenneferIndicator,
+          this.fireballIcon,
+          this.cooldownCircle,
+          this.marioHearts,
+          this.yenneferHearts,
+          this.backgroundGroupMario
+      ]);
+
+      this.uiCamera = this.cameras.add(0, 0, this.screenWidth, this.screenHeight)
+        .setScroll(0, 0)
+        .ignore([
+          this.map,
+          this.bgLayer,
+          this.groundLayer,
+          this.trampasLayer,
+          this.mario,
+          this.yennefer,
+          this.powerups,
+          this.mushroomGroup,
+          this.backgroundGroupMario,
+          this.backgroundGroupYennefer
+      ]);
+    //Fin Camera
   }
 
 
@@ -586,7 +586,7 @@ export default class GameScene extends Phaser.Scene {
     [this.mario, this.yennefer].forEach((jugador) => {
         this.deslizamiento = true; // Activar deslizamiento
     });
-}
+  }
 
   //__________________________________CARTAS Y EFECTOS______________________________________________
 
