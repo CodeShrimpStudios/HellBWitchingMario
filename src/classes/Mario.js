@@ -1,6 +1,6 @@
 export default class Mario extends Phaser.Physics.Arcade.Sprite
 {
-    constructor (scene, x, y, sfx)
+    constructor (scene, x, y, sfx,invertirControlesHorizontales)
     {
         super(scene, x, y, 'mario');
 
@@ -31,8 +31,8 @@ export default class Mario extends Phaser.Physics.Arcade.Sprite
         this.isdamaged = false;
         this.isSlowed = false;
         this.isSliding = false;
-        this.invertirControlesHorizontales = false;
-        console.log(this.invertirControlesHorizontales);
+        
+       
 
         this.powerup = false;
 
@@ -41,12 +41,25 @@ export default class Mario extends Phaser.Physics.Arcade.Sprite
 
         this.cursors = this.scene.input.keyboard.createCursorKeys();
         //Añadi esto para para cambiar a Mario a WASD - Davide
-        this.cursors = this.scene.input.keyboard.addKeys({
-            up:Phaser.Input.Keyboard.KeyCodes.W,
-            left:Phaser.Input.Keyboard.KeyCodes.A,
-            right:Phaser.Input.Keyboard.KeyCodes.D,
-            boost:Phaser.Input.Keyboard.KeyCodes.S
-        });
+        if(invertirControlesHorizontales){
+            console.log ("controles invertidos")
+            this.cursors = this.scene.input.keyboard.addKeys({
+                up:Phaser.Input.Keyboard.KeyCodes.W,
+                left:Phaser.Input.Keyboard.KeyCodes.D,
+                right:Phaser.Input.Keyboard.KeyCodes.A,
+                fireball:Phaser.Input.Keyboard.KeyCodes.S
+            });
+        }
+        else{
+            console.log ("controles normales")
+
+            this.cursors = this.scene.input.keyboard.addKeys({
+                up:Phaser.Input.Keyboard.KeyCodes.W,
+                left:Phaser.Input.Keyboard.KeyCodes.A,
+                right:Phaser.Input.Keyboard.KeyCodes.S,
+                fireball:Phaser.Input.Keyboard.KeyCodes.D
+            });
+        }
 
         this.anims.create({
             key: "mar_idle",
@@ -154,44 +167,41 @@ export default class Mario extends Phaser.Physics.Arcade.Sprite
 
     inputManager() {
 
-        console.log("dentro de input invertir = ", this.invertirControlesHorizontales)
         if (this.cursors.left.isDown && !this.cursors.right.isDown) {
-            const direction = this.invertirControlesHorizontales ? -1 : 1;
             if(this.isSlowed==true){
                 this.body.maxSpeed = this.topSpeed / 2;
-                this.setAccelerationX(-this.accelSpeed*direction);
+                this.setAccelerationX(-this.accelSpeed);
             }
              else{
                 this.body.maxSpeed = this.topSpeed;
                 if (this.body.velocity.x > -this.baseSpeed) {
-                    this.setVelocityX(-this.baseSpeed*direction);
+                    this.setVelocityX(-this.baseSpeed);
                 }
-                this.setAccelerationX(-this.accelSpeed*direction);
+                this.setAccelerationX(-this.accelSpeed);
              }
             if(this.isdamaged == true){
                 this.body.velocity.x *= 0.2;
             }
-            this.flipX = -direction === -1;
+            this.flipX = true;
             this.walking = true;
         }
         else if (this.cursors.right.isDown && !this.cursors.left.isDown) {
-            const direction = this.invertirControlesHorizontales ? -1 : 1;
 
             if(this.isSlowed==true){
                 this.body.maxSpeed = this.topSpeed / 2;
-                this.setAccelerationX(this.accelSpeed*direction);
+                this.setAccelerationX(this.accelSpeed);
             }
             else{
                 this.body.maxSpeed = this.topSpeed;
                 if (this.body.velocity.x < this.baseSpeed) {
-                    this.setVelocityX(this.baseSpeed*direction);
+                    this.setVelocityX(this.baseSpeed);
                 }
-                this.setAccelerationX(this.accelSpeed*direction);
+                this.setAccelerationX(this.accelSpeed);
             }
             if(this.isdamaged == true){
                 this.body.velocity.x *= 0.2;
             }
-            this.flipX = direction === -1;
+            this.flipX = false;
             this.walking = true;
         } 
         else {

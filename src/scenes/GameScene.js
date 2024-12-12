@@ -68,6 +68,7 @@ export default class GameScene extends Phaser.Scene {
     this.screenWidth = this.scale.width;
     this.screenHeight = this.scale.height;
     this.worldWidth = this.physics.world.bounds.width;   
+    this.controlesA = false;
     
 
     //Background
@@ -148,15 +149,23 @@ export default class GameScene extends Phaser.Scene {
 
       this.adjustVolumeSettings();
     //Fin BGM
+//_________________________CARTAS DE CONTROLES_________________________
+    this.cartasSeleccionadas.forEach((carta) => {
+     
+      if (carta.efecto === "invertirIzquierdaDerecha") {
+        console.log("Aplicando efecto: Invertir controles izquierda-derecha");
+        this.invertirControlesHorizontales();
+      }
+  });
 
-
+  //_______________________CARTAS DE CONTROLES___________________________
     //Personajes & Fisicas
-      this.mario = new Mario(this, 0, 400, this.sfx_mario);
+      this.mario = new Mario(this, 0, 400, this.sfx_mario,this.controlesA);
       this.physics.add.collider(this.mario, this.groundLayer);
       this.physics.add.overlap(this.mario, this.trampasLayer, this.damageMario, null, this);
       //Voy a dejar groundLayer comentado hasta que funcione correctamente.
 
-      this.yennefer = new Yennefer(this, 600, 370, this.sfx_yennefer);
+      this.yennefer = new Yennefer(this, 600, 370, this.sfx_yennefer,this.controlesA);
       this.physics.add.collider(this.yennefer, this.groundLayer);
       this.physics.add.collider(this.mario, this.yennefer, this.marioWin, null, this);
 
@@ -327,10 +336,7 @@ const jugador = [this.mario, this.yennefer];
         console.log("Aplicando efecto: Vida extra");
         this.aplicarVidaExtra();
       }
-      if (carta.efecto === "invertirIzquierdaDerecha") {
-        console.log("Aplicando efecto: Invertir controles izquierda-derecha");
-        this.invertirControlesHorizontales();
-      }
+      
   });
 
 
@@ -531,10 +537,9 @@ aplicarVidaExtra() {
 
 //CONTROLES HORIZONTALES INVERTIDOS
 invertirControlesHorizontales() {
-  console.log("Efecto de invertir controles izquierda-derecha activado");
-
   [this.mario, this.yennefer].forEach((jugador) => {
-      jugador.invertirControlesHorizontales = true; // Activar la bandera de inversión
+    
+      this.controlesA=true;
   });
 }
 //__________________________________CARTAS Y EFECTOS______________________________________________

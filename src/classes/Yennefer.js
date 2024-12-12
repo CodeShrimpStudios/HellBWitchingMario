@@ -4,7 +4,7 @@ import Fireball from "./Fireball.js";
 
 export default class Yennefer extends Phaser.Physics.Arcade.Sprite
 {
-    constructor (scene, x, y, sfx)
+    constructor (scene, x, y, sfx,invertirControlesHorizontales)
     {
         super(scene, x, y, 'yennefer');
 
@@ -33,7 +33,7 @@ export default class Yennefer extends Phaser.Physics.Arcade.Sprite
         this.hasAirJumped = false;
 
         this.isSlowed=false;
-        this.invertirControlesHorizontales = false;
+        
         
         this.powerup = false;
 
@@ -41,12 +41,29 @@ export default class Yennefer extends Phaser.Physics.Arcade.Sprite
         this.hp = 4;
 
         this.cursors = this.scene.input.keyboard.createCursorKeys();
-        this.cursors = this.scene.input.keyboard.addKeys({
-            up:Phaser.Input.Keyboard.KeyCodes.UP,
-            left:Phaser.Input.Keyboard.KeyCodes.LEFT,
-            right:Phaser.Input.Keyboard.KeyCodes.RIGHT,
-            fireball:Phaser.Input.Keyboard.KeyCodes.DOWN
-        });
+
+        console.log("CONTROLES DE YENNEFER INVERTIDOS: ", this.invertirControlesHorizontales)
+
+        if(invertirControlesHorizontales){
+            console.log ("controles invertidos")
+            this.cursors = this.scene.input.keyboard.addKeys({
+                up:Phaser.Input.Keyboard.KeyCodes.UP,
+                left:Phaser.Input.Keyboard.KeyCodes.RIGHT,
+                right:Phaser.Input.Keyboard.KeyCodes.LEFT,
+                fireball:Phaser.Input.Keyboard.KeyCodes.DOWN
+            });
+        }
+        else{
+            console.log ("controles normales")
+
+            this.cursors = this.scene.input.keyboard.addKeys({
+                up:Phaser.Input.Keyboard.KeyCodes.UP,
+                left:Phaser.Input.Keyboard.KeyCodes.LEFT,
+                right:Phaser.Input.Keyboard.KeyCodes.RIGHT,
+                fireball:Phaser.Input.Keyboard.KeyCodes.DOWN
+            });
+        }
+        
 
         this.anims.create({
             key: "yen_idle",
