@@ -217,6 +217,7 @@ export default class Mario extends Phaser.Physics.Arcade.Sprite
             this.walking = true;
         } 
         else {
+            this.setAccelerationX(0);
             if (this.body.velocity.x > 5) {
                 this.body.velocity.x -= 5;
             }
