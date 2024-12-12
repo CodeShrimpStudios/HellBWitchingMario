@@ -9,8 +9,6 @@ export default class MenuScene extends Phaser.Scene {
     }
 
     preload() {
-        this.load.image("Victory1", "/assets/images/Victory1.png");
-        this.load.image("Victory2", "/assets/images/Victory1.png");//Cambiar a Player2 wins
         this.load.image("BContinuar", "/assets/images/BContinuar.png");
     }
 
@@ -37,6 +35,18 @@ export default class MenuScene extends Phaser.Scene {
             })
         }
 
+        this.sfx = {
+            sfx2: this.sound.add("sfx_2")
+        }
+    
+        this.bgm = {
+            bgm1: this.sound.add("bgm_1")
+        }
+
+        this.bgm.bgm1.play();
+
+        this.adjustVolumeSettings();
+
         let botonContinuar = this.add.image(screenCenterX, 2 * screenCenterY, "BContinuar").setScale(0.2).setInteractive();
         botonContinuar.on("pointerdown", () => {
             this.cambiarAMenu();
@@ -49,6 +59,33 @@ export default class MenuScene extends Phaser.Scene {
 
     cambiarAMenu() {
         console.log(this.cartasSeleccionadas);
+        this.bgm.bgm1.stop();
+
         this.scene.start("menu");
+    }
+
+    adjustVolumeSettings() {
+        let sfxVolume = parseFloat(localStorage.getItem('sfxVolume')) / 100;
+        if (isNaN(sfxVolume)) {
+          sfxVolume = 1;
+        }
+        this.setSfxVolume(sfxVolume);
+        let bgmVolume = parseFloat(localStorage.getItem('bgmVolume')) / 100;
+        if (isNaN(bgmVolume)) {
+          bgmVolume = 1;
+        }
+        this.setBgmVolume(bgmVolume);
+    }
+    
+    setSfxVolume(volume) {
+        for (let key in this.sfx) {
+            this.sfx[key].setVolume(volume);
+        }
+    }
+    
+    setBgmVolume(volume) {
+        for (let key in this.bgm) {
+            this.bgm[key].setVolume(volume);
+        }
     }
 }
