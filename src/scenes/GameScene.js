@@ -71,6 +71,8 @@ export default class GameScene extends Phaser.Scene {
     this.controlesHorizontalesInvertidos = false;
     this.controlesVerticalesInvertidos = false;
     this.deslizamiento=false;
+    this.potSalto=0;
+    this.potVel=0;
     
 
     //Background
@@ -178,17 +180,33 @@ this.cartasSeleccionadas.forEach((carta) => {
       this.activarDeslizamiento();
   }
 });
+this.cartasSeleccionadas.forEach((carta) => {
+  if (carta.efecto === "velocidadExtra") {
+    console.log("Aplicando efectoaaa: Velocidad extra");
+    this.aplicarVelocidadExtra();
+  }
+});
+this.cartasSeleccionadas.forEach((carta) => {
+  if (carta.efecto === "saltoExtra") {
+    console.log("Aplicando efectoaaaa: Salto extra");
+    this.aplicarSaltoExtra();
+  }
+});
+
+
+
+
 
   //_______________________CARTAS DE CONTROLES___________________________
     //Personajes & Fisicas
       this.mario = new Mario(this, 0, 400, this.sfx_mario,this.controlesHorizontalesInvertidos,
-        this.controlesVerticalesInvertidos,this.deslizamiento);
+        this.controlesVerticalesInvertidos,this.deslizamiento,this.potVel, this.potSalto);
       this.physics.add.collider(this.mario, this.groundLayer);
       this.physics.add.overlap(this.mario, this.trampasLayer, this.damageMario, null, this);
       //Voy a dejar groundLayer comentado hasta que funcione correctamente.
 
       this.yennefer = new Yennefer(this, 600, 370, this.sfx_yennefer,this.controlesHorizontalesInvertidos,
-        this.controlesVerticalesInvertidos,this.deslizamiento);
+        this.controlesVerticalesInvertidos,this.deslizamiento,this.potVel, this.potSalto);
       this.physics.add.collider(this.yennefer, this.groundLayer);
       this.physics.add.collider(this.mario, this.yennefer, this.marioWin, null, this);
 
@@ -347,14 +365,14 @@ const jugador = [this.mario, this.yennefer];
         console.log("Aplicando efecto: Gravedad reducida");
         this.iniciarIntervaloGravedadReducida(); // Llamar al intervalo
       }
-      if (carta.efecto === "velocidadExtra") {
-        console.log("Aplicando efecto: Velocidad extra");
-        this.aplicarVelocidadExtra();
-      }
-      if (carta.efecto === "saltoExtra") {
-        console.log("Aplicando efecto: Salto extra");
-        this.aplicarSaltoExtra();
-      }
+      // if (carta.efecto === "velocidadExtra") {
+      //   console.log("Aplicando efecto: Velocidad extra");
+      //   this.aplicarVelocidadExtra();
+      // }
+      // if (carta.efecto === "saltoExtra") {
+      //   console.log("Aplicando efecto: Salto extra");
+      //   this.aplicarSaltoExtra();
+      // }
       if (carta.efecto === "vidaExtra") {
         console.log("Aplicando efecto: Vida extra");
         this.aplicarVidaExtra();
@@ -520,23 +538,30 @@ reducirGravedad() {
 aplicarVelocidadExtra() {
   console.log("Efecto de velocidad extra aplicado");
 
+  this.potVel+=100;
   // Aumentar la velocidad base y máxima de los jugadores
-  this.mario.baseSpeed += 30;
-  this.mario.topSpeed += 60;
+  // this.mario.baseSpeed += 30;
+  // this.mario.topSpeed += 60;
 
-  this.yennefer.baseSpeed += 30;
-  this.yennefer.topSpeed += 60;
+  // this.yennefer.baseSpeed += 30;
+  // this.yennefer.topSpeed += 60;
 
   
 }
 
 //SALTO AUMENTADO
 aplicarSaltoExtra() {
-  console.log("Efecto de salto extra aplicado");
 
-  // Aumentar la fuerza del salto de los jugadores
-  this.mario.baseJumpStrength += 100;
-  this.yennefer.baseJumpStrength += 100;
+
+  this.potSalto+=500;
+  // console.log("Efecto de salto extra aplicado");
+  // console.log("salto mario antes: ",this.mario.baseJumpStrength)
+  // console.log("salto yennefer antes: ",this.yennefer.baseJumpStrength)
+  // // Aumentar la fuerza del salto de los jugadores
+  // this.mario.baseJumpStrength += 200;
+  // this.yennefer.baseJumpStrength += 3000;
+  // console.log("salto mario despues: ",this.mario.baseJumpStrength)
+  // console.log("salto yennefer despues: ",this.yennefer.baseJumpStrength)
 
   
 }
@@ -622,7 +647,7 @@ activarDeslizamiento() {
     console.log(player.body.velocity.x);
     if (player instanceof Mario || player instanceof Yennefer) {
       player.slowDown(0.5, 3000); // Aplicar la ralentización al jugador usando el nuevo método
-      console.log(`${player.constructor.name} colisionó con un champiñón y fue ralentizado.`);
+      //console.log(`${player.constructor.name} colisionó con un champiñón y fue ralentizado.`);
     }
 
   }

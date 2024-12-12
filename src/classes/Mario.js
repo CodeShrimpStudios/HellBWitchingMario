@@ -1,6 +1,6 @@
 export default class Mario extends Phaser.Physics.Arcade.Sprite
 {
-    constructor (scene, x, y, sfx,invertirControlesHorizontales,invertirControlesVerticales,deslizamiento)
+    constructor (scene, x, y, sfx,invertirControlesHorizontales,invertirControlesVerticales,deslizamiento,velocidad,salto)
     {
         super(scene, x, y, 'mario');
 
@@ -11,9 +11,9 @@ export default class Mario extends Phaser.Physics.Arcade.Sprite
         this.body.setSize(16, 16);
         this.body.setOffset(0, 2);
         this.baseSpeed = 50;
-        this.topSpeed = 250;
+        this.topSpeed = 250+velocidad;
         this.accelSpeed = 200;
-        this.baseJumpStrength = 400;
+        this.baseJumpStrength = 400+salto;
 
         this.setCollideWorldBounds(true);
 
@@ -217,7 +217,7 @@ export default class Mario extends Phaser.Physics.Arcade.Sprite
             this.walking = true;
         } 
         else {
-            console.log("deslizamiento: ", this.isSliding)
+           // console.log("deslizamiento: ", this.isSliding)
             this.setAccelerationX(0);
             if (this.body.velocity.x > 5) {
                 this.body.velocity.x -= 5;
@@ -240,7 +240,7 @@ export default class Mario extends Phaser.Physics.Arcade.Sprite
     
         if (Phaser.Input.Keyboard.JustDown(this.cursors.up) && this.body.onFloor()) {
             if(this.isSlowed==true){
-                this.setVelocityY(-this.baseJumpStrength/3.5)
+                this.setVelocityY(-this.baseJumpStrength/2.5)
             }
             else{this.setVelocityY(-this.baseJumpStrength/2);}
         }

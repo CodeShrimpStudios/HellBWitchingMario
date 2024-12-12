@@ -4,7 +4,7 @@ import Fireball from "./Fireball.js";
 
 export default class Yennefer extends Phaser.Physics.Arcade.Sprite
 {
-    constructor (scene, x, y, sfx,invertirControlesHorizontales,invertirControlesVerticales,deslizamiento)
+    constructor (scene, x, y, sfx,invertirControlesHorizontales,invertirControlesVerticales,deslizamiento,velocidad,salto)
     {
         super(scene, x, y, 'yennefer');
 
@@ -16,9 +16,11 @@ export default class Yennefer extends Phaser.Physics.Arcade.Sprite
         this.body.setSize((16) * 3/2, (16) * 3/2);
         this.body.setOffset(33, 8);
         this.baseSpeed = 50;
-        this.topSpeed = 175;
+        this.topSpeed = 175+velocidad;
         this.accelSpeed = 200;
-        this.baseJumpStrength = 400;
+        this.baseJumpStrength = 400+salto;
+
+        console.log("Potencia trasConstructor",this.baseJumpStrength);
 
         this.setCollideWorldBounds(true);
 
@@ -193,7 +195,7 @@ export default class Yennefer extends Phaser.Physics.Arcade.Sprite
             this.walking = true;
         } 
         else {
-            console.log("deslizamiento yennefer: ", this.isSliding)
+            //console.log("deslizamiento yennefer: ", this.isSliding)
             this.setAccelerationX(0);
             if (this.body.velocity.x > 5) {
                 this.body.velocity.x -= 5;
@@ -217,7 +219,7 @@ export default class Yennefer extends Phaser.Physics.Arcade.Sprite
             if (this.body.onFloor()) {
                 //Primer salto
                 if(this.isSlowed==true){
-                    this.setVelocityY(-this.baseJumpStrength/3.5)
+                    this.setVelocityY(-this.baseJumpStrength/2.5)
                 }
                 else{this.setVelocityY(-this.baseJumpStrength/2);}
             }
