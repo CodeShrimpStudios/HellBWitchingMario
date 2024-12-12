@@ -56,6 +56,9 @@ export default class GameScene extends Phaser.Scene {
     this.load.audio("sfx_revive", "/assets/sfx/revive.mp3");
     this.load.audio("sfx_explosion_1", "/assets/sfx/explosion_1.mp3");
     this.load.audio("sfx_explosion_2", "/assets/sfx/explosion_2.mp3");
+    this.load.audio("sfx_thunder", "/assets/sfx/thunder.mp3");
+    this.load.audio("sfx_glitch", "/assets/sfx/glitch.mp3");
+    this.load.audio("sfx_powerup", "/assets/sfx/powerup.mp3");
 
     this.load.audio("bgm_3", "/assets/bgm/01_Press_Play.mp3");
     this.load.audio("bgm_4", "/assets/bgm/06_Punch_Out.mp3");
@@ -132,6 +135,9 @@ export default class GameScene extends Phaser.Scene {
     //SFX
       this.sfx_yennefer = {
         hurt: this.sound.add("sfx_hurt"),
+        healing: this.sound.add("sfx_healing", { loop: true }),
+        death: this.sound.add("sfx_death"),
+        revive: this.sound.add("sfx_revive"),
         explosion_1: this.sound.add("sfx_explosion_1"),
         explosion_2: this.sound.add("sfx_explosion_2")
       };
@@ -142,6 +148,12 @@ export default class GameScene extends Phaser.Scene {
         death: this.sound.add("sfx_death"),
         revive: this.sound.add("sfx_revive")
       };
+
+      this.sfx_map = {
+        thunder: this.sound.add("sfx_thunder"),
+        glitch: this.sound.add("sfx_glitch"),
+        powerup: this.sound.add("sfx_powerup")
+      }
     //Fin SFX
 
 
@@ -387,6 +399,8 @@ export default class GameScene extends Phaser.Scene {
   activarRelampago() {
     console.log("Efecto de relámpago activado");
 
+    this.sfx_map.thunder.play();
+
     // Crear un destello blanco en la pantalla
     const flash = this.add.rectangle(400, 300, 800, 600, 0xffffff, 1).setDepth(10).setAlpha(0);
     const flash2 = this.add.rectangle(400, 300, 800, 600, 0xffffff, 1).setDepth(10).setAlpha(0);
@@ -434,6 +448,9 @@ export default class GameScene extends Phaser.Scene {
   activarGlitch(jugadores) {
     console.log("Efecto de glitch activado");
     console.log("Jugadores dentro del metodo glitch:", jugadores);
+
+    this.sfx_map.glitch.play();
+
     // Efecto visual: Cambiar tintes rápidos de los jugadores
     jugadores.forEach((jugador) => {
         if (jugador) {
@@ -612,6 +629,7 @@ export default class GameScene extends Phaser.Scene {
 
   onPowerupCollisionY(yennefer, powerup){
     if (powerup && powerup.Yennefer){
+      this.sfx_map.powerup.play();
       this.yennefer.powerup = true;
       powerup.Yennefer = false;
       console.log("powerup Yennefer")
@@ -620,12 +638,12 @@ export default class GameScene extends Phaser.Scene {
 
   onPowerupCollisionM(mario, powerup){
     if (powerup && powerup.Mario){
+      this.sfx_map.powerup.play();
       this.mario.powerup = true;
       powerup.Mario = false;
       console.log("powerup Mario")
     }
   }
-
 
   handleMushroomCollision(player, mushroom) {
     console.log(player.body.velocity.x);
@@ -750,6 +768,9 @@ export default class GameScene extends Phaser.Scene {
     }
     for (let key in this.sfx_mario) {
       this.sfx_mario[key].setVolume(volume);
+    }
+    for (let key in this.sfx_map) {
+      this.sfx_map[key].setVolume(volume);
     }
   }
 
