@@ -10,9 +10,6 @@ export default class MenuScene extends Phaser.Scene {
 
     preload() {
         this.load.image("BContinuar", "/assets/images/BContinuar.png");
-
-        this.load.audio("bgm_1", "/assets/bgm/13_Mana_Refill.mp3");
-        this.load.audio("sfx_2", "/assets/sfx/menu_2.mp3");
     }
 
     create() {

@@ -1,6 +1,6 @@
 export default class Mario extends Phaser.Physics.Arcade.Sprite
 {
-    constructor (scene, x, y, sfx,invertirControlesHorizontales,invertirControlesVerticales,deslizamiento,velocidad,salto)
+    constructor (scene, x, y, sfx, invertirControlesHorizontales, invertirControlesVerticales, deslizamiento, velocidad, salto)
     {
         super(scene, x, y, 'mario');
 

@@ -27,8 +27,6 @@ export default class CardScene extends Phaser.Scene {
         this.load.image("inicio", "assets/images/iniciarPartida.jpg");
 
         this.load.audio("bgm_2", "/assets/bgm/20_Pixel_Party.mp3");
-        this.load.audio("sfx_1", "/assets/sfx/menu_1.mp3");
-        this.load.audio("sfx_2", "/assets/sfx/menu_2.mp3");
     }
 
     create() {
@@ -257,7 +255,9 @@ export default class CardScene extends Phaser.Scene {
     }
     
     setSfxVolume(volume) {
-
+        for (let key in this.sfx) {
+            this.sfx[key].setVolume(volume);
+        }
     }
     
     setBgmVolume(volume) {

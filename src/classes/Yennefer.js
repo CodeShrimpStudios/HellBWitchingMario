@@ -4,7 +4,7 @@ import Fireball from "./Fireball.js";
 
 export default class Yennefer extends Phaser.Physics.Arcade.Sprite
 {
-    constructor (scene, x, y, sfx,invertirControlesHorizontales,invertirControlesVerticales,deslizamiento,velocidad,salto)
+    constructor (scene, x, y, sfx, invertirControlesHorizontales, invertirControlesVerticales, deslizamiento, velocidad, salto)
     {
         super(scene, x, y, 'yennefer');
 
@@ -58,12 +58,12 @@ export default class Yennefer extends Phaser.Physics.Arcade.Sprite
         }
         else if(invertirControlesVerticales)
             {
-                this.cursors = this.scene.input.keyboard.addKeys({
-                    up:Phaser.Input.Keyboard.KeyCodes.DOWN,
-                    left:Phaser.Input.Keyboard.KeyCodes.LEFT,
-                    right:Phaser.Input.Keyboard.KeyCodes.RIGHT,
-                    fireball:Phaser.Input.Keyboard.KeyCodes.UP
-                });
+            this.cursors = this.scene.input.keyboard.addKeys({
+                up:Phaser.Input.Keyboard.KeyCodes.DOWN,
+                left:Phaser.Input.Keyboard.KeyCodes.LEFT,
+                right:Phaser.Input.Keyboard.KeyCodes.RIGHT,
+                fireball:Phaser.Input.Keyboard.KeyCodes.UP
+            });
         }
         else{
             console.log ("controles normales")
@@ -125,10 +125,34 @@ export default class Yennefer extends Phaser.Physics.Arcade.Sprite
     shootFireball() {
         console.log('Fireball shot!');
 
-        this.play("yen_fireball");
         this.walkAnim = false;
         this.idleAnim = false;
         this.jumpAnim = false;
+        this.fireballCooldown = true;
+
+
+        this.fireball();
+
+        if (this.powerup) {
+            this.powerup = false
+            this.scene.time.delayedCall(1000, () => {
+                this.fireball();
+            });
+            this.scene.time.delayedCall(2000, () => {
+                this.fireball();
+            }); 
+        }
+
+        this.scene.time.delayedCall(this.cooldownTime, () => {
+            this.fireballCooldown = false;
+            console.log('Fireball ready!');
+        }); 
+    }
+
+    fireball() {
+        this.sfx.explosion_1.play();
+
+        this.play("yen_fireball");
         this.fireballAnimCounter = this.fireballAnimDuration;
 
         const fireball = this.fireballs.get(this.x, this.y, 'fireball').setActive(true).setVisible(true);
@@ -138,12 +162,6 @@ export default class Yennefer extends Phaser.Physics.Arcade.Sprite
         fireball.setFlipX(true);
         fireball.body.setOffset(35, 45);
         fireball.setVelocityY(0);
-
-        this.fireballCooldown = true;
-        this.scene.time.delayedCall(this.cooldownTime, () => {
-            this.fireballCooldown = false;
-            console.log('Fireball ready!');
-        });
     }
 
     slowDown(factor, duration) {
@@ -241,9 +259,8 @@ export default class Yennefer extends Phaser.Physics.Arcade.Sprite
             this.hasAirJumped = false;
         }
 
-        if (this.cursors.fireball.isDown && !this.fireballCooldown) {
+        if (Phaser.Input.Keyboard.JustDown(this.cursors.fireball) && !this.fireballCooldown) {
             this.shootFireball();
-            this.sfx.explosion_1.play();
         }
     }
 

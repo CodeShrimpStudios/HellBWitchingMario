@@ -19,18 +19,15 @@ export default class GameScene extends Phaser.Scene {
     console.log ("cartas recibidas", this.cartasSeleccionadas);
 
     this.fireballCooldownTime = 0; //Para el icono de la fireball
-    this.maxCooldownTime = 5000;
+    this.maxCooldownTime = 4990;
   }
 
   preload() {
     this.load.image("bg1", "/assets/images/Cave_BG/image1.png");
     this.load.image("bg2", "/assets/images/Cave_BG/image2.png");
-    this.load.image("bg3", "/assets/images/Cave_BG/3fx.png");
     this.load.image("bg4", "/assets/images/Cave_BG/image4.png");
     this.load.image("bg5", "/assets/images/Cave_BG/image5.png");
-    this.load.image("bg6", "/assets/images/Cave_BG/6fx.png");
     this.load.image("bg7", "/assets/images/Cave_BG/image7.png");
-    this.load.image("bg8", "/assets/images/Cave_BG/8fx.png");
     this.load.image("bg9", "/assets/images/Cave_BG/image9.png");
 
     this.load.image("tiles", "/assets/tiles/FireSet.png");
@@ -79,17 +76,17 @@ export default class GameScene extends Phaser.Scene {
     
 
     //Background
-      const backgroundImages = ["bg1", "bg2", "bg3", "bg4", "bg5", "bg6", "bg7", "bg8", "bg9"];
-      this.backgroundGroupMario = this.add.group();
-      this.backgroundGroupYennefer = this.add.group();
-      for (const bg of backgroundImages) {
-        const sprite = this.add.tileSprite(400, 300, this.worldWidth, 600, bg).setOrigin(0.5, 0.5);
-        this.backgroundGroupMario.add(sprite);
-      }
-      for (const bg of backgroundImages) {
-        const sprite = this.add.tileSprite(400, 300, this.worldWidth, 600, bg).setOrigin(0.5, 0.5);
-        this.backgroundGroupYennefer.add(sprite);
-      }
+    //  const backgroundImages = ["bg1", "bg2", "bg3", "bg4", "bg5", "bg6", "bg7", "bg8", "bg9"];
+    //  this.backgroundGroupMario = this.add.group();
+    //  this.backgroundGroupYennefer = this.add.group();
+    //  for (const bg of backgroundImages) {
+    //    const sprite = this.add.tileSprite(400, 300, this.worldWidth, 600, bg).setOrigin(0.5, 0.5);
+    //    this.backgroundGroupMario.add(sprite);
+    //  }
+    // for (const bg of backgroundImages) {
+    //    const sprite = this.add.tileSprite(400, 300, this.worldWidth, 600, bg).setOrigin(0.5, 0.5);
+    //    this.backgroundGroupYennefer.add(sprite);
+    //  }
     //Fin Background
 
 
@@ -295,6 +292,7 @@ export default class GameScene extends Phaser.Scene {
 
 
     //UI
+      this.firballCDBool = false;
       this.fireballIcon = this.add.image(this.screenWidth * 0.9, this.screenHeight * 0.85, 'fireballIcon')
         .setScrollFactor(0)
       .setDepth(1);
@@ -356,7 +354,7 @@ export default class GameScene extends Phaser.Scene {
           this.cooldownCircle,
           this.marioHearts,
           this.yenneferHearts,
-          this.backgroundGroupYennefer
+          //this.backgroundGroupYennefer
       ]);
 
       const camera2 = this.cameras.add(400, 0, 400, 600, false, 'camera2')
@@ -372,7 +370,7 @@ export default class GameScene extends Phaser.Scene {
           this.cooldownCircle,
           this.marioHearts,
           this.yenneferHearts,
-          this.backgroundGroupMario
+          //this.backgroundGroupMario
       ]);
 
       this.uiCamera = this.cameras.add(0, 0, this.screenWidth, this.screenHeight)
@@ -386,8 +384,8 @@ export default class GameScene extends Phaser.Scene {
           this.yennefer,
           this.powerups,
           this.mushroomGroup,
-          this.backgroundGroupMario,
-          this.backgroundGroupYennefer
+          //this.backgroundGroupMario,
+          //this.backgroundGroupYennefer
       ]);
     //Fin Camera
   }
@@ -674,13 +672,25 @@ export default class GameScene extends Phaser.Scene {
       this.uiCamera.ignore(fireball);
     });
 
+    if(!this.previousYenneferFCD) {
+      if (this.yennefer.fireballCooldown) {
+        this.firballCDBool = true;
+      }
+    }
+    this.previousYenneferFCD = this.yennefer.fireballCooldown;
+
     //Temporizador para el icono fireball
-    if (this.yennefer.fireballCooldown) {
+    if (this.firballCDBool) {
       this.fireballCooldownTime -= this.game.loop.delta;
+      if (this.fireballCooldownTime <= 0) {
+        this.firballCDBool = false;
+      }
     }
     else {
       this.fireballCooldownTime = this.maxCooldownTime;
     }
+
+    
 
     //Calculador del progreso
     let progress = 1 - Math.max(0, this.fireballCooldownTime / this.maxCooldownTime);
@@ -796,12 +806,12 @@ export default class GameScene extends Phaser.Scene {
       mushroom.update();
     });
 
-    this.backgroundGroupMario.getChildren().forEach((backgroundLayer, index) => {
-      backgroundLayer.tilePositionX = this.mario.x * (index + 1) * 0.01;
-    });
+    //this.backgroundGroupMario.getChildren().forEach((backgroundLayer, index) => {
+    //  backgroundLayer.tilePositionX = this.mario.x * (index + 1) * 0.01;
+    //});
 
-    this.backgroundGroupYennefer.getChildren().forEach((backgroundLayer, index) => {
-      backgroundLayer.tilePositionX = this.yennefer.x * (index + 1) * 0.01;
-    });
+    //this.backgroundGroupYennefer.getChildren().forEach((backgroundLayer, index) => {
+    //  backgroundLayer.tilePositionX = this.yennefer.x * (index + 1) * 0.01;
+    //});
   }
 }
