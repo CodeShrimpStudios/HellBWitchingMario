@@ -32,8 +32,6 @@ export default class Mario extends Phaser.Physics.Arcade.Sprite
         this.isSlowed = false;
         this.isSliding = deslizamiento;
         
-       
-
         this.powerup = false;
 
         this.maxHp = 4;

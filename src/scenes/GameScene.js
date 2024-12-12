@@ -215,13 +215,15 @@ export default class GameScene extends Phaser.Scene {
       this.mario = new Mario(this, 0, 400, this.sfx_mario,this.controlesHorizontalesInvertidos,
         this.controlesVerticalesInvertidos,this.deslizamiento,this.potVel, this.potSalto);
       this.physics.add.collider(this.mario, this.groundLayer);
-      this.physics.add.overlap(this.mario, this.trampasLayer, this.damageMario, null, this);
       //Voy a dejar groundLayer comentado hasta que funcione correctamente.
 
       this.yennefer = new Yennefer(this, 600, 370, this.sfx_yennefer,this.controlesHorizontalesInvertidos,
         this.controlesVerticalesInvertidos,this.deslizamiento,this.potVel, this.potSalto);
       this.physics.add.collider(this.yennefer, this.groundLayer);
+      
       this.physics.add.collider(this.mario, this.yennefer, this.marioWin, null, this);
+      this.physics.add.overlap(this.mario, this.trampasLayer, this.damageMario, null, this);
+      this.physics.add.overlap(this.yennefer, this.trampasLayer, this.damageYennefer, null, this);
 
       this.mario.setCollideWorldBounds(true);
       this.yennefer.setCollideWorldBounds(true);
@@ -614,6 +616,11 @@ export default class GameScene extends Phaser.Scene {
   damageMario(mario, tile) { 
     if (tile.properties.trampa) { mario.damage(); }
     if (tile.properties.trampa && tile.properties.Flava) {mario.bounceOnLava()}; // cambiar true a si es lava en el suelo
+  }
+
+  damageYennefer(yennefer, tile) { 
+    if (tile.properties.trampa) { yennefer.damage(); }
+    if (tile.properties.trampa && tile.properties.Flava) {yennefer.bounceOnLava()}; // cambiar true a si es lava en el suelo
   }
 
   fireballHitsMario(mario, fireball) {
