@@ -27,6 +27,8 @@ export default class CardScene extends Phaser.Scene {
         this.load.image("inicio", "assets/images/iniciarPartida.jpg");
 
         this.load.audio("bgm_2", "/assets/bgm/20_Pixel_Party.mp3");
+        this.load.audio("sfx_1", "/assets/sfx/menu_1.mp3");
+        this.load.audio("sfx_2", "/assets/sfx/menu_2.mp3");
     }
 
     create() {
@@ -71,9 +73,13 @@ export default class CardScene extends Phaser.Scene {
                 if (this.validarSeleccion()) {
                     this.transicionarAlJuego();
                 }
-            });
+        });
 
-
+        this.sfx = {
+            sfx1: this.sound.add("sfx_1"),
+            sfx2: this.sound.add("sfx_2")
+        }
+        
         this.bgm = {
             bgm2: this.sound.add("bgm_2", { loop: true })
         }
@@ -123,6 +129,7 @@ export default class CardScene extends Phaser.Scene {
             return; // Salir si ya hay una carta seleccionada para este tipo
         }
 
+        this.sfx.sfx1.play();
         this.selectedCards[tipo] = { carta, sprite: cartaSprite };
         cartaSprite.setTexture(carta.spriteKey); // Mostrar la carta seleccionada
         cartaSprite.disableInteractive(); // Desactivar interacción de la carta seleccionada
@@ -175,6 +182,7 @@ export default class CardScene extends Phaser.Scene {
 
         // Mostrar cartas seleccionadas con descripciones antes de iniciar el juego
         this.mostrarResumenCartas(cartasSeleccionadas, () => {
+            this.sfx.sfx2.play();
             this.bgm.bgm2.stop();
             this.scene.start("game", { cartasSeleccionadas });
         });
@@ -183,6 +191,7 @@ export default class CardScene extends Phaser.Scene {
     //para crear una pantalla intermedia con las cartas seleccionadas para la partida
     mostrarResumenCartas(cartas, callback) {
         
+        this.sfx.sfx2.play();
 
         this.children.removeAll(); //ESTO ES LA LECHE
 

@@ -22,6 +22,8 @@ export default class MenuScene extends Phaser.Scene {
         this.load.image("pYennefer", "/assets/images/Yennefer_Portada_Recortado.png");
 
         this.load.audio("bgm_1", "/assets/bgm/13_Mana_Refill.mp3");
+        this.load.audio("sfx_1", "/assets/sfx/menu_1.mp3");
+        this.load.audio("sfx_2", "/assets/sfx/menu_2.mp3");
     }
 
     create() {
@@ -63,6 +65,13 @@ export default class MenuScene extends Phaser.Scene {
             this.settingsContainer = this.add.container();  
         //Fin Ajustes
 
+        //SFX
+            this.sfx = {
+                sfx1: this.sound.add("sfx_1"),
+                sfx2: this.sound.add("sfx_2")
+            }
+        //Fin SFX
+
         //BGM
             this.bgm = {
                 bgm1: this.sound.add("bgm_1", { loop: true })
@@ -88,12 +97,14 @@ export default class MenuScene extends Phaser.Scene {
         console.log("boton");
         //this.scene.remove('MenuScene'); // I remove the scene, because I will add again when start the game
         //this.scene.stop('scene_ui');
+        this.sfx.sfx2.play();
         this.bgm.bgm1.stop();
         this.scene.switch('card');
     }
 
     showSettings() {
         this.settingsVisible = true;
+        this.sfx.sfx1.play();
 
         this.BStart.disableInteractive();
         this.settingsButton.disableInteractive();
@@ -123,6 +134,10 @@ export default class MenuScene extends Phaser.Scene {
             localStorage.setItem('bgmVolume', volumePercentage);
         });
 
+        bgmHandle.on('dragend', () => {
+            this.sfx.sfx2.play();
+        });
+
         const sfxSlider = this.add.rectangle(400, 300, 200, 10, 0xffffff)
         .setOrigin(0.5);
         const sfxHandle = this.add.circle(initialsfxX, 300, 10, 0xff0000)
@@ -135,6 +150,10 @@ export default class MenuScene extends Phaser.Scene {
             sfxValue.setText(volumePercentage);
             this.sound.sfxVolume = volumePercentage / 100;
             localStorage.setItem('sfxVolume', volumePercentage);
+        });
+
+        sfxHandle.on('dragend', () => {
+            this.sfx.sfx2.play();
         });
 
         const controlsP1Text = this.add.text(400, 350, 'Controls Player 1: WASD', { fontSize: '24px', fill: '#ffffff' }).setOrigin(0.5);
@@ -163,6 +182,7 @@ export default class MenuScene extends Phaser.Scene {
 
     hideSettings() {
         this.settingsVisible = false;
+        this.sfx.sfx1.play();
 
         this.BStart.setInteractive();
         this.settingsButton.setInteractive();
@@ -184,7 +204,9 @@ export default class MenuScene extends Phaser.Scene {
     }
     
     setSfxVolume(volume) {
-
+        for (let key in this.sfx) {
+            this.sfx[key].setVolume(volume);
+        }
     }
     
     setBgmVolume(volume) {
