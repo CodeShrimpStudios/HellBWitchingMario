@@ -23,42 +23,42 @@ export default class GameScene extends Phaser.Scene {
   }
 
   preload() {
-    this.load.image("bg1", "/assets/images/Cave_BG/image1.png");
-    this.load.image("bg2", "/assets/images/Cave_BG/image2.png");
-    this.load.image("bg4", "/assets/images/Cave_BG/image4.png");
-    this.load.image("bg5", "/assets/images/Cave_BG/image5.png");
-    this.load.image("bg7", "/assets/images/Cave_BG/image7.png");
-    this.load.image("bg9", "/assets/images/Cave_BG/image9.png");
+    this.load.image("bg1", "./assets/images/Cave_BG/image1.png");
+    this.load.image("bg2", "./assets/images/Cave_BG/image2.png");
+    this.load.image("bg4", "./assets/images/Cave_BG/image4.png");
+    this.load.image("bg5", "./assets/images/Cave_BG/image5.png");
+    this.load.image("bg7", "./assets/images/Cave_BG/image7.png");
+    this.load.image("bg9", "./assets/images/Cave_BG/image9.png");
 
-    this.load.image("tiles", "/assets/tiles/FireSet.png");
-    this.load.tilemapTiledJSON('tilemap', 'assets/tilemap/FinalTilemap.json');
-    this.load.spritesheet("mario", "/assets/images/mario_small.png", { frameHeight: 18, frameWidth: 18});
-    this.load.spritesheet("yennefer", "/assets/images/Yennefer.png", { frameHeight: 32, frameWidth: 90});
+    this.load.image("tiles", "./assets/tiles/FireSet.png");
+    this.load.tilemapTiledJSON('tilemap', './assets/tilemap/FinalTilemap.json');
+    this.load.spritesheet("mario", "./assets/images/mario_small.png", { frameHeight: 18, frameWidth: 18});
+    this.load.spritesheet("yennefer", "./assets/images/Yennefer.png", { frameHeight: 32, frameWidth: 90});
 
-    this.load.image('fireballIcon', 'assets/images/Retro-Fire-Ball.64.png');
-    this.load.image('mario_icon', 'assets/images/Mario_Icon.png');
-    this.load.image('yennefer_icon', 'assets/images/Yennefer_Icon.png');
-    this.load.image('heart_full', 'assets/images/Full_Heart.png');
-    this.load.image('heart_empty', 'assets/images/Cracked_Heart.png');
+    this.load.image('fireballIcon', './assets/images/Retro-Fire-Ball.64.png');
+    this.load.image('mario_icon', './assets/images/Mario_Icon.png');
+    this.load.image('yennefer_icon', './assets/images/Yennefer_Icon.png');
+    this.load.image('heart_full', './assets/images/Full_Heart.png');
+    this.load.image('heart_empty', './assets/images/Cracked_Heart.png');
 
-    this.load.image("prueba", "/assets/images/patatas.jpg");
-    this.load.image("platformplaceholder", "/assets/images/platformplaceholder.png");
-    this.load.spritesheet("powertile", "/assets/tiles/FireSet.png", { frameHeight: 16, frameWidth: 16 });
-    this.load.spritesheet("fireball", "/assets/images/FireBall.png", { frameHeight: 100, frameWidth: 100 });
-    this.load.spritesheet('mushroom_walk', '/assets/images/Big Mushroom_Walk.png', {frameWidth: 28,frameHeight: 28});
+    this.load.image("prueba", "./assets/images/patatas.jpg");
+    this.load.image("platformplaceholder", "./assets/images/platformplaceholder.png");
+    this.load.spritesheet("powertile", "./assets/tiles/FireSet.png", { frameHeight: 16, frameWidth: 16 });
+    this.load.spritesheet("fireball", "./assets/images/FireBall.png", { frameHeight: 100, frameWidth: 100 });
+    this.load.spritesheet('mushroom_walk', './assets/images/Big Mushroom_Walk.png', {frameWidth: 28,frameHeight: 28});
 
-    this.load.audio("sfx_hurt", "/assets/sfx/hurt.mp3");
-    this.load.audio("sfx_healing", "/assets/sfx/healing.mp3");
-    this.load.audio("sfx_death", "/assets/sfx/death.mp3");
-    this.load.audio("sfx_revive", "/assets/sfx/revive.mp3");
-    this.load.audio("sfx_explosion_1", "/assets/sfx/explosion_1.mp3");
-    this.load.audio("sfx_explosion_2", "/assets/sfx/explosion_2.mp3");
-    this.load.audio("sfx_thunder", "/assets/sfx/thunder.mp3");
-    this.load.audio("sfx_glitch", "/assets/sfx/glitch.mp3");
-    this.load.audio("sfx_powerup", "/assets/sfx/powerup.mp3");
+    this.load.audio("sfx_hurt", "./assets/sfx/hurt.mp3");
+    this.load.audio("sfx_healing", "./assets/sfx/healing.mp3");
+    this.load.audio("sfx_death", "./assets/sfx/death.mp3");
+    this.load.audio("sfx_revive", "./assets/sfx/revive.mp3");
+    this.load.audio("sfx_explosion_1", "./assets/sfx/explosion_1.mp3");
+    this.load.audio("sfx_explosion_2", "./assets/sfx/explosion_2.mp3");
+    this.load.audio("sfx_thunder", "./assets/sfx/thunder.mp3");
+    this.load.audio("sfx_glitch", "./assets/sfx/glitch.mp3");
+    this.load.audio("sfx_powerup", "./assets/sfx/powerup.mp3");
 
-    this.load.audio("bgm_3", "/assets/bgm/01_Press_Play.mp3");
-    this.load.audio("bgm_4", "/assets/bgm/06_Punch_Out.mp3");
+    this.load.audio("bgm_3", "./assets/bgm/01_Press_Play.mp3");
+    this.load.audio("bgm_4", "./assets/bgm/06_Punch_Out.mp3");
   }
 
   create() {

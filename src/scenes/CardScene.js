@@ -13,20 +13,20 @@ export default class CardScene extends Phaser.Scene {
     }
 
     preload() {
-        this.load.image("cartaReverso", "assets/images/Cartas/CartaD1Esc.jpg"); // Imagen para cartas dadas vuelta
-        this.load.image("cartaControles1", "assets/images/Cartas/HorizontalEsc.jpg");
-        this.load.image("cartaControles2", "assets/images/Cartas/VerticalEsc.jpg");
-        this.load.image("cartaControles3", "assets/images/Cartas/DeslizamientoEsc.jpg");
-        this.load.image("cartaStats1", "assets/images/Cartas/VelocidadEsc.jpg");
-        this.load.image("cartaStats2", "assets/images/Cartas/SaltoEsc.jpg");
-        this.load.image("cartaStats3", "assets/images/Cartas/VidaEsc.jpg");
-        this.load.image("cartaMapa1", "assets/images/Cartas/GravedadEsc.jpg");
-        this.load.image("cartaMapa2", "assets/images/Cartas/GlitchEsc.jpg");
-        this.load.image("cartaMapa3", "assets/images/Cartas/RelampagoEsc.jpg");
-        this.load.image("continuar", "assets/images/BContinuar.png");
-        this.load.image("inicio", "assets/images/iniciarPartida.jpg");
+        this.load.image("cartaReverso", "./assets/images/Cartas/CartaD1Esc.jpg"); // Imagen para cartas dadas vuelta
+        this.load.image("cartaControles1", "./assets/images/Cartas/HorizontalEsc.jpg");
+        this.load.image("cartaControles2", "./assets/images/Cartas/VerticalEsc.jpg");
+        this.load.image("cartaControles3", "./assets/images/Cartas/DeslizamientoEsc.jpg");
+        this.load.image("cartaStats1", "./assets/images/Cartas/VelocidadEsc.jpg");
+        this.load.image("cartaStats2", "./assets/images/Cartas/SaltoEsc.jpg");
+        this.load.image("cartaStats3", "./assets/images/Cartas/VidaEsc.jpg");
+        this.load.image("cartaMapa1", "./assets/images/Cartas/GravedadEsc.jpg");
+        this.load.image("cartaMapa2", "./assets/images/Cartas/GlitchEsc.jpg");
+        this.load.image("cartaMapa3", "./assets/images/Cartas/RelampagoEsc.jpg");
+        this.load.image("continuar", "./assets/images/BContinuar.png");
+        this.load.image("inicio", "./assets/images/iniciarPartida.jpg");
 
-        this.load.audio("bgm_2", "/assets/bgm/20_Pixel_Party.mp3");
+        this.load.audio("bgm_2", "./assets/bgm/20_Pixel_Party.mp3");
     }
 
     create() {
