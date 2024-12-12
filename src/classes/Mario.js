@@ -136,6 +136,9 @@ export default class Mario extends Phaser.Physics.Arcade.Sprite
             this.isRecovering = true;
             this.canbedamaged = false;
             this.body.enable = false;
+            this.setAccelerationX(0);
+            this.setVelocityX(0);
+
             this.stopBlinking();
             this.setTint(0x999999);
             this.scene.time.addEvent({
