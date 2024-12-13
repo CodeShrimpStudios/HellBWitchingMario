@@ -269,8 +269,10 @@ export default class GameScene extends Phaser.Scene {
       this.mushroomGroup.add(mushroom5);
       const mushroom6 = new Mushroom(this, 4000, 400);
       this.mushroomGroup.add(mushroom6);
-      const mushroom7 = new Mushroom(this, 6640, 400);
+      const mushroom7 = new Mushroom(this, 5136, 400);
       this.mushroomGroup.add(mushroom7);
+      const mushroom8 = new Mushroom(this, 6640, 400);
+      this.mushroomGroup.add(mushroom8);
 
       // Evitar colisiones entre champiñones y hacer que reboten
       this.physics.add.collider(this.mushroomGroup, this.mushroomGroup, (mushroom1, mushroom2) => {
