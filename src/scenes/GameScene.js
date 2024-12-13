@@ -658,7 +658,6 @@ export default class GameScene extends Phaser.Scene {
     if (fireball.active) {
       fireball.setActive(false);
       fireball.setVisible(false);
-      fireball.disableBody(true);
       if (mario.active) { 
         mario.damage();
         this.sfx_yennefer.explosion_2.play();
