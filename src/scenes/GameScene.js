@@ -109,12 +109,15 @@ export default class GameScene extends Phaser.Scene {
       const tilesPerRow = 5;
       const frame= (4 - 1) + ((5 - 1) * tilesPerRow);
       //this.powerUp = new Powerup(this, 100, 150, 'powertile', frame);
-      this.powerups = [ 
-        new Powerup(this, 150, 370, 'powertile', frame), 
+      this.powerups = [  
         new Powerup(this, 1100, 120, 'powertile', frame), 
-        new Powerup(this, 1824, 500, 'powertile', frame),
-        new Powerup(this, 2176, 500, 'powertile', frame),
-        new Powerup(this, 2336, 140, 'powertile', frame), ];;
+        new Powerup(this, 1824, 300, 'powertile', frame),
+        new Powerup(this, 2336, 140, 'powertile', frame),
+        new Powerup(this, 2640, 275, 'powertile', frame),
+        new Powerup(this, 3250, 140, 'powertile', frame),
+        new Powerup(this, 6550, 250, 'powertile', frame), ];;
+
+        
 
 
         /*this.powerupGroup = this.physics.add.group({collideWorldBounds: true });
@@ -149,7 +152,9 @@ export default class GameScene extends Phaser.Scene {
       this.sfx_map = {
         thunder: this.sound.add("sfx_thunder"),
         glitch: this.sound.add("sfx_glitch"),
-        powerup: this.sound.add("sfx_powerup")
+        powerup: this.sound.add("sfx_powerup"),
+        enemy_death: this.sound.add("sfx_enemy_death"),
+        bgm5: this.sound.add("bgm_5", { loop: true })
       }
     //Fin SFX
 
@@ -157,7 +162,7 @@ export default class GameScene extends Phaser.Scene {
     //BGM
       this.bgm = {
         bgm3: this.sound.add("bgm_3", { loop: true }),
-        bgm4: this.sound.add("bgm_4", { loop: true }),
+        bgm4: this.sound.add("bgm_4", { loop: true })
       }
 
       const bgmKeys = Object.keys(this.bgm);
@@ -165,6 +170,15 @@ export default class GameScene extends Phaser.Scene {
       this.selectedBgm = this.bgm[randomBgmKey];
       
       this.selectedBgm.play();
+
+      this.sfxVolume = parseFloat(localStorage.getItem('bgmVolume')) / 100;
+      if (isNaN(this.sfxVolume)) {
+        this.sfxVolume = 1;
+      }
+      this.bgmVolume = parseFloat(localStorage.getItem('bgmVolume')) / 100;
+      if (isNaN(this.bgmVolume)) {
+        this.bgmVolume = 1;
+      }
 
       this.adjustVolumeSettings();
     //Fin BGM
@@ -214,7 +228,7 @@ export default class GameScene extends Phaser.Scene {
       this.physics.add.collider(this.mario, this.groundLayer);
       //Voy a dejar groundLayer comentado hasta que funcione correctamente.
 
-      this.yennefer = new Yennefer(this, 600, 370, this.sfx_yennefer,this.controlesHorizontalesInvertidos,
+      this.yennefer = new Yennefer(this, 700, 370, this.sfx_yennefer,this.controlesHorizontalesInvertidos,
         this.controlesVerticalesInvertidos,this.deslizamiento,this.potVel, this.potSalto);
       this.physics.add.collider(this.yennefer, this.groundLayer);
       
@@ -235,12 +249,28 @@ export default class GameScene extends Phaser.Scene {
         bounceY: 0.2,
         collideWorldBounds: true
       });
-      for (let i = 0; i < 5; i++) {
-        const x = Phaser.Math.Between(200, 800);
-        const y = Phaser.Math.Between(100, 150);
-        const mushroom = new Mushroom(this, x, y);
-        this.mushroomGroup.add(mushroom);
-      }
+      //for (let i = 0; i < 5; i++) {
+      //  const x = Phaser.Math.Between(200, 800);
+      //  const y = Phaser.Math.Between(100, 150);
+      //  const mushroom = new Mushroom(this, x, y);
+      //  this.mushroomGroup.add(mushroom);
+      //}
+      const mushroom1 = new Mushroom(this, 150, 400);
+      this.mushroomGroup.add(mushroom1);
+      const mushroom2 = new Mushroom(this, 1500, 400);
+      this.mushroomGroup.add(mushroom2);
+      const mushroom3 = new Mushroom(this, 1700, 400);
+      this.mushroomGroup.add(mushroom3);
+      const mushroom4 = new Mushroom(this, 2200, 400);
+      this.mushroomGroup.add(mushroom4);
+      const mushroom5 = new Mushroom(this, 3424, 400);
+      this.mushroomGroup.add(mushroom5);
+      const mushroom6 = new Mushroom(this, 4000, 400);
+      this.mushroomGroup.add(mushroom6);
+      const mushroom7 = new Mushroom(this, 5136, 400);
+      this.mushroomGroup.add(mushroom7);
+      const mushroom8 = new Mushroom(this, 6640, 400);
+      this.mushroomGroup.add(mushroom8);
 
       // Evitar colisiones entre champiñones y hacer que reboten
       this.physics.add.collider(this.mushroomGroup, this.mushroomGroup, (mushroom1, mushroom2) => {
@@ -625,6 +655,7 @@ export default class GameScene extends Phaser.Scene {
     if (fireball.active) {
       fireball.setActive(false);
       fireball.setVisible(false);
+      fireball.disableBody(true);
       if (mario.active) { 
         mario.damage();
         this.sfx_yennefer.explosion_2.play();
@@ -653,8 +684,16 @@ export default class GameScene extends Phaser.Scene {
   handleMushroomCollision(player, mushroom) {
     console.log(player.body.velocity.x);
     if (player instanceof Mario || player instanceof Yennefer) {
-      player.slowDown(0.5, 3000); // Aplicar la ralentización al jugador usando el nuevo método
-      //console.log(`${player.constructor.name} colisionó con un champiñón y fue ralentizado.`);
+      if (player instanceof Mario && this.mario.isInvincible) {
+        this.sfx_map.enemy_death.play();
+        mushroom.setActive(false);
+        mushroom.setVisible(false);
+        mushroom.disableBody(true);
+      }
+      else {
+        player.slowDown(0.5, 3000); // Aplicar la ralentización al jugador usando el nuevo método
+        //console.log(`${player.constructor.name} colisionó con un champiñón y fue ralentizado.`);
+      }
     }
 
   }
@@ -662,14 +701,14 @@ export default class GameScene extends Phaser.Scene {
   marioWin() {
     //Añadan animaciones antes de cambiar de escena
     console.log("Colision!!!");
-    this.selectedBgm.stop();
+    this.sound.stopAll();
     this.WinnerP1 = true;
     this.scene.switch('victory', { WinnerP1: this.WinnerP1, cartasSeleccionadas: this.cartasSeleccionadas });
   }
 
   yenneferWin() {
     console.log("Yennefer");
-    this.selectedBgm.stop();
+    this.sound.stopAll();
     this.WinnerP1 = false;
     this.scene.switch('victory', { WinnerP1: this.WinnerP1, cartasSeleccionadas: this.cartasSeleccionadas });
   }
@@ -767,16 +806,8 @@ export default class GameScene extends Phaser.Scene {
   }
 
   adjustVolumeSettings() {
-    let sfxVolume = parseFloat(localStorage.getItem('sfxVolume')) / 100;
-    if (isNaN(sfxVolume)) {
-      sfxVolume = 1;
-    }
-    this.setSfxVolume(sfxVolume);
-    let bgmVolume = parseFloat(localStorage.getItem('bgmVolume')) / 100;
-    if (isNaN(bgmVolume)) {
-      bgmVolume = 1;
-    }
-    this.setBgmVolume(bgmVolume);
+    this.setSfxVolume(this.sfxVolume);
+    this.setBgmVolume(this.bgmVolume);
   }
 
   setSfxVolume(volume) {
@@ -797,6 +828,14 @@ export default class GameScene extends Phaser.Scene {
     }
   }
 
+  fadeOutBgm(bgm ,volume) {
+    this.tweens.add({
+      targets: bgm,
+      volume: volume,
+      duration: 2000,
+    });
+  }
+
   update() {
     this.mario.update();
     this.yennefer.update();
@@ -812,6 +851,20 @@ export default class GameScene extends Phaser.Scene {
     this.mushroomGroup.children.iterate((mushroom) => {
       mushroom.update();
     });
+
+    if (!this.lastInvincible && this.mario.isInvincible) {
+      this.fadeOutBgm(this.selectedBgm, 0);
+      this.sfx_map.bgm5.setVolume(0);
+      this.sfx_map.bgm5.play();
+      this.fadeOutBgm(this.sfx_map.bgm5, this.bgmVolume)
+    }
+
+    if (this.lastInvincible && !this.mario.isInvincible) {
+        this.fadeOutBgm(this.sfx_map.bgm5, 0)
+        this.fadeOutBgm(this.selectedBgm, this.bgmVolume);
+    }
+   
+    this.lastInvincible = this.mario.isInvincible;
 
     //this.backgroundGroupMario.getChildren().forEach((backgroundLayer, index) => {
     //  backgroundLayer.tilePositionX = this.mario.x * (index + 1) * 0.01;

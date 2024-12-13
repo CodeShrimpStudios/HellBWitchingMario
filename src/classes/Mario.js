@@ -31,8 +31,10 @@ export default class Mario extends Phaser.Physics.Arcade.Sprite
         this.isdamaged = false;
         this.isSlowed = false;
         this.isSliding = deslizamiento;
-        
-        this.powerup = false;
+
+        this.powerup = true;
+        this.powerupTime = 6000;
+        this.isInvincible = false;
 
         this.maxHp = 4;
         this.hp = 4;
@@ -45,7 +47,7 @@ export default class Mario extends Phaser.Physics.Arcade.Sprite
                 up:Phaser.Input.Keyboard.KeyCodes.W,
                 left:Phaser.Input.Keyboard.KeyCodes.D,
                 right:Phaser.Input.Keyboard.KeyCodes.A,
-                fireball:Phaser.Input.Keyboard.KeyCodes.S
+                star:Phaser.Input.Keyboard.KeyCodes.S
             });
         }
         else if (invertirControlesVerticales){
@@ -53,7 +55,7 @@ export default class Mario extends Phaser.Physics.Arcade.Sprite
                 up:Phaser.Input.Keyboard.KeyCodes.S,
                 left:Phaser.Input.Keyboard.KeyCodes.A,
                 right:Phaser.Input.Keyboard.KeyCodes.D,
-                fireball:Phaser.Input.Keyboard.KeyCodes.W
+                star:Phaser.Input.Keyboard.KeyCodes.W
             });
         }
         else{
@@ -63,7 +65,7 @@ export default class Mario extends Phaser.Physics.Arcade.Sprite
                 up:Phaser.Input.Keyboard.KeyCodes.W,
                 left:Phaser.Input.Keyboard.KeyCodes.A,
                 right:Phaser.Input.Keyboard.KeyCodes.D,
-                fireball:Phaser.Input.Keyboard.KeyCodes.S
+                star:Phaser.Input.Keyboard.KeyCodes.S
             });
         }
 
@@ -89,12 +91,29 @@ export default class Mario extends Phaser.Physics.Arcade.Sprite
             frames: this.anims.generateFrameNumbers("mario", {frames: [3, 0]}),
             repeat: -1
         })
+
+        console.log ("salto final mario: ",this.baseJumpStrength);
     }
 
     update() {
         if (!this.isRecovering) {
             this.inputManager();
             this.animManager();
+        }
+    }
+
+    starEffect() {
+        if (this.powerup) {
+            this.powerup = false;
+            this.canbedamaged = false;
+            this.isInvincible = true;
+            this.blink();
+
+            this.scene.time.delayedCall(this.powerupTime, () => {
+                this.canbedamaged = true;
+                this.isInvincible = false;
+                this.stopBlinking();
+            });
         }
     }
 
@@ -168,13 +187,15 @@ export default class Mario extends Phaser.Physics.Arcade.Sprite
     }
 
     slowDown(factor, duration) {
-        if (!this.isSlowed) {
-          this.isSlowed = true;
-          this.speed *= factor;
-          this.scene.time.delayedCall(duration, () => {
-            this.speed /= factor;
-            this.isSlowed = false;
-          });
+        if (!this.isInvincible) {
+            if (!this.isSlowed) {
+                this.isSlowed = true;
+                this.speed *= factor;
+                this.scene.time.delayedCall(duration, () => {
+                    this.speed /= factor;
+                    this.isSlowed = false;
+                });
+            }
         }
     }
 
@@ -252,6 +273,10 @@ export default class Mario extends Phaser.Physics.Arcade.Sprite
         else {
             this.grounded = true;
         }
+
+        if (Phaser.Input.Keyboard.JustDown(this.cursors.star)) {
+            this.starEffect();
+        }
     }
 
     animManager() {
@@ -306,10 +331,29 @@ export default class Mario extends Phaser.Physics.Arcade.Sprite
         });
     }
 
+    //starBlink() {
+    //    this.starBlinking = this.scene.tweens.add({
+    //        targets: this,
+    //        repeat: -1,
+    //        duration: 100,
+    //        onUpdate: (tween) => {
+    //            this.randomColor = Phaser.Display.Color.RandomRGB();
+    //            console.log(`Generated Color: ${this.randomColor}`);
+    //            this.player.setTint(this.randomColor);
+    //        }
+    //    });
+    //}
+
     stopBlinking() {
         if (this.blinking) {
             this.blinking.stop();
             this.setAlpha(1);
         }
+
+        //if (this.starBlinking) {
+        //    this.starBlinking.stop();
+        //    this.setAlpha(1);
+        //    this.clearTint();
+        //}
     }
 }
