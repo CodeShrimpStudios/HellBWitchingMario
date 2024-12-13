@@ -153,7 +153,7 @@ export default class GameScene extends Phaser.Scene {
         thunder: this.sound.add("sfx_thunder"),
         glitch: this.sound.add("sfx_glitch"),
         powerup: this.sound.add("sfx_powerup"),
-        enemy_death: this.sound.add("sfx_enemy_death"),
+        enemy_death: this.sound.add("sfx_death"),
         bgm5: this.sound.add("bgm_5", { loop: true })
       }
     //Fin SFX
