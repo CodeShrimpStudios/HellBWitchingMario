@@ -9,7 +9,7 @@ export default class CardScene extends Phaser.Scene {
             stats: null,
             mapa: null
         }; // Guardar selección por tipo
-        this.shuffleEnabled = false; // Flag para activar/desactivar desorden
+        this.shuffleEnabled = true; // Flag para activar/desactivar desorden
     }
 
     preload() {
