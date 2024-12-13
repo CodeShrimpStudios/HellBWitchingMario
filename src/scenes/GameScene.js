@@ -56,6 +56,8 @@ export default class GameScene extends Phaser.Scene {
     this.load.audio("sfx_thunder", "./assets/sfx/thunder.mp3");
     this.load.audio("sfx_glitch", "./assets/sfx/glitch.mp3");
     this.load.audio("sfx_powerup", "./assets/sfx/powerup.mp3");
+    this.load.audio("sfx_enemy_death", "/assets/sfx/enemy_death.mp3");
+
 
     this.load.audio("bgm_3", "./assets/bgm/01_Press_Play.mp3");
     this.load.audio("bgm_4", "./assets/bgm/06_Punch_Out.mp3");
@@ -153,7 +155,7 @@ export default class GameScene extends Phaser.Scene {
         thunder: this.sound.add("sfx_thunder"),
         glitch: this.sound.add("sfx_glitch"),
         powerup: this.sound.add("sfx_powerup"),
-        enemy_death: this.sound.add("sfx_death"),
+        enemy_death: this.sound.add("sfx_enemy_death"),
         bgm5: this.sound.add("bgm_5", { loop: true })
       }
     //Fin SFX
