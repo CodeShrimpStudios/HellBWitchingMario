@@ -115,6 +115,8 @@ export default class Yennefer extends Phaser.Physics.Arcade.Sprite
             classType: Fireball,
             runChildUpdate: true,
         });
+
+        console.log ("salto final yennefer: ",this.baseJumpStrength);
     }
 
     update() {
@@ -246,6 +248,7 @@ export default class Yennefer extends Phaser.Physics.Arcade.Sprite
     }
 
     inputManager() {
+        
         if (this.cursors.left.isDown && !this.cursors.right.isDown) {
             if(this.isSlowed==true){
                 this.body.maxSpeed = this.topSpeed / 2;
@@ -305,6 +308,7 @@ export default class Yennefer extends Phaser.Physics.Arcade.Sprite
 
         if (Phaser.Input.Keyboard.JustDown(this.cursors.up)) {
             if (this.body.onFloor()) {
+                console.log ("salto final  al saltar yennefer: ",this.baseJumpStrength);
                 //Primer salto
                 if(this.isSlowed==true){
                     this.setVelocityY(-this.baseJumpStrength/2.5)
@@ -312,9 +316,10 @@ export default class Yennefer extends Phaser.Physics.Arcade.Sprite
                 else{this.setVelocityY(-this.baseJumpStrength/2);}
             }
             else if (!this.hasAirJumped) {
+                console.log ("salto final  al saltar doble yennefer: ",this.baseJumpStrength/2.5);
                 //Salto en aire
                 if(this.isSlowed==true){
-                    this.setVelocityY(-this.baseJumpStrength/3.5)
+                    this.setVelocityY(-this.baseJumpStrength/2.5)
                 }
                 else{this.setVelocityY(-this.baseJumpStrength/2);}
                 this.hasAirJumped = true;

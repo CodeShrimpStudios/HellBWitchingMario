@@ -91,6 +91,8 @@ export default class Mario extends Phaser.Physics.Arcade.Sprite
             frames: this.anims.generateFrameNumbers("mario", {frames: [3, 0]}),
             repeat: -1
         })
+
+        console.log ("salto final mario: ",this.baseJumpStrength);
     }
 
     update() {

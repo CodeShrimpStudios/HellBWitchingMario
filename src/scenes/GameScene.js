@@ -227,7 +227,7 @@ export default class GameScene extends Phaser.Scene {
       this.physics.add.collider(this.mario, this.groundLayer);
       //Voy a dejar groundLayer comentado hasta que funcione correctamente.
 
-      this.yennefer = new Yennefer(this, 600, 370, this.sfx_yennefer,this.controlesHorizontalesInvertidos,
+      this.yennefer = new Yennefer(this, 460, 450, this.sfx_yennefer,this.controlesHorizontalesInvertidos,
         this.controlesVerticalesInvertidos,this.deslizamiento,this.potVel, this.potSalto);
       this.physics.add.collider(this.yennefer, this.groundLayer);
       
