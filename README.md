@@ -14,21 +14,23 @@ En el juego, los jugadores seleccionan **tres cartas** que afectan a diferentes 
 - **Personajes jugables**:
   - **Mario**: Usa las teclas WASD para moverse, saltar y activar habilidades.
   - **Yennefer**: Usa las flechas del teclado para moverse y activar sus habilidades.
-- **Efectos únicos**:
-  -          CONTROLES:
-o   Invertidos Horizontal: cambian los controles de derecha izquierda durante la partida.
-o   Invertidos Vertical: cambian los controles de salto y power up durante la partida.
-o   Deslizamiento: el jugador tendrá un pequeño deslizamiento al intentar frenar
- 
--          STATS:
-o   Vida: Se aumenta la cantidad de vida de los jugadores.
-o   Velocidad: Se aumenta la velocidad de los jugadores.
-o   Salto: Se aumenta la potencia de salto de los jugadores.
- 
--          MAPA:
-o   Gravedad reducida: Cada 10 segundos la gravedad disminuye en el mapa.
-o   Glitch: Ambos jugadores se verán desplazados en una dirección aleatoria en intervalos aleatorios de tiempo durante la partida y su animación cambiará.
-o   Relámpago: Durante la partida se dificultará la visión de los jugadores con un efecto de relámpago cada 6-10 segundos.
+## Efectos Únicos
+
+### Controles
+- **Invertidos Horizontal**: Cambian los controles de derecha e izquierda durante la partida.
+- **Invertidos Vertical**: Cambian los controles de salto y power-up durante la partida.
+- **Deslizamiento**: El jugador tendrá un pequeño deslizamiento al intentar frenar.
+
+### Stats
+- **Vida**: Se aumenta la cantidad de vida de los jugadores.
+- **Velocidad**: Se aumenta la velocidad de los jugadores.
+- **Salto**: Se aumenta la potencia de salto de los jugadores.
+
+### Mapa
+- **Gravedad Reducida**: Cada 10 segundos, la gravedad disminuye en el mapa.
+- **Glitch**: Ambos jugadores se verán desplazados en una dirección aleatoria en intervalos aleatorios de tiempo durante la partida, y su animación cambiará.
+- **Relámpago**: Durante la partida, se dificultará la visión de los jugadores con un efecto de relámpago cada 6-10 segundos.
+
 
 - **Arte en pixel art** y ambientación de fantasía.
 
@@ -52,10 +54,10 @@ o   Relámpago: Durante la partida se dificultará la visión de los jugadores c
 
 ## Trabajo Universitario
 
-Este proyecto fue desarrollado como parte de un curso académico de diseño y desarrollo de videojuegos. Es un ejemplo práctico de cómo integrar mecánicas avanzadas como:
+Este proyecto fue desarrollado durante las prácticas de la asignatura PROGRAMACIÓN EN LENGUAJES INTERPRETADOS en el Grado de Diseño y desarrollo de videojuegos en la Universidad Complutense de Madrid. Es un ejemplo práctico de cómo integrar mecánicas avanzadas como:
 - Física personalizada con **Phaser.js**.
 - Estilo visual basado en **pixel art**.
-- Incorporación de elementos interactivos que alteran el juego.
+- Incorporación de elementos interactivos que alteran el juego, como en este caso las cartas.
 
 ---
 
