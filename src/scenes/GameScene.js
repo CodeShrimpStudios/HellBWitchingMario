@@ -56,11 +56,12 @@ export default class GameScene extends Phaser.Scene {
     this.load.audio("sfx_thunder", "./assets/sfx/thunder.mp3");
     this.load.audio("sfx_glitch", "./assets/sfx/glitch.mp3");
     this.load.audio("sfx_powerup", "./assets/sfx/powerup.mp3");
-    this.load.audio("sfx_enemy_death", "/assets/sfx/enemy_death.mp3");
+    this.load.audio("sfx_enemy_death", "./assets/sfx/enemy_death.mp3");
 
 
     this.load.audio("bgm_3", "./assets/bgm/01_Press_Play.mp3");
     this.load.audio("bgm_4", "./assets/bgm/06_Punch_Out.mp3");
+    this.load.audio("bgm_5", "./assets/bgm/18_Level_Up.mp3");
   }
 
   create() {
