@@ -32,7 +32,7 @@ export default class Mushroom extends Phaser.Physics.Arcade.Sprite {
         
         // Temporizador para saltar ocasionalmente
         this.jumpTimer = scene.time.addEvent({
-            delay: Phaser.Math.Between(2000, 4000), // Intervalo aleatorio para saltar
+            delay: Phaser.Math.Between(1000, 2000), // Intervalo aleatorio para saltar
             callback: this.jump,
             callbackScope: this,
             loop: true

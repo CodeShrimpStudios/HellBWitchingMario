@@ -111,12 +111,15 @@ export default class GameScene extends Phaser.Scene {
       const tilesPerRow = 5;
       const frame= (4 - 1) + ((5 - 1) * tilesPerRow);
       //this.powerUp = new Powerup(this, 100, 150, 'powertile', frame);
-      this.powerups = [ 
-        new Powerup(this, 150, 370, 'powertile', frame), 
+      this.powerups = [  
         new Powerup(this, 1100, 120, 'powertile', frame), 
-        new Powerup(this, 1824, 500, 'powertile', frame),
-        new Powerup(this, 2176, 500, 'powertile', frame),
-        new Powerup(this, 2336, 140, 'powertile', frame), ];;
+        new Powerup(this, 1824, 300, 'powertile', frame),
+        new Powerup(this, 2336, 140, 'powertile', frame),
+        new Powerup(this, 2640, 275, 'powertile', frame),
+        new Powerup(this, 3250, 140, 'powertile', frame),
+        new Powerup(this, 6550, 250, 'powertile', frame), ];;
+
+        
 
 
         /*this.powerupGroup = this.physics.add.group({collideWorldBounds: true });
@@ -227,7 +230,7 @@ export default class GameScene extends Phaser.Scene {
       this.physics.add.collider(this.mario, this.groundLayer);
       //Voy a dejar groundLayer comentado hasta que funcione correctamente.
 
-      this.yennefer = new Yennefer(this, 600, 370, this.sfx_yennefer,this.controlesHorizontalesInvertidos,
+      this.yennefer = new Yennefer(this, 700, 370, this.sfx_yennefer,this.controlesHorizontalesInvertidos,
         this.controlesVerticalesInvertidos,this.deslizamiento,this.potVel, this.potSalto);
       this.physics.add.collider(this.yennefer, this.groundLayer);
       
@@ -248,12 +251,26 @@ export default class GameScene extends Phaser.Scene {
         bounceY: 0.2,
         collideWorldBounds: true
       });
-      for (let i = 0; i < 5; i++) {
-        const x = Phaser.Math.Between(200, 800);
-        const y = Phaser.Math.Between(100, 150);
-        const mushroom = new Mushroom(this, x, y);
-        this.mushroomGroup.add(mushroom);
-      }
+      //for (let i = 0; i < 5; i++) {
+      //  const x = Phaser.Math.Between(200, 800);
+      //  const y = Phaser.Math.Between(100, 150);
+      //  const mushroom = new Mushroom(this, x, y);
+      //  this.mushroomGroup.add(mushroom);
+      //}
+      const mushroom1 = new Mushroom(this, 150, 400);
+      this.mushroomGroup.add(mushroom1);
+      const mushroom2 = new Mushroom(this, 1500, 400);
+      this.mushroomGroup.add(mushroom2);
+      const mushroom3 = new Mushroom(this, 1700, 400);
+      this.mushroomGroup.add(mushroom3);
+      const mushroom4 = new Mushroom(this, 2200, 400);
+      this.mushroomGroup.add(mushroom4);
+      const mushroom5 = new Mushroom(this, 3424, 400);
+      this.mushroomGroup.add(mushroom5);
+      const mushroom6 = new Mushroom(this, 4000, 400);
+      this.mushroomGroup.add(mushroom6);
+      const mushroom7 = new Mushroom(this, 6640, 400);
+      this.mushroomGroup.add(mushroom7);
 
       // Evitar colisiones entre champiñones y hacer que reboten
       this.physics.add.collider(this.mushroomGroup, this.mushroomGroup, (mushroom1, mushroom2) => {
