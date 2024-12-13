@@ -23,52 +23,78 @@
             align-items: center;
         }
         header {
-            padding: 20px;
-            background: rgba(0, 0, 0, 0.7);
-            margin-bottom: 20px;
-            position: relative;
-            z-index: 2;
-            width: 100%;
-        }
-        #game-container {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            margin: 20px auto;
-            width: 80%;
-            max-width: 800px;
-            height: 600px;
-            background: rgba(0, 0, 0, 0.8);
-            border: 3px solid #fff;
-            border-radius: 15px;
-            position: relative;
-            z-index: 2;
-        }
-        .content-section {
-            background: rgba(0, 0, 0, 0.6);
-            padding: 15px;
-            margin: 20px;
-            border-radius: 10px;
-            position: relative;
-            z-index: 2;
-            width: 80%;
-            max-width: 800px;
-        }
-        footer {
-            padding: 10px;
-            background: rgba(0, 0, 0, 0.8);
-            position: relative;
-            z-index: 2;
-            width: 100%;
-        }
-        a {
-            color: #ffd700;
-            text-decoration: none;
-            margin: 0 10px;
-        }
-        a:hover {
-            text-decoration: underline;
-        }
+    padding: 20px;
+    background: rgba(0, 0, 0, 0.9);
+    margin-bottom: 20px;
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.5);
+}
+
+h1 {
+    font-size: 3rem;
+    color: #ffd700;
+    text-shadow: 2px 2px 4px #000;
+}
+
+h2 {
+    font-size: 2rem;
+    color: #ff6347;
+    margin-bottom: 10px;
+    text-shadow: 1px 1px 3px #000;
+}
+
+p {
+    font-size: 1.1rem;
+    line-height: 1.8;
+    margin: 10px 0;
+}
+
+.content-section {
+    background: rgba(0, 0, 0, 0.7);
+    padding: 20px;
+    margin: 20px auto;
+    border-radius: 10px;
+    position: relative;
+    z-index: 2;
+    width: 90%;
+    max-width: 900px;
+    box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.5);
+}
+
+#game-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 20px auto;
+    width: 90%;
+    max-width: 1200px;
+    height: 700px;
+    background: rgba(0, 0, 0, 0.85);
+    border: 3px solid #fff;
+    border-radius: 15px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.8);
+}
+
+footer {
+    padding: 10px;
+    background: rgba(0, 0, 0, 0.9);
+    color: #ccc;
+    font-size: 0.9rem;
+    margin-top: 20px;
+    text-shadow: 1px 1px 2px #000;
+}
+
+a {
+    color: #ffd700;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+a:hover {
+    text-decoration: underline;
+}
     </style>
 </head>
 
@@ -88,25 +114,56 @@
     </section>
 
     <section class="content-section">
+        <section class="content-section">
         <h2>Instrucciones</h2>
         <p>Al comienzo del juego se seleccionarán 3 cartas de las 9 disponibles.
-            Estas cartas tendrán efectos diferentes, desde potenciación de la velocidad de desplazamiento, aumento
-            del salto, aparición de enemigos, o simplemente que el mapa sea más complejo.
+            Se tendrá que elegir obligatoriamente una carta de cada columna para poder proceder al juego:
+            <p>CONTROLES</p>            
+                
+                <p>+Inversión Horizontal: Cambian los controles izquierda y derecha.</p>
+                <p>+Inversión Vertical: Cambian los controles arriba y abajo.</p>
+                <p>+Inversión Deslizamiento: los jugadores deslizan ligeramente al intentar frenar.</p>
+
+                <p>STATS</p>
+
+                <p>Velocidad Aumentada: Los jugadores verán aumentada su velocidad máxima.</p>
+                <p>Salto Aumentado: Los jugadores verán aumentada su potencia de Salto.</p>
+                <p>Vida Aumentada: Los jugadores recibirán una vida adicional.</p>
+
+                <p>MODIFICADORES DEL MAPA</p>
+                <p>Gravedad reducida: A intervalos de 10 segundos la gravedad se reducirá a la mitad durante 3 segundos.</p>
+                <p>Glitch: Los jugadores se desplazan en una dirección aleatoria y su animación sufre alteraciones.</p>
+                <p>Relámpago: A intervalos de entre 6-10 segundo la pantalla se verá alterada por la caída de un relámpago.</p>
+
 
         </p>
-
-        <p>
-            MARIO : Usará los controles WASD para su desplazamiento y la tecla S para utilizar habilidades que pueda haber obtenido
-
-        </p>
-
-        <p>
-            YENNEFER: Usará los controles de flechas de dirección para moverse y la tecla de "Down" para utilizar habilidades
-
-        </p>
+        
+    </section>
+        <section class="content-section">
+            <h2>Jugadores</h2>
+            <div>
+                <h3>MARIO</h3>
+                <ul>
+                    <li>W: Salto</li>
+                    <li>A: Movimiento hacia la izquierda</li>
+                    <li>D: Movimiento hacia la derecha</li>
+                    <li>S: Activar PowerUp</li>
+                </ul>
+            </div>
+            <div>
+                <h3>YENNEFER</h3>
+                <ul>
+                    <li>W: Salto</li>
+                    <li>W + W: Doble Salto</li>
+                    <li>A: Movimiento hacia la izquierda</li>
+                    <li>D: Movimiento hacia la derecha</li>
+                    <li>S: Activar PowerUp</li>
+                </ul>
+            </div>
+        </section>
         <p>
             Una vez comenzado el juego, Yennefer tendrá como objetivo huir de Mario tomando la mayor distancia posible
-            para evitar ser alcanzada, mientras que Mario tendrá por el contrario que esta se escape y poder pedirle por fin su 
+            para evitar ser alcanzada y llegando al final del nivel, mientras que Mario tendrá que, por el contrario, evitar que esta se escape y poder pedirle por fin su 
             instagram para poder mandarle DM y pedirle su numero.
         </p>
     </section>
