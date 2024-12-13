@@ -29,3 +29,7 @@ Autor: Zapsplat
 **Música de fondo:** al plantear una estética pixel art a nivel gráfico teníamos que jugar con paralelismos y de esta manera viajar a por sonidos arcade de estilo 8-bits.  
 Fuente: [Panda Beats Music](https://pandabeatsmusic.com/)  
 Autor: Panda Beats  
+
+**Fondo de Menu Inicial:** un color relajado que contrasta con estetica de cueva
+https://slashdashgamesstudio.itch.io/cave-background-assets
+Autor:Seetyaji
