@@ -283,6 +283,7 @@ export default class GameScene extends Phaser.Scene {
       // Detectar colisión con los jugadores
       this.physics.add.collider(this.mushroomGroup, this.mario, this.handleMushroomCollision, null, this);
       this.physics.add.collider(this.mushroomGroup, this.yennefer, this.handleMushroomCollision, null, this);
+      this.physics.add.overlap(this.mushroomGroup, this.trampasLayer, this.handleMushroomCollision2, null, this);
 
       //Yennefer y Mario colision con Powerup
       this.physics.add.overlap(this.yennefer, this.powerups, this.onPowerupCollisionY, null, this);
@@ -697,7 +698,12 @@ export default class GameScene extends Phaser.Scene {
         //console.log(`${player.constructor.name} colisionó con un champiñón y fue ralentizado.`);
       }
     }
+  }
 
+  handleMushroomCollision2(mushroom, tile) {
+    if (tile.properties.trampa && tile.properties.Flava) {
+      mushroom.dieOnLava();
+    }
   }
 
   marioWin() {

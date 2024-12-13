@@ -39,6 +39,12 @@ export default class Mushroom extends Phaser.Physics.Arcade.Sprite {
         });
     }
 
+    dieOnLava() {
+        this.setActive(false);
+        this.setVisible(false);
+        this.disableBody(true);
+    }
+
     // Lógica para el salto del champiñón
     jump() {
         if (this.body.blocked.down) { // Solo saltar si está en el suelo
