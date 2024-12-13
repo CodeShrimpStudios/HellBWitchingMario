@@ -33,3 +33,6 @@ Autor: Panda Beats
 **Fondo de Menu Inicial:** un color relajado que contrasta con estetica de cueva
 https://slashdashgamesstudio.itch.io/cave-background-assets
 Autor:Seetyaji
+
+**Algun otro efecto de sonido:** https://samplefocus.com/ 
+
