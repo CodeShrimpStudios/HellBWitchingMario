@@ -114,6 +114,7 @@ export default class GameScene extends Phaser.Scene {
       //this.powerUp = new Powerup(this, 100, 150, 'powertile', frame);
       this.powerups = [  
         new Powerup(this, 1100, 120, 'powertile', frame), 
+        //new Powerup(this, 700, 370, 'powertile', frame), //powerup de testeo
         new Powerup(this, 1824, 300, 'powertile', frame),
         new Powerup(this, 2336, 140, 'powertile', frame),
         new Powerup(this, 2640, 275, 'powertile', frame),
@@ -132,6 +133,11 @@ export default class GameScene extends Phaser.Scene {
       //  new Powerup(this, 100, 200, 'powertile', frame) ]; */
       this.groundLayer.setCollisionByProperty({ colisiona: true });
       this.trampasLayer.setCollisionByProperty({ colisiona: true });
+
+      // Crear un sprite en la posición (50, 50) con un tamaño de 100x100 píxeles 
+      this.invisibleSquare = this.add.rectangle(7264, 400, 10, 500, 0x000000, 0); 
+      // Habilitar la física para el objeto 
+      this.physics.add.existing(this.invisibleSquare, true);
     //Fin Tilemap
 
 
@@ -232,6 +238,7 @@ export default class GameScene extends Phaser.Scene {
       //Voy a dejar groundLayer comentado hasta que funcione correctamente.
 
       this.yennefer = new Yennefer(this, 700, 370, this.sfx_yennefer,this.controlesHorizontalesInvertidos,
+      //this.yennefer = new Yennefer(this, 7000, 370, this.sfx_yennefer,this.controlesHorizontalesInvertidos,
         this.controlesVerticalesInvertidos,this.deslizamiento,this.potVel, this.potSalto);
       this.physics.add.collider(this.yennefer, this.groundLayer);
       
@@ -289,6 +296,7 @@ export default class GameScene extends Phaser.Scene {
       //Yennefer y Mario colision con Powerup
       this.physics.add.overlap(this.yennefer, this.powerups, this.onPowerupCollisionY, null, this);
       this.physics.add.overlap(this.mario, this.powerups, this.onPowerupCollisionM, null, this);
+      this.yWon = false;
     //Fin Personajes & Fisicas
 
 
@@ -671,6 +679,7 @@ export default class GameScene extends Phaser.Scene {
       this.sfx_map.powerup.play();
       this.yennefer.powerup = true;
       powerup.Yennefer = false;
+      powerup.checkDestroy();
       console.log("powerup Yennefer")
     }
   }
@@ -680,6 +689,7 @@ export default class GameScene extends Phaser.Scene {
       this.sfx_map.powerup.play();
       this.mario.powerup = true;
       powerup.Mario = false;
+      powerup.checkDestroy();
       console.log("powerup Mario")
     }
   }
@@ -707,18 +717,20 @@ export default class GameScene extends Phaser.Scene {
   }
 
   marioWin() {
-    //Añadan animaciones antes de cambiar de escena
-    console.log("Colision!!!");
+    //Añadan animaciones antes de cambiar de escena // <-No
+    console.log("Colision!!! Mario Win");
     this.sound.stopAll();
     this.WinnerP1 = true;
     this.scene.switch('victory', { WinnerP1: this.WinnerP1, cartasSeleccionadas: this.cartasSeleccionadas });
   }
 
   yenneferWin() {
-    console.log("Yennefer");
+    //console.log("Yennefer");
+    if(!this.yWon){
+    this.yWon = true;
     this.sound.stopAll();
     this.WinnerP1 = false;
-    this.scene.switch('victory', { WinnerP1: this.WinnerP1, cartasSeleccionadas: this.cartasSeleccionadas });
+    this.scene.switch('victory', { WinnerP1: this.WinnerP1, cartasSeleccionadas: this.cartasSeleccionadas });}
   }
 
   uiManager() {
@@ -849,11 +861,13 @@ export default class GameScene extends Phaser.Scene {
     this.yennefer.update();
     this.uiManager();
 
-    this.physics.world.once("worldbounds", (body, up, down, left, right) => {
-      if (right) {
-        this.yenneferWin();
-      }
-    });
+    //this.physics.world.once("worldbounds", (body, up, down, left, right) => {
+    //  if (right) {
+    //    this.yenneferWin();
+    //  }
+    //});
+
+    this.physics.add.overlap(this.yennefer, this.invisibleSquare, this.yenneferWin, null, this);
 
     // Actualizar cada champiñón
     this.mushroomGroup.children.iterate((mushroom) => {

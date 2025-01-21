@@ -14,4 +14,12 @@ export default class Powerup extends Phaser.GameObjects.Sprite{
         this.body.allowGravity = false;
         this.body.setImmovable(true);   
     }
+
+    checkDestroy(){
+        if(!this.Mario && !this.Yennefer){
+            this.setActive(false);
+            this.setVisible(false);
+            //this.disableBody(true);
+        }
+    }
 }

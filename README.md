@@ -72,7 +72,7 @@ Si has creado redes sociales para el proyecto, inclúyelas aquí:
 ## Enlace al Proyecto
 
 Puedes jugar la versión pública del juego directamente en GitHub Pages:
-[Hell Witching Mario - Publicación en GitHub Pages](https://codeshrimpstudios.github.io/)
+[Hell Witching Mario - Publicación en GitHub Pages](https://codeshrimpstudios.github.io/HellBWitchingMario/)
 
 ---
 
