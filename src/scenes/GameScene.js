@@ -716,15 +716,15 @@ export default class GameScene extends Phaser.Scene {
   }
 
   marioWin() {
-    //Añadan animaciones antes de cambiar de escena
-    console.log("Colision!!!");
+    //Añadan animaciones antes de cambiar de escena // <-No
+    console.log("Colision!!! Mario Win");
     this.sound.stopAll();
     this.WinnerP1 = true;
     this.scene.switch('victory', { WinnerP1: this.WinnerP1, cartasSeleccionadas: this.cartasSeleccionadas });
   }
 
   yenneferWin() {
-    console.log("Yennefer");
+    //console.log("Yennefer");
     if(!this.yWon){
     this.yWon = true;
     this.sound.stopAll();
