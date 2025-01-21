@@ -113,6 +113,7 @@ export default class GameScene extends Phaser.Scene {
       //this.powerUp = new Powerup(this, 100, 150, 'powertile', frame);
       this.powerups = [  
         new Powerup(this, 1100, 120, 'powertile', frame), 
+        //new Powerup(this, 700, 370, 'powertile', frame), //powerup de testeo
         new Powerup(this, 1824, 300, 'powertile', frame),
         new Powerup(this, 2336, 140, 'powertile', frame),
         new Powerup(this, 2640, 275, 'powertile', frame),
@@ -677,6 +678,7 @@ export default class GameScene extends Phaser.Scene {
       this.sfx_map.powerup.play();
       this.yennefer.powerup = true;
       powerup.Yennefer = false;
+      powerup.checkDestroy();
       console.log("powerup Yennefer")
     }
   }
@@ -686,6 +688,7 @@ export default class GameScene extends Phaser.Scene {
       this.sfx_map.powerup.play();
       this.mario.powerup = true;
       powerup.Mario = false;
+      powerup.checkDestroy();
       console.log("powerup Mario")
     }
   }
